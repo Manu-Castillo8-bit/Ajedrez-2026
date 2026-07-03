@@ -80,10 +80,10 @@ namespace Ajedrez
                     P[i, j].Name = i + " " + j;
 
                     if (i < (n / 2) - 1 && P[i, j].BackColor == Color.Black)
-                    { P[i, j].Image = Properties.Resources.peon_blanco; P[i, j].Name += " r"; }
+                    { P[i, j].Image = Properties.Resources.peon; P[i, j].Name += " r"; }
 
                     else if (i > (n / 2) && P[i, j].BackColor == Color.Black)
-                    { P[i, j].Image = Properties.Resources.peon_negro; P[i, j].Name += " g"; }
+                    { P[i, j].Image = Properties.Resources.peon_negro_pixel; P[i, j].Name += " g"; }
                     P[i, j].SizeMode = PictureBoxSizeMode.Zoom;
                     P[i, j].MouseHover += (sender2, e2) =>
                     {
@@ -118,13 +118,13 @@ namespace Ajedrez
 
                                 if (k.Split(' ')[2] == "r")
                                 {
-                                    p.Image = Properties.Resources.peon_blanco; //r = peon_blanco
+                                    p.Image = Properties.Resources.peon; //r = peon_blanco
                                     p.Name = p.Name.Replace("b", "r");
                                 }
                                 else
                                     if (k.Split(' ')[2] == "g")
                                     {
-                                        p.Image = Properties.Resources.peon_negro; //g = peon_negro
+                                        p.Image = Properties.Resources.peon_negro_pixel; //g = peon_negro
                                         p.Name = p.Name.Replace("b", "g");
                                     }
 

@@ -51,7 +51,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro;
+            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
             this.pictureBox1.Location = new System.Drawing.Point(510, 27);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(50, 50);
@@ -61,7 +61,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon_blanco;
+            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon;
             this.pictureBox2.Location = new System.Drawing.Point(510, 435);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(50, 50);

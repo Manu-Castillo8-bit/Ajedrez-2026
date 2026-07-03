@@ -60,33 +60,33 @@ namespace Ajedrez
         {
             // Piezas negras (fila 0 y 1)
             // Fila 0 - Piezas mayores negras
-            PlacePiece(0, 0, "torre_negra", "black", "rook");
-            PlacePiece(0, 1, "caballo_negra", "black", "knight");
-            PlacePiece(0, 2, "alfil_negra", "black", "bishop");
-            PlacePiece(0, 3, "reina_negra", "black", "queen");
-            PlacePiece(0, 4, "rey_negra", "black", "king");
-            PlacePiece(0, 5, "alfil_negra", "black", "bishop");
-            PlacePiece(0, 6, "caballo_negra", "black", "knight");
-            PlacePiece(0, 7, "torre_negra", "black", "rook");
+            PlacePiece(0, 0, "Torre_n", "black", "rook");
+            PlacePiece(0, 1, "caballo_n", "black", "knight");
+            PlacePiece(0, 2, "alfil_n", "black", "bishop");
+            PlacePiece(0, 3, "reina_n", "black", "queen");
+            PlacePiece(0, 4, "rey_n", "black", "king");
+            PlacePiece(0, 5, "alfil_n", "black", "bishop");
+            PlacePiece(0, 6, "caballo_n", "black", "knight");
+            PlacePiece(0, 7, "Torre_n", "black", "rook");
 
             // Fila 1 - Peones negros
             for (int col = 0; col < 8; col++)
-                PlacePiece(1, col, "peon_negro", "black", "pawn");
+                PlacePiece(1, col, "peon_negro_pixel", "black", "pawn");
 
             // Piezas blancas (fila 6 y 7)
             // Fila 6 - Peones blancos
             for (int col = 0; col < 8; col++)
-                PlacePiece(6, col, "peon_blanco", "white", "pawn");
+                PlacePiece(6, col, "peon", "white", "pawn");
 
             // Fila 7 - Piezas mayores blancas
-            PlacePiece(7, 0, "torre_blanca", "white", "rook");
-            PlacePiece(7, 1, "caballo_blanca", "white", "knight");
-            PlacePiece(7, 2, "alfil_blanca", "white", "bishop");
-            PlacePiece(7, 3, "reina_blanca", "white", "queen");
-            PlacePiece(7, 4, "rey_blanca", "white", "king");
-            PlacePiece(7, 5, "alfil_blanca", "white", "bishop");
-            PlacePiece(7, 6, "caballo_blanca", "white", "knight");
-            PlacePiece(7, 7, "torre_blanca", "white", "rook");
+            PlacePiece(7, 0, "torre", "white", "rook");
+            PlacePiece(7, 1, "caballo", "white", "knight");
+            PlacePiece(7, 2, "alfil", "white", "bishop");
+            PlacePiece(7, 3, "reina", "white", "queen");
+            PlacePiece(7, 4, "rey", "white", "king");
+            PlacePiece(7, 5, "alfil", "white", "bishop");
+            PlacePiece(7, 6, "caballo", "white", "knight");
+            PlacePiece(7, 7, "torre", "white", "rook");
         }
 
         private void PlacePiece(int row, int col, string imageName, string color, string type)
