@@ -16,5 +16,22 @@ namespace Ajedrez
         {
             InitializeComponent();
         }
+
+        private void ir_menu_Click(object sender, EventArgs e)
+        {
+            menu f_menu = new menu();
+            f_menu.Show();
+            this.Hide();
+        }
+
+        private void m_claro_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_oscuro_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

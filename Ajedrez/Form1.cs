@@ -21,7 +21,31 @@ namespace Ajedrez
         PictureBox[,] P;
 
         string color = "r", k = "", B1 = "", B2 = "", k2="";
-        int blancas=0, negras=0;
+
+        private void partidas_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_claro_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void m_oscuro_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ir_menu_Click(object sender, EventArgs e)
+        {
+            menu f_menu = new menu();
+            f_menu.Show();
+            this.Hide();
+        }
+        
+
+        int blancas =0, negras=0;
         private void Form1_Load(object sender, EventArgs e)
         {
             n = 8;

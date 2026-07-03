@@ -10,18 +10,11 @@ using System.Windows.Forms;
 
 namespace Ajedrez
 {
-    public partial class Partidas : Form
+    public partial class REGISTRADOR : Form
     {
-        public Partidas()
+        public REGISTRADOR()
         {
             InitializeComponent();
-        }
-
-        private void ir_menu_Click(object sender, EventArgs e)
-        {
-           menu f_menu = new menu();
-            f_menu.Show();
-            this.Hide();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Ajedrez
 {
-    partial class Form1
+    partial class Ajedrez_tablero
     {
         /// <summary>
         /// Variable del diseñador necesaria.
@@ -29,16 +29,16 @@
         private void InitializeComponent()
         {
             this.G = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.p_negras = new System.Windows.Forms.Label();
             this.p_blancas = new System.Windows.Forms.Label();
+            this.menu = new System.Windows.Forms.Button();
             this.deshacer = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.ir_menu = new System.Windows.Forms.Button();
-            this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.m_claro = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // G
@@ -48,6 +48,26 @@
             this.G.Name = "G";
             this.G.Size = new System.Drawing.Size(484, 484);
             this.G.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro;
+            this.pictureBox1.Location = new System.Drawing.Point(510, 27);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon_blanco;
+            this.pictureBox2.Location = new System.Drawing.Point(510, 435);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 2;
+            this.pictureBox2.TabStop = false;
             // 
             // p_negras
             // 
@@ -69,86 +89,65 @@
             this.p_blancas.TabIndex = 4;
             this.p_blancas.Text = "0";
             // 
+            // menu
+            // 
+            this.menu.Location = new System.Drawing.Point(713, 27);
+            this.menu.Name = "menu";
+            this.menu.Size = new System.Drawing.Size(75, 23);
+            this.menu.TabIndex = 5;
+            this.menu.Text = "MENU";
+            this.menu.UseVisualStyleBackColor = true;
+            this.menu.Click += new System.EventHandler(this.menu_Click);
+            // 
             // deshacer
             // 
-            this.deshacer.Location = new System.Drawing.Point(775, 69);
+            this.deshacer.Location = new System.Drawing.Point(713, 75);
             this.deshacer.Name = "deshacer";
             this.deshacer.Size = new System.Drawing.Size(75, 23);
             this.deshacer.TabIndex = 6;
             this.deshacer.Text = "DESHACER";
             this.deshacer.UseVisualStyleBackColor = true;
-            this.deshacer.Click += new System.EventHandler(this.partidas_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon_blanco;
-            this.pictureBox2.Location = new System.Drawing.Point(510, 435);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro;
-            this.pictureBox1.Location = new System.Drawing.Point(510, 27);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // ir_menu
-            // 
-            this.ir_menu.Location = new System.Drawing.Point(775, 27);
-            this.ir_menu.Name = "ir_menu";
-            this.ir_menu.Size = new System.Drawing.Size(75, 23);
-            this.ir_menu.TabIndex = 6;
-            this.ir_menu.Text = "MENU";
-            this.ir_menu.UseVisualStyleBackColor = true;
-            this.ir_menu.Click += new System.EventHandler(this.ir_menu_Click);
-            // 
-            // m_claro
-            // 
-            this.m_claro.Location = new System.Drawing.Point(775, 108);
-            this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(75, 40);
-            this.m_claro.TabIndex = 7;
-            this.m_claro.Text = "MODO CLARO";
-            this.m_claro.UseVisualStyleBackColor = true;
-            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
             // 
             // m_oscuro
             // 
-            this.m_oscuro.Location = new System.Drawing.Point(775, 162);
+            this.m_oscuro.Location = new System.Drawing.Point(713, 173);
             this.m_oscuro.Name = "m_oscuro";
             this.m_oscuro.Size = new System.Drawing.Size(75, 40);
-            this.m_oscuro.TabIndex = 7;
+            this.m_oscuro.TabIndex = 8;
             this.m_oscuro.Text = "MODO OSCURO";
             this.m_oscuro.UseVisualStyleBackColor = true;
             this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
-            // Form1
+            // m_claro
+            // 
+            this.m_claro.Location = new System.Drawing.Point(713, 119);
+            this.m_claro.Name = "m_claro";
+            this.m_claro.Size = new System.Drawing.Size(75, 40);
+            this.m_claro.TabIndex = 9;
+            this.m_claro.Text = "MODO CLARO";
+            this.m_claro.UseVisualStyleBackColor = true;
+            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
+            // 
+            // Ajedrez_tablero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(862, 517);
+            this.ClientSize = new System.Drawing.Size(800, 517);
             this.Controls.Add(this.m_oscuro);
             this.Controls.Add(this.m_claro);
-            this.Controls.Add(this.ir_menu);
             this.Controls.Add(this.deshacer);
+            this.Controls.Add(this.menu);
             this.Controls.Add(this.p_blancas);
             this.Controls.Add(this.p_negras);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.G);
             this.MaximizeBox = false;
-            this.Name = "Form1";
-            this.Text = "DAMAS";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.Name = "Ajedrez_tablero";
+            this.Text = "AJEDREZ";
+            this.Load += new System.EventHandler(this.Ajedrez_tablero_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,10 +160,9 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label p_negras;
         private System.Windows.Forms.Label p_blancas;
+        private System.Windows.Forms.Button menu;
         private System.Windows.Forms.Button deshacer;
-        private System.Windows.Forms.Button ir_menu;
-        private System.Windows.Forms.Button m_claro;
         private System.Windows.Forms.Button m_oscuro;
+        private System.Windows.Forms.Button m_claro;
     }
 }
-
