@@ -19,7 +19,7 @@ namespace Ajedrez
         int n;
         PictureBox[,] P;
 
-        string color = "r", k = "", B1 = "", B2 = "";
+        string color = "r", k = "", B1 = "", B2 = "", k2="";
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -79,6 +79,36 @@ namespace Ajedrez
                         {
                             int c = -1, x, y;
 
+                            F();
+                            if (p.Name.Split(' ')[2] == "b")
+                            {
+                                if (color == "r") color = "g";
+                                else color = "r";
+
+                                x = Convert.ToInt32(k.Split(' ')[0]);
+                                y = Convert.ToInt32(k.Split(' ')[1]);
+
+                                B1 = "";
+                                B2 = "";
+
+                                if (k.Split(' ')[2] == "r")
+                                {
+                                    p.Image = Properties.Resources.peon_blanco; //r = peon_blanco
+                                    p.Name = p.Name.Replace("b", "r");
+                                }
+                                else
+                                if (k.Split(' ')[2] == "g")
+                                {
+                                    p.Image = Properties.Resources.peon_negro; //g = peon_negro
+                                    p.Name = p.Name.Replace("b", "g");
+                                }
+
+                                P[x, y].Image = null;
+                            }
+
+                            else
+
+
                             if (p.Name.Split(' ')[2] == color) //Minuto 8:41
                             {
                                 x = Convert.ToInt32(p.Name.Split(' ')[0]);
@@ -96,6 +126,15 @@ namespace Ajedrez
                                         P[x + c, y + 1].Name = (x + c) + " " + (y + 1) + " b";
                                         B1 = (x + c) + " " + (y + 1);
                                     }
+
+                                        else
+                                            if (P[x+c,y+1].Name.Split(' ')[2] !=p.Name.Split(' ')[2] && P[x+(c*2),y+2].Image == null)
+                                            {
+                                                P[x+(c*2),y+2].Image = Properties.Resources.Movimiento;
+                                                P[x+(c*2),y+2].Name = (x+(c*2)) + " " + (y+2) + " b";
+                                                B1 = (x + (c * 2)) + " " + (y + 2);
+                                                k2 = (x + c) + " " + (y + 1) + " " + P[x+c,y+1].Name.Split(' ')[2];
+                                            }
                                 } catch { }
 
                                 try
@@ -106,6 +145,24 @@ namespace Ajedrez
                                         P[x + c, y - 1].Name = (x + c) + " " + (y - 1) + " b";
                                         B2 = (x + c) + " " + (y - 1);
                                     }
+
+                                        else
+                                            if (P[x + c, y - 1].Name.Split(' ')[2] != p.Name.Split(' ')[2] &&
+                                                P[x + (c * 2), y - 2].Image == null)
+                                            {
+                                              
+                                                P[x + (c * 2), y - 2].Image = Properties.Resources.Movimiento;
+
+                                               
+                                                P[x + (c * 2), y - 2].Name = (x + (c * 2)) + " " + (y - 2) + " b";
+
+                                               
+                                                B2 = (x + (c * 2)) + " " + (y - 2);
+
+                                              
+                                                k2 = (x + c) + " " + (y - 1) + " " + P[x + c, y - 1].Name.Split(' ')[2];
+                                            }
+                                    
                                 }catch { }
 
                             }
@@ -117,7 +174,28 @@ namespace Ajedrez
                 top += 60;
                 }
             }
+
+        public void F()
+        {
+            if (B1 != "")
+            {
+                int x, y;
+                x = Convert.ToInt32(B1.Split(' ')[0]);
+                y = Convert.ToInt32(B1.Split(' ')[1]);
+                P[x, y].Image = null;
+            }
+
+            if (B2 != "")
+            {
+                int x, y;
+                x = Convert.ToInt32(B2.Split(' ')[0]);
+                y = Convert.ToInt32(B2.Split(' ')[1]);
+                P[x, y].Image = null;
+            }
         }
+
+
+    }
     }
 
 
