@@ -19,6 +19,8 @@ namespace Ajedrez
         int n;
         PictureBox[,] P;
 
+        string color = "r", k = "", B1 = "", B2 = "";
+
         private void Form1_Load(object sender, EventArgs e)
         {
             n = 8;
@@ -33,13 +35,13 @@ namespace Ajedrez
 
                 if (i % 2 == 0)
                 {
-                    colors[0] = Color.White;
-                    colors[1] = Color.Black;
+                    colors[0] = Color.Black;  // Invertido
+                    colors[1] = Color.White;  // Invertido
                 }
                 else
                 {
-                    colors[0] = Color.Black;
-                    colors[1] = Color.White;
+                    colors[0] = Color.White;  // Invertido
+                    colors[1] = Color.Black;  // Invertido
                 }
 
 
@@ -50,7 +52,7 @@ namespace Ajedrez
                     P[i, j].Location = new Point(left, top);
                     P[i, j].Size = new Size(60, 60);
                     left += 60;
-                    P[i, j].Name = i + "" + j;
+                    P[i, j].Name = i + " " + j;
 
                     if (i < (n / 2) - 1 && P[i, j].BackColor == Color.Black)
                     { P[i, j].Image = Properties.Resources.peon_blanco; P[i, j].Name += " r"; }
@@ -58,13 +60,66 @@ namespace Ajedrez
                     else if (i > (n / 2) && P[i, j].BackColor == Color.Black)
                     { P[i, j].Image = Properties.Resources.peon_negro; P[i, j].Name += " g"; }
                     P[i, j].SizeMode = PictureBoxSizeMode.Zoom;
+                    P[i, j].MouseHover += (sender2, e2) =>
+                    {
+                        PictureBox p = sender2 as PictureBox;
+                        if (p.Image != null) p.BackColor = Color.FromArgb(255, 64, 64, 64);
+                    };
+
+                    P[i, j].MouseLeave += (sender2, e2) =>
+                    {
+                        PictureBox p = sender2 as PictureBox;
+                        if (p.Image != null) p.BackColor = Color.Black;
+                    };
+
+                    P[i, j].Click += (sender3, e3) =>
+                    {
+                        PictureBox p = sender3 as PictureBox;
+                        if (p.Image != null)
+                        {
+                            int c = -1, x, y;
+
+                            if (p.Name.Split(' ')[2] == color) //Minuto 8:41
+                            {
+                                x = Convert.ToInt32(p.Name.Split(' ')[0]);
+                                y = Convert.ToInt32(p.Name.Split(' ')[1]);
+                                k = p.Name;
 
 
+                                if (p.Name.Split(' ')[2] == "r") c = 1;
 
-                    G.Controls.Add(P[i, j]);
-                }
+                                try
+                                {
+                                    if (P[x + c, y + 1].Image == null)
+                                    {
+                                        P[x + c, y + 1].Image = Properties.Resources.Movimiento; //b min 9:49
+                                        P[x + c, y + 1].Name = (x + c) + " " + (y + 1) + " b";
+                                        B1 = (x + c) + " " + (y + 1);
+                                    }
+                                } catch { }
+
+                                try
+                                {
+                                    if (P[x + c, y - 1].Image == null)
+                                    {
+                                        P[x + c, y - 1].Image = Properties.Resources.Movimiento;
+                                        P[x + c, y - 1].Name = (x + c) + " " + (y - 1) + " b";
+                                        B2 = (x + c) + " " + (y - 1);
+                                    }
+                                }catch { }
+
+                            }
+                        }
+                    };
+
+                        G.Controls.Add(P[i, j]);
+                    }
                 top += 60;
+                }
             }
         }
     }
-}
+
+
+
+
