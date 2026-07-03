@@ -57,14 +57,15 @@ namespace Ajedrez
 
                     else if (i > (n / 2) && P[i, j].BackColor == Color.Black)
                     { P[i, j].Image = Properties.Resources.peon_negro; P[i, j].Name += " g"; }
-                    P[i, j].SizeMode = PictureBoxSizeMode.Zoom;
+                    P[i, j].SizeMode = PictureBoxSizeMode.CenterImage;
 
 
 
                     G.Controls.Add(P[i, j]);
                 }
                 top += 60;
-            }
+            
+        }
         }
     }
 }

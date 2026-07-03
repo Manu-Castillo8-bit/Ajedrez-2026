@@ -53,18 +53,25 @@ namespace Ajedrez
                     P[i, j].Name = i + "" + j;
 
                     if (i < (n / 2) - 1 && P[i, j].BackColor == Color.Black)
-                    { P[i, j].Image = Properties.Resources.peon_blanco; P[i, j].Name += " r"; }
+                    {
+                        P[i, j].Image = CreatePawnImage(Color.White);
+                        P[i, j].Name += " r";
+                    }
 
                     else if (i > (n / 2) && P[i, j].BackColor == Color.Black)
-                    { P[i, j].Image = Properties.Resources.peon_negro; P[i, j].Name += " g"; }
-                    P[i, j].SizeMode = PictureBoxSizeMode.Zoom;
+                    {
+                        P[i, j].Image = CreatePawnImage(Color.Black);
+                        P[i, j].Name += " g";
+                    }
+                    P[i, j].SizeMode = PictureBoxSizeMode.CenterImage;
 
 
 
                     G.Controls.Add(P[i, j]);
                 }
                 top += 60;
-            }
+            
+        }
         }
     }
 }

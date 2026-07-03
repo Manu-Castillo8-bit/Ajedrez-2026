@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\Ajedrez\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     }
@@ -14,19 +18,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Form1.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Form1.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Form1.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Form1.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Ajedrez\\Form1.cs [Dise\u00F1o]",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Form1.cs [Dise\u00F1o]*",
+              "RelativeToolTip": "Ajedrez\\Form1.cs [Dise\u00F1o]*",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-01T15:44:00.358Z",
+              "WhenOpened": "2026-07-03T08:20:50.049Z",
               "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Form1.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\Form1.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Form1.cs*",
+              "RelativeToolTip": "Ajedrez\\Form1.cs*",
+              "ViewState": "AgIAAC4AAAAAAAAAAAAiwDsAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-03T06:53:24.263Z",
+              "EditorCaption": ""
             }
           ]
         }
