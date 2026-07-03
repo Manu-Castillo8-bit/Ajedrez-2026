@@ -81,15 +81,3 @@ CREATE TABLE preferencias (
 
 
 
-/*
--- ============================================
--- ÍNDICES PARA RENDIMIENTO (OPCIONAL)
--- ============================================
-CREATE INDEX idx_usuarios_email ON usuarios(email);
-CREATE INDEX idx_usuarios_nombre ON usuarios(nombre_usuario);
-CREATE INDEX idx_partidas_estado ON partidas(estado);
-CREATE INDEX idx_partidas_fecha ON partidas(fecha_inicio);
-CREATE INDEX idx_partidas_jugadores ON partidas(jugador_blancas, jugador_negras);
-CREATE INDEX idx_movimientos_partida ON movimientos(id_partida);
-CREATE INDEX idx_guardadas_usuario ON partidas_guardadas(id_usuario);
-*/
