@@ -55,6 +55,23 @@ namespace Ajedrez
             f_login.Show();
             this.Hide();
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+          //NO SIRVE
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            //NO SIRVE
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+            //NO SIRVE
+
+        }
     }
     }
 

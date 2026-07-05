@@ -1,9 +1,9 @@
-C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.exe.config
 C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.exe
-C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.pdb
+C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.exe.config
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.csproj.AssemblyReference.cache
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.Ajedrez_tablero.resources
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.Form1.resources
+C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.LOGIN.resources
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.menu.resources
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.Movimientos.resources
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.Partidas.resources
@@ -13,3 +13,4 @@ C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.csproj.GenerateResource.
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.csproj.CoreCompileInputs.cache
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.exe
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.pdb
+C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.pdb

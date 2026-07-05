@@ -104,6 +104,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="LOGIN.resx">
+      <DependentUpon>LOGIN.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="menu.resx">
       <DependentUpon>menu.cs</DependentUpon>
     </EmbeddedResource>
@@ -120,6 +123,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="REGISTRADOR.resx">
+      <DependentUpon>REGISTRADOR.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

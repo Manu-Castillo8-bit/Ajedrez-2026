@@ -16,5 +16,16 @@ namespace Ajedrez
         {
             InitializeComponent();
         }
+
+        private void LOGIN_Load(object sender, EventArgs e)
+        {
+          
+        }
+
+        private void nombre_TextChanged(object sender, EventArgs e)
+        {
+            //NO SIRVE
+
+        }
     }
 }
