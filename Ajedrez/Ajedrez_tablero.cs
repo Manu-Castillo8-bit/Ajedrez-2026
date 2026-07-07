@@ -623,6 +623,11 @@ namespace Ajedrez
 
         private void menu_Click(object sender, EventArgs e)
         {
+          //NO SIRVE
+        }
+
+        private void menu_Click_1(object sender, EventArgs e)
+        {
             menu f_menu = new menu();
             f_menu.Show();
             this.Hide();

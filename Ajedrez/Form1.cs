@@ -140,8 +140,8 @@ namespace Ajedrez
                                     if (k2.Split(' ')[2] == "r") blancas++;
                                     else negras++;
 
-                                    p_negras.Text = negras + "";
-                                    p_blancas.Text = blancas + "";
+                                    p_blancas.Text = negras + "";
+                                    p_negras.Text = blancas + "";
 
                                     k2 = "";
                                 }

@@ -14,3 +14,4 @@ C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.csproj.CoreCompileInputs
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.exe
 C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.pdb
 C:\Users\User\Desktop\Ajedrez\Ajedrez\bin\Debug\Ajedrez.pdb
+C:\Users\User\Desktop\Ajedrez\Ajedrez\obj\Debug\Ajedrez.REGISTRADOR.resources
