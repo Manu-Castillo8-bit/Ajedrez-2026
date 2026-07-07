@@ -39,9 +39,9 @@
             this.m_oscuro = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -119,19 +119,25 @@
             // 
             // m_claro
             // 
-            this.m_claro.Location = new System.Drawing.Point(27, 41);
+            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
+            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.m_claro.Location = new System.Drawing.Point(41, 40);
             this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(51, 38);
+            this.m_claro.Size = new System.Drawing.Size(40, 38);
             this.m_claro.TabIndex = 5;
             this.m_claro.UseVisualStyleBackColor = true;
+            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
             // 
             // m_oscuro
             // 
+            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_negra;
+            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.m_oscuro.Location = new System.Drawing.Point(96, 40);
             this.m_oscuro.Name = "m_oscuro";
-            this.m_oscuro.Size = new System.Drawing.Size(51, 38);
+            this.m_oscuro.Size = new System.Drawing.Size(40, 38);
             this.m_oscuro.TabIndex = 2;
             this.m_oscuro.UseVisualStyleBackColor = true;
+            this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
             // label1
             // 
@@ -153,16 +159,16 @@
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             // 
-            // label3
+            // label5
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(161, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(60, 13);
-            this.label3.TabIndex = 19;
-            this.label3.Text = "Bienvenido";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(387, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 13);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "Victorias";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label4
             // 
@@ -175,16 +181,16 @@
             this.label4.Text = "ELO";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
-            // label5
+            // label3
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(387, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(47, 13);
-            this.label5.TabIndex = 21;
-            this.label5.Text = "Victorias";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(161, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(60, 13);
+            this.label3.TabIndex = 19;
+            this.label3.Text = "Bienvenido";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // menu
             // 

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Ajedrez
 {
@@ -71,6 +72,27 @@ namespace Ajedrez
         {
             //NO SIRVE
 
+        }
+
+        private void m_claro_Click(object sender, EventArgs e)
+        {
+            this.BackColor = SystemColors.Control;
+            label1.ForeColor = Color.Black;
+            label2.ForeColor = Color.Black;
+            label3.ForeColor = Color.Black;
+            label4.ForeColor = Color.Black;
+            label5.ForeColor = Color.Black;
+          
+        }
+
+        private void m_oscuro_Click(object sender, EventArgs e)
+        {
+            this.BackColor = Color.FromArgb(30, 30, 30);
+            label1.ForeColor = Color.White;
+            label2.ForeColor = Color.White;
+            label3.ForeColor = Color.White;
+            label4.ForeColor = Color.White;
+            label5.ForeColor = Color.White;
         }
     }
     }

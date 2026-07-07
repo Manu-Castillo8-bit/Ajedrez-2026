@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Ajedrez
 {
@@ -26,6 +27,50 @@ namespace Ajedrez
         {
             //NO SIRVE
 
+        }
+
+        private void m_claro_Click(object sender, EventArgs e)
+        {
+            this.BackColor = SystemColors.Control;
+            label1.ForeColor = Color.Black;
+            label2.ForeColor = Color.Black;
+            label3.ForeColor = Color.Black;
+            label4.ForeColor = Color.Black;
+            checkBox1.ForeColor = Color.Black;
+            pictureBox1.Visible = true;
+            pictureBox2.Visible = true;
+            pictureBox3.Visible = true;
+            pictureBox5.Visible = false;
+            pictureBox4.Visible = false;
+            pictureBox6.Visible = false;
+        }
+
+        private void m_oscuro_Click(object sender, EventArgs e)
+        {
+            this.BackColor = Color.FromArgb(30, 30, 30);
+            label1.ForeColor = SystemColors.Control;
+            label2.ForeColor = SystemColors.Control;
+            label3.ForeColor = SystemColors.Control;
+            label4.ForeColor = SystemColors.Control;
+            checkBox1.ForeColor = Color.White;
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            pictureBox3.Visible = false;
+            pictureBox5.Visible = true;
+            pictureBox4.Visible = true;
+            pictureBox6.Visible = true;
+        }
+
+        private void continuar_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void ir_registro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            REGISTRADOR f_registro = new REGISTRADOR();
+            f_registro.Show();
+            this.Hide();
         }
     }
 }
