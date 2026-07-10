@@ -98,6 +98,7 @@
     <Compile Include="REGISTRADOR.Designer.cs">
       <DependentUpon>REGISTRADOR.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tema.cs" />
     <EmbeddedResource Include="Ajedrez_tablero.resx">
       <DependentUpon>Ajedrez_tablero.cs</DependentUpon>
     </EmbeddedResource>

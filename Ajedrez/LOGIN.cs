@@ -16,6 +16,7 @@ namespace Ajedrez
         public LOGIN()
         {
             InitializeComponent();
+           
         }
 
         private void LOGIN_Load(object sender, EventArgs e)
@@ -31,34 +32,14 @@ namespace Ajedrez
 
         private void m_claro_Click(object sender, EventArgs e)
         {
-            this.BackColor = SystemColors.Control;
-            label1.ForeColor = Color.Black;
-            label2.ForeColor = Color.Black;
-            label3.ForeColor = Color.Black;
-            label4.ForeColor = Color.Black;
-            checkBox1.ForeColor = Color.Black;
-            pictureBox1.Visible = true;
-            pictureBox2.Visible = true;
-            pictureBox3.Visible = true;
-            pictureBox5.Visible = false;
-            pictureBox4.Visible = false;
-            pictureBox6.Visible = false;
+            Tema.SetTheme(false);      // Cambia a tema claro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
         {
-            this.BackColor = Color.FromArgb(30, 30, 30);
-            label1.ForeColor = SystemColors.Control;
-            label2.ForeColor = SystemColors.Control;
-            label3.ForeColor = SystemColors.Control;
-            label4.ForeColor = SystemColors.Control;
-            checkBox1.ForeColor = Color.White;
-            pictureBox1.Visible = false;
-            pictureBox2.Visible = false;
-            pictureBox3.Visible = false;
-            pictureBox5.Visible = true;
-            pictureBox4.Visible = true;
-            pictureBox6.Visible = true;
+            Tema.SetTheme(true);       // Cambia a tema oscuro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void continuar_Click(object sender, EventArgs e)

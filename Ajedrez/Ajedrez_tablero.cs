@@ -613,12 +613,14 @@ namespace Ajedrez
 
         private void m_claro_Click(object sender, EventArgs e)
         {
-
+            Tema.SetTheme(false);      // Cambia a tema claro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
         {
-
+            Tema.SetTheme(true);       // Cambia a tema oscuro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void menu_Click(object sender, EventArgs e)
