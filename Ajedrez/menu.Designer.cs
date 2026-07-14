@@ -113,7 +113,7 @@
             this.groupBox1.Controls.Add(this.ir_login);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
-            this.groupBox1.Location = new System.Drawing.Point(532, 1);
+            this.groupBox1.Location = new System.Drawing.Point(532, -5);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(185, 426);
             this.groupBox1.TabIndex = 16;

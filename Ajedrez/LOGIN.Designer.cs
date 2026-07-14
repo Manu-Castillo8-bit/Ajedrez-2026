@@ -31,12 +31,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LOGIN));
             this.label1 = new System.Windows.Forms.Label();
             this.nombre = new System.Windows.Forms.TextBox();
-            this.ir_registro = new System.Windows.Forms.LinkLabel();
             this.contraseña = new System.Windows.Forms.TextBox();
-            this.continuar = new System.Windows.Forms.Button();
+            this.ingresar = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.registrarse = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -73,34 +74,24 @@
             this.nombre.TabIndex = 1;
             this.nombre.TextChanged += new System.EventHandler(this.nombre_TextChanged);
             // 
-            // ir_registro
-            // 
-            this.ir_registro.AutoSize = true;
-            this.ir_registro.LinkColor = System.Drawing.Color.Black;
-            this.ir_registro.Location = new System.Drawing.Point(134, 174);
-            this.ir_registro.Name = "ir_registro";
-            this.ir_registro.Size = new System.Drawing.Size(169, 13);
-            this.ir_registro.TabIndex = 3;
-            this.ir_registro.TabStop = true;
-            this.ir_registro.Text = "¿Aún no tienes cuenta, registrate?";
-            this.ir_registro.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.ir_registro_LinkClicked);
-            // 
             // contraseña
             // 
             this.contraseña.Location = new System.Drawing.Point(72, 142);
             this.contraseña.Name = "contraseña";
             this.contraseña.Size = new System.Drawing.Size(219, 20);
             this.contraseña.TabIndex = 4;
+            this.contraseña.UseSystemPasswordChar = true;
+            this.contraseña.TextChanged += new System.EventHandler(this.contraseña_TextChanged);
             // 
-            // continuar
+            // ingresar
             // 
-            this.continuar.Location = new System.Drawing.Point(134, 252);
-            this.continuar.Name = "continuar";
-            this.continuar.Size = new System.Drawing.Size(169, 39);
-            this.continuar.TabIndex = 6;
-            this.continuar.Text = "CONTINUAR";
-            this.continuar.UseVisualStyleBackColor = true;
-            this.continuar.Click += new System.EventHandler(this.continuar_Click);
+            this.ingresar.Location = new System.Drawing.Point(134, 252);
+            this.ingresar.Name = "ingresar";
+            this.ingresar.Size = new System.Drawing.Size(169, 39);
+            this.ingresar.TabIndex = 6;
+            this.ingresar.Text = "CONTINUAR";
+            this.ingresar.UseVisualStyleBackColor = true;
+            this.ingresar.Click += new System.EventHandler(this.continuar_Click);
             // 
             // m_oscuro
             // 
@@ -126,6 +117,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.registrarse);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
@@ -135,6 +128,25 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(10, 302);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(120, 13);
+            this.label5.TabIndex = 17;
+            this.label5.Text = "¿Aún no tienes cuenta?";
+            // 
+            // registrarse
+            // 
+            this.registrarse.Location = new System.Drawing.Point(19, 318);
+            this.registrarse.Name = "registrarse";
+            this.registrarse.Size = new System.Drawing.Size(104, 30);
+            this.registrarse.TabIndex = 9;
+            this.registrarse.Text = "REGISTRATE";
+            this.registrarse.UseVisualStyleBackColor = true;
+            this.registrarse.Click += new System.EventHandler(this.registrarse_Click);
             // 
             // label2
             // 
@@ -175,7 +187,7 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.candado_negro;
+            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.candado_blanco;
             this.pictureBox2.Location = new System.Drawing.Point(34, 129);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 33);
@@ -205,7 +217,7 @@
             // 
             // pictureBox5
             // 
-            this.pictureBox5.Image = global::Ajedrez.Properties.Resources.candado_blanco;
+            this.pictureBox5.Image = global::Ajedrez.Properties.Resources.candado_negro;
             this.pictureBox5.Location = new System.Drawing.Point(34, 129);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(32, 33);
@@ -232,6 +244,7 @@
             this.checkBox1.TabIndex = 16;
             this.checkBox1.Text = "Ver contraseña";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // LOGIN
             // 
@@ -248,9 +261,8 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.continuar);
+            this.Controls.Add(this.ingresar);
             this.Controls.Add(this.contraseña);
-            this.Controls.Add(this.ir_registro);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
             this.Name = "LOGIN";
@@ -273,9 +285,8 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox nombre;
-        private System.Windows.Forms.LinkLabel ir_registro;
         private System.Windows.Forms.TextBox contraseña;
-        private System.Windows.Forms.Button continuar;
+        private System.Windows.Forms.Button ingresar;
         private System.Windows.Forms.Button m_oscuro;
         private System.Windows.Forms.Button m_claro;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -289,5 +300,7 @@
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button registrarse;
     }
 }
