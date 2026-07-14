@@ -197,13 +197,19 @@ namespace Ajedrez
                             button.BackColor = ColorTranslator.FromHtml("#22b8f0");
                             break;
                         case "ir_login":
-                            button.BackColor = ColorTranslator.FromHtml("#4a8af4");
+                            button.BackColor = ColorTranslator.FromHtml("#18c484");
                             break;
                         case "m_oscuro":
                             button.BackColor = ColorTranslator.FromHtml("#4a8af4");
                             break;
                         case "m_claro":
                             button.BackColor = SystemColors.Control;
+                            break;
+                        case "registrarse":
+                            button.BackColor = ColorTranslator.FromHtml("#22b8f0");
+                            break;
+                        case "ingresar":
+                            button.BackColor = ColorTranslator.FromHtml("#22b8f0");
                             break;
                         default:
                             button.BackColor = ColorTranslator.FromHtml("#4a8af4");

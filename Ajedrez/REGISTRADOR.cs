@@ -33,7 +33,9 @@ namespace Ajedrez
         {
             InitializeComponent();
 
-              
+            // Aplicar el tema inicial
+            Tema.ApplyTheme(this);
+
         }
 
         private void m_claro_Click(object sender, EventArgs e)

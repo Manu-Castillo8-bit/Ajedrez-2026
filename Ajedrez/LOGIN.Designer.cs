@@ -32,7 +32,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.nombre = new System.Windows.Forms.TextBox();
             this.contraseña = new System.Windows.Forms.TextBox();
-            this.ingresar = new System.Windows.Forms.Button();
+            this.ingresar_ = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -83,15 +83,15 @@
             this.contraseña.UseSystemPasswordChar = true;
             this.contraseña.TextChanged += new System.EventHandler(this.contraseña_TextChanged);
             // 
-            // ingresar
+            // ingresar_
             // 
-            this.ingresar.Location = new System.Drawing.Point(134, 252);
-            this.ingresar.Name = "ingresar";
-            this.ingresar.Size = new System.Drawing.Size(169, 39);
-            this.ingresar.TabIndex = 6;
-            this.ingresar.Text = "CONTINUAR";
-            this.ingresar.UseVisualStyleBackColor = true;
-            this.ingresar.Click += new System.EventHandler(this.continuar_Click);
+            this.ingresar_.Location = new System.Drawing.Point(134, 252);
+            this.ingresar_.Name = "ingresar_";
+            this.ingresar_.Size = new System.Drawing.Size(169, 39);
+            this.ingresar_.TabIndex = 6;
+            this.ingresar_.Text = "CONTINUAR";
+            this.ingresar_.UseVisualStyleBackColor = true;
+            this.ingresar_.Click += new System.EventHandler(this.continuar_Click);
             // 
             // m_oscuro
             // 
@@ -261,7 +261,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.ingresar);
+            this.Controls.Add(this.ingresar_);
             this.Controls.Add(this.contraseña);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
@@ -286,7 +286,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox nombre;
         private System.Windows.Forms.TextBox contraseña;
-        private System.Windows.Forms.Button ingresar;
+        private System.Windows.Forms.Button ingresar_;
         private System.Windows.Forms.Button m_oscuro;
         private System.Windows.Forms.Button m_claro;
         private System.Windows.Forms.GroupBox groupBox1;

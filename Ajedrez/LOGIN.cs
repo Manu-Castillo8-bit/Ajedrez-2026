@@ -85,8 +85,8 @@ namespace Ajedrez
             }
 
             // Deshabilitar botón mientras se verifica
-            ingresar.Enabled = false;
-            ingresar.Text = "Verificando...";
+            ingresar_.Enabled = false;
+            ingresar_.Text = "Verificando...";
 
             try
             {
@@ -125,8 +125,8 @@ namespace Ajedrez
             finally
             {
                 // Rehabilitar botón
-                ingresar.Enabled = true;
-                ingresar.Text = "Verificar";
+                ingresar_.Enabled = true;
+                ingresar_.Text = "Verificar";
 
                 
 
