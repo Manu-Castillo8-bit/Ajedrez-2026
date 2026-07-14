@@ -15,6 +15,7 @@ namespace Ajedrez
         public Perfil()
         {
             InitializeComponent();
+            Tema.ApplyTheme(this);
         }
 
         private void ir_menu_Click(object sender, EventArgs e)
@@ -26,32 +27,23 @@ namespace Ajedrez
 
         private void m_claro_Click(object sender, EventArgs e)
         {
-            this.BackColor = SystemColors.Control;
-            label1.ForeColor = Color.Black;
-            label2.ForeColor = Color.Black;
-            label3.ForeColor = Color.Black;
-            label4.ForeColor = Color.Black;
-            label5.ForeColor = Color.Black;
-            label6.ForeColor = Color.Black;
-            label7.ForeColor = Color.Black;
-            label8.ForeColor = Color.Black;
-            label9.ForeColor = Color.Black;
-            label10.ForeColor = Color.Black;
+            Tema.SetTheme(false);      // Cambia a tema claro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
         {
-            this.BackColor = Color.FromArgb(30, 30, 30);
-            label1.ForeColor = Color.White;
-            label2.ForeColor = Color.White;
-            label3.ForeColor = Color.White;
-            label4.ForeColor = Color.White;
-            label5.ForeColor = Color.White;
-            label6.ForeColor = Color.White;
-            label7.ForeColor = Color.White;
-            label8.ForeColor = Color.White;
-            label9.ForeColor = Color.White;
-            label10.ForeColor = Color.White;
+            Tema.SetTheme(true);       // Cambia a tema oscuro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual  
+        }
+
+        private void Perfil_Load(object sender, EventArgs e)
+        {
+            picture_victorias.Visible = true;
+            picture_elo.Visible = true;
+            picture_derrotas.Visible = true;
+            picture_partidas.Visible = true;
+
         }
     }
 }

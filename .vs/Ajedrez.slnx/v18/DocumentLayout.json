@@ -3,20 +3,28 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\Ajedrez\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\Desktop\\Ajedrez\\ajedrez\\registrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\registrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\Desktop\\Ajedrez\\ajedrez\\registrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\registrador.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\Desktop\\Ajedrez\\ajedrez\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
-      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\login.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\Desktop\\Ajedrez\\ajedrez\\tema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\tema.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\Desktop\\Ajedrez\\ajedrez\\perfil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\perfil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\perfil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\perfil.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\desktop\\ajedrez\\ajedrez\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\menu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -31,49 +39,74 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "REGISTRADOR.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\REGISTRADOR.cs",
-              "RelativeDocumentMoniker": "Ajedrez\\REGISTRADOR.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\REGISTRADOR.cs",
-              "RelativeToolTip": "Ajedrez\\REGISTRADOR.cs",
-              "ViewState": "AgIAADUAAAAAAAAAAAAuwCQAAAAiAAAAAAAAAA==",
+              "Title": "Partidas.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Partidas.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\Partidas.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Partidas.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Ajedrez\\Partidas.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-10T06:44:37.916Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "LOGIN.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\LOGIN.cs",
-              "RelativeDocumentMoniker": "Ajedrez\\LOGIN.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\LOGIN.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Ajedrez\\LOGIN.cs [Dise\u00F1o]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-12T05:26:47.238Z",
+              "WhenOpened": "2026-07-14T15:58:42.367Z",
               "EditorCaption": " [Dise\u00F1o]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "REGISTRADOR.cs [Dise\u00F1o]",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\REGISTRADOR.cs",
-              "RelativeDocumentMoniker": "Ajedrez\\REGISTRADOR.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\REGISTRADOR.cs [Dise\u00F1o]",
-              "RelativeToolTip": "Ajedrez\\REGISTRADOR.cs [Dise\u00F1o]",
+              "DocumentIndex": 5,
+              "Title": "menu.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\menu.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\menu.cs",
+              "RelativeToolTip": "Ajedrez\\menu.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAwwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-07-10T06:44:36.082Z",
+              "WhenOpened": "2026-07-14T15:49:50.049Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "menu.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\menu.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\menu.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Ajedrez\\menu.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T15:49:33.7Z",
               "EditorCaption": " [Dise\u00F1o]"
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "Perfil.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Perfil.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\Perfil.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Perfil.cs",
+              "RelativeToolTip": "Ajedrez\\Perfil.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAADwvyQAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T14:17:56.048Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Perfil.cs [Dise\u00F1o]",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Perfil.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\Perfil.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Perfil.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Ajedrez\\Perfil.cs [Dise\u00F1o]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-14T13:07:01.127Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Tema.cs",
               "DocumentMoniker": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Tema.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Tema.cs",
               "ToolTip": "C:\\Users\\User\\Desktop\\Ajedrez\\Ajedrez\\Tema.cs",
               "RelativeToolTip": "Ajedrez\\Tema.cs",
-              "ViewState": "AgIAAL8AAAAAAAAAAAAAANQAAAAiAAAAAAAAAA==",
+              "ViewState": "AgIAAMwAAAAAAAAAAAAAANcAAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-07-10T06:32:03.227Z",
               "EditorCaption": ""

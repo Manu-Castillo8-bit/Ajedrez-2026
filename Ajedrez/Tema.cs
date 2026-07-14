@@ -126,7 +126,7 @@ namespace Ajedrez
                     {
                         label.ForeColor = Color.White;
                     }
-                    else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5")
+                    else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
                         label.ForeColor = ColorTranslator.FromHtml("#9ab8e8");
                     }
@@ -209,6 +209,9 @@ namespace Ajedrez
                             button.BackColor = ColorTranslator.FromHtml("#22b8f0");
                             break;
                         case "ingresar":
+                            button.BackColor = ColorTranslator.FromHtml("#22b8f0");
+                            break;
+                        case "ir_menu":
                             button.BackColor = ColorTranslator.FromHtml("#22b8f0");
                             break;
                         default:

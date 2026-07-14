@@ -51,9 +51,19 @@
             this.fecha = new System.Windows.Forms.Button();
             this.damas = new System.Windows.Forms.RadioButton();
             this.ajedrez = new System.Windows.Forms.RadioButton();
+            this.picture_todas = new System.Windows.Forms.PictureBox();
+            this.picture_victorias = new System.Windows.Forms.PictureBox();
+            this.picture_derrotas = new System.Windows.Forms.PictureBox();
+            this.picture_empates = new System.Windows.Forms.PictureBox();
+            this.picture_fecha = new System.Windows.Forms.PictureBox();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_todas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_derrotas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_empates)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_fecha)).BeginInit();
             this.SuspendLayout();
             // 
             // m_oscuro
@@ -90,7 +100,7 @@
             this.groupBox3.Controls.Add(this.ir_menu);
             this.groupBox3.Controls.Add(this.m_oscuro);
             this.groupBox3.Controls.Add(this.m_claro);
-            this.groupBox3.Location = new System.Drawing.Point(626, 12);
+            this.groupBox3.Location = new System.Drawing.Point(720, 12);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(165, 426);
             this.groupBox3.TabIndex = 16;
@@ -210,63 +220,69 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 111);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(589, 312);
+            this.dataGridView1.Size = new System.Drawing.Size(694, 312);
             this.dataGridView1.TabIndex = 18;
             // 
             // todas
             // 
-            this.todas.Location = new System.Drawing.Point(12, 62);
+            this.todas.Location = new System.Drawing.Point(18, 62);
             this.todas.Name = "todas";
-            this.todas.Size = new System.Drawing.Size(75, 33);
+            this.todas.Size = new System.Drawing.Size(96, 43);
             this.todas.TabIndex = 19;
             this.todas.Text = "TODAS";
+            this.todas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.todas.UseVisualStyleBackColor = true;
             this.todas.Click += new System.EventHandler(this.button1_Click);
             // 
             // ganadas
             // 
-            this.ganadas.Location = new System.Drawing.Point(93, 62);
+            this.ganadas.Location = new System.Drawing.Point(122, 60);
             this.ganadas.Name = "ganadas";
-            this.ganadas.Size = new System.Drawing.Size(75, 33);
+            this.ganadas.Size = new System.Drawing.Size(117, 43);
             this.ganadas.TabIndex = 20;
             this.ganadas.Text = "VICTORIAS";
+            this.ganadas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ganadas.UseVisualStyleBackColor = true;
             this.ganadas.Click += new System.EventHandler(this.button2_Click);
             // 
             // perdidas
             // 
-            this.perdidas.Location = new System.Drawing.Point(174, 63);
+            this.perdidas.Location = new System.Drawing.Point(243, 60);
             this.perdidas.Name = "perdidas";
-            this.perdidas.Size = new System.Drawing.Size(75, 33);
+            this.perdidas.Size = new System.Drawing.Size(119, 43);
             this.perdidas.TabIndex = 21;
             this.perdidas.Text = "DERROTAS";
+            this.perdidas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.perdidas.UseVisualStyleBackColor = true;
             this.perdidas.Click += new System.EventHandler(this.button3_Click);
             // 
             // tablas
             // 
-            this.tablas.Location = new System.Drawing.Point(256, 63);
+            this.tablas.Location = new System.Drawing.Point(369, 60);
             this.tablas.Name = "tablas";
-            this.tablas.Size = new System.Drawing.Size(75, 33);
+            this.tablas.Size = new System.Drawing.Size(115, 43);
             this.tablas.TabIndex = 22;
             this.tablas.Text = "EMPATES";
+            this.tablas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.tablas.UseVisualStyleBackColor = true;
             this.tablas.Click += new System.EventHandler(this.button4_Click);
             // 
             // fecha
             // 
-            this.fecha.Location = new System.Drawing.Point(337, 63);
+            this.fecha.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.fecha.Location = new System.Drawing.Point(488, 59);
             this.fecha.Name = "fecha";
-            this.fecha.Size = new System.Drawing.Size(75, 33);
+            this.fecha.Size = new System.Drawing.Size(95, 43);
             this.fecha.TabIndex = 23;
             this.fecha.Text = "FECHA";
+            this.fecha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.fecha.UseVisualStyleBackColor = true;
             this.fecha.Click += new System.EventHandler(this.button5_Click);
             // 
             // damas
             // 
             this.damas.AutoSize = true;
-            this.damas.Location = new System.Drawing.Point(461, 54);
+            this.damas.Location = new System.Drawing.Point(632, 53);
             this.damas.Name = "damas";
             this.damas.Size = new System.Drawing.Size(63, 17);
             this.damas.TabIndex = 24;
@@ -277,7 +293,7 @@
             // ajedrez
             // 
             this.ajedrez.AutoSize = true;
-            this.ajedrez.Location = new System.Drawing.Point(461, 79);
+            this.ajedrez.Location = new System.Drawing.Point(632, 78);
             this.ajedrez.Name = "ajedrez";
             this.ajedrez.Size = new System.Drawing.Size(74, 17);
             this.ajedrez.TabIndex = 25;
@@ -285,11 +301,71 @@
             this.ajedrez.Text = "AJEDREZ";
             this.ajedrez.UseVisualStyleBackColor = true;
             // 
+            // picture_todas
+            // 
+            this.picture_todas.BackColor = System.Drawing.Color.Transparent;
+            this.picture_todas.Image = global::Ajedrez.Properties.Resources.batalla;
+            this.picture_todas.Location = new System.Drawing.Point(23, 67);
+            this.picture_todas.Name = "picture_todas";
+            this.picture_todas.Size = new System.Drawing.Size(45, 33);
+            this.picture_todas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_todas.TabIndex = 26;
+            this.picture_todas.TabStop = false;
+            // 
+            // picture_victorias
+            // 
+            this.picture_victorias.BackColor = System.Drawing.Color.Transparent;
+            this.picture_victorias.Image = global::Ajedrez.Properties.Resources.aprobado;
+            this.picture_victorias.Location = new System.Drawing.Point(126, 65);
+            this.picture_victorias.Name = "picture_victorias";
+            this.picture_victorias.Size = new System.Drawing.Size(45, 33);
+            this.picture_victorias.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_victorias.TabIndex = 27;
+            this.picture_victorias.TabStop = false;
+            // 
+            // picture_derrotas
+            // 
+            this.picture_derrotas.BackColor = System.Drawing.Color.Transparent;
+            this.picture_derrotas.Image = global::Ajedrez.Properties.Resources.no_aprobado;
+            this.picture_derrotas.Location = new System.Drawing.Point(247, 65);
+            this.picture_derrotas.Name = "picture_derrotas";
+            this.picture_derrotas.Size = new System.Drawing.Size(45, 33);
+            this.picture_derrotas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_derrotas.TabIndex = 28;
+            this.picture_derrotas.TabStop = false;
+            // 
+            // picture_empates
+            // 
+            this.picture_empates.BackColor = System.Drawing.Color.Transparent;
+            this.picture_empates.Image = global::Ajedrez.Properties.Resources.empate;
+            this.picture_empates.Location = new System.Drawing.Point(375, 65);
+            this.picture_empates.Name = "picture_empates";
+            this.picture_empates.Size = new System.Drawing.Size(45, 33);
+            this.picture_empates.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_empates.TabIndex = 29;
+            this.picture_empates.TabStop = false;
+            // 
+            // picture_fecha
+            // 
+            this.picture_fecha.BackColor = System.Drawing.Color.Transparent;
+            this.picture_fecha.Image = global::Ajedrez.Properties.Resources.fecha;
+            this.picture_fecha.Location = new System.Drawing.Point(492, 64);
+            this.picture_fecha.Name = "picture_fecha";
+            this.picture_fecha.Size = new System.Drawing.Size(45, 33);
+            this.picture_fecha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_fecha.TabIndex = 30;
+            this.picture_fecha.TabStop = false;
+            // 
             // Partidas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(895, 450);
+            this.Controls.Add(this.picture_fecha);
+            this.Controls.Add(this.picture_empates);
+            this.Controls.Add(this.picture_derrotas);
+            this.Controls.Add(this.picture_victorias);
+            this.Controls.Add(this.picture_todas);
             this.Controls.Add(this.ajedrez);
             this.Controls.Add(this.damas);
             this.Controls.Add(this.fecha);
@@ -306,6 +382,11 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_todas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_derrotas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_empates)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_fecha)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -336,5 +417,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.PictureBox picture_todas;
+        private System.Windows.Forms.PictureBox picture_victorias;
+        private System.Windows.Forms.PictureBox picture_derrotas;
+        private System.Windows.Forms.PictureBox picture_empates;
+        private System.Windows.Forms.PictureBox picture_fecha;
     }
 }
