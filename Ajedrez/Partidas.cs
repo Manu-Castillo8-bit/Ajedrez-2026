@@ -15,6 +15,7 @@ namespace Ajedrez
         public Partidas()
         {
             InitializeComponent();
+            //Prueva de vinculación con una máquina virtual
         }
 
         private void ir_menu_Click(object sender, EventArgs e)
