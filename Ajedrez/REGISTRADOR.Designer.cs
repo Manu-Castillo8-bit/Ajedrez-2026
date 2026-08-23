@@ -32,6 +32,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.ingresar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
@@ -46,8 +48,6 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
-            this.ingresar = new System.Windows.Forms.Button();
-            this.label5 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -88,6 +88,25 @@
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(14, 289);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(139, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "¿Ya tienes cuenta, ingresa?";
+            // 
+            // ingresar
+            // 
+            this.ingresar.Location = new System.Drawing.Point(28, 304);
+            this.ingresar.Name = "ingresar";
+            this.ingresar.Size = new System.Drawing.Size(111, 35);
+            this.ingresar.TabIndex = 9;
+            this.ingresar.Text = "INGRESAR";
+            this.ingresar.UseVisualStyleBackColor = true;
+            this.ingresar.Click += new System.EventHandler(this.ingresar_Click);
             // 
             // label2
             // 
@@ -225,25 +244,6 @@
             this.pictureBox6.TabIndex = 24;
             this.pictureBox6.TabStop = false;
             // 
-            // ingresar
-            // 
-            this.ingresar.Location = new System.Drawing.Point(28, 304);
-            this.ingresar.Name = "ingresar";
-            this.ingresar.Size = new System.Drawing.Size(111, 35);
-            this.ingresar.TabIndex = 9;
-            this.ingresar.Text = "INGRESAR";
-            this.ingresar.UseVisualStyleBackColor = true;
-            this.ingresar.Click += new System.EventHandler(this.ingresar_Click);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 289);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(139, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "¿Ya tienes cuenta, ingresa?";
-            // 
             // REGISTRADOR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,6 +263,7 @@
             this.Controls.Add(this.contraseña);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "REGISTRADOR";
             this.Text = "REGISTRADOR";
             this.Load += new System.EventHandler(this.REGISTRADOR_Load);

@@ -265,6 +265,7 @@
             this.Controls.Add(this.contraseña);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LOGIN";
             this.Text = "LOGIN";
             this.Load += new System.EventHandler(this.LOGIN_Load);

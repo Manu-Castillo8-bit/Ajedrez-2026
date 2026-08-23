@@ -28,19 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.G = new System.Windows.Forms.Panel();
             this.p_blancas = new System.Windows.Forms.Label();
             this.p_negras = new System.Windows.Forms.Label();
             this.deshacer = new System.Windows.Forms.Button();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.ir_menu = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.puntos_b = new System.Windows.Forms.PictureBox();
+            this.puntos_n = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).BeginInit();
             this.SuspendLayout();
             // 
             // G
@@ -80,26 +81,6 @@
             this.deshacer.Text = "DESHACER";
             this.deshacer.UseVisualStyleBackColor = true;
             this.deshacer.Click += new System.EventHandler(this.partidas_Click);
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon;
-            this.pictureBox2.Location = new System.Drawing.Point(667, 166);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
-            this.pictureBox1.Location = new System.Drawing.Point(667, 298);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
             // 
             // ir_menu
             // 
@@ -149,6 +130,26 @@
             this.label1.TabIndex = 14;
             this.label1.Text = "PUNTOS NEGRAS:";
             // 
+            // puntos_b
+            // 
+            this.puntos_b.Image = global::Ajedrez.Properties.Resources.peon;
+            this.puntos_b.Location = new System.Drawing.Point(667, 166);
+            this.puntos_b.Name = "puntos_b";
+            this.puntos_b.Size = new System.Drawing.Size(50, 50);
+            this.puntos_b.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.puntos_b.TabIndex = 2;
+            this.puntos_b.TabStop = false;
+            // 
+            // puntos_n
+            // 
+            this.puntos_n.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
+            this.puntos_n.Location = new System.Drawing.Point(667, 298);
+            this.puntos_n.Name = "puntos_n";
+            this.puntos_n.Size = new System.Drawing.Size(50, 50);
+            this.puntos_n.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.puntos_n.TabIndex = 1;
+            this.puntos_n.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,15 +163,16 @@
             this.Controls.Add(this.deshacer);
             this.Controls.Add(this.p_negras);
             this.Controls.Add(this.p_blancas);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.puntos_b);
+            this.Controls.Add(this.puntos_n);
             this.Controls.Add(this.G);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "DAMAS";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,8 +181,8 @@
         #endregion
 
         private System.Windows.Forms.Panel G;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox puntos_n;
+        private System.Windows.Forms.PictureBox puntos_b;
         private System.Windows.Forms.Label p_blancas;
         private System.Windows.Forms.Label p_negras;
         private System.Windows.Forms.Button deshacer;

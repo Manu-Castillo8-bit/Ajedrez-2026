@@ -63,9 +63,9 @@ namespace Ajedrez.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap alfil {
+        internal static System.Drawing.Bitmap alfil_blanco {
             get {
-                object obj = ResourceManager.GetObject("alfil", resourceCulture);
+                object obj = ResourceManager.GetObject("alfil_blanco", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

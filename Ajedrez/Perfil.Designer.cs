@@ -28,19 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Perfil));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.picture_elo = new System.Windows.Forms.PictureBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.picture_victorias = new System.Windows.Forms.PictureBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.picture_partidas = new System.Windows.Forms.PictureBox();
+            this.label = new System.Windows.Forms.Label();
+            this.picture_derrotas = new System.Windows.Forms.PictureBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ir_menu = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
-            this.picture_partidas = new System.Windows.Forms.PictureBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.picture_derrotas = new System.Windows.Forms.PictureBox();
-            this.label = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.picture_victorias = new System.Windows.Forms.PictureBox();
-            this.picture_elo = new System.Windows.Forms.PictureBox();
             this.button1 = new System.Windows.Forms.Button();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
@@ -55,11 +56,11 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_elo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_partidas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_derrotas)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture_elo)).BeginInit();
+            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,6 +80,86 @@
             this.groupBox1.TabIndex = 13;
             this.groupBox1.TabStop = false;
             this.groupBox1.UseCompatibleTextRendering = true;
+            // 
+            // picture_elo
+            // 
+            this.picture_elo.Image = global::Ajedrez.Properties.Resources.elo;
+            this.picture_elo.Location = new System.Drawing.Point(16, 22);
+            this.picture_elo.Name = "picture_elo";
+            this.picture_elo.Size = new System.Drawing.Size(44, 50);
+            this.picture_elo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_elo.TabIndex = 23;
+            this.picture_elo.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(380, 80);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(67, 13);
+            this.label5.TabIndex = 19;
+            this.label5.Text = "DERROTAS";
+            // 
+            // picture_victorias
+            // 
+            this.picture_victorias.Image = global::Ajedrez.Properties.Resources.trofeo;
+            this.picture_victorias.Location = new System.Drawing.Point(321, 22);
+            this.picture_victorias.Name = "picture_victorias";
+            this.picture_victorias.Size = new System.Drawing.Size(44, 50);
+            this.picture_victorias.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_victorias.TabIndex = 22;
+            this.picture_victorias.TabStop = false;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(380, 26);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(64, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "VICTORIAS";
+            // 
+            // picture_partidas
+            // 
+            this.picture_partidas.Image = global::Ajedrez.Properties.Resources.batalla;
+            this.picture_partidas.Location = new System.Drawing.Point(16, 78);
+            this.picture_partidas.Name = "picture_partidas";
+            this.picture_partidas.Size = new System.Drawing.Size(44, 42);
+            this.picture_partidas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_partidas.TabIndex = 21;
+            this.picture_partidas.TabStop = false;
+            // 
+            // label
+            // 
+            this.label.AutoSize = true;
+            this.label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label.Location = new System.Drawing.Point(93, 26);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(28, 13);
+            this.label.TabIndex = 16;
+            this.label.Text = "ELO";
+            // 
+            // picture_derrotas
+            // 
+            this.picture_derrotas.Image = global::Ajedrez.Properties.Resources.no_aprobado;
+            this.picture_derrotas.Location = new System.Drawing.Point(321, 78);
+            this.picture_derrotas.Name = "picture_derrotas";
+            this.picture_derrotas.Size = new System.Drawing.Size(44, 42);
+            this.picture_derrotas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picture_derrotas.TabIndex = 20;
+            this.picture_derrotas.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(93, 80);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 13);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "PARTIDAS";
             // 
             // groupBox3
             // 
@@ -123,86 +204,6 @@
             this.m_oscuro.TabIndex = 10;
             this.m_oscuro.UseVisualStyleBackColor = true;
             this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
-            // 
-            // picture_partidas
-            // 
-            this.picture_partidas.Image = global::Ajedrez.Properties.Resources.batalla;
-            this.picture_partidas.Location = new System.Drawing.Point(16, 78);
-            this.picture_partidas.Name = "picture_partidas";
-            this.picture_partidas.Size = new System.Drawing.Size(44, 42);
-            this.picture_partidas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picture_partidas.TabIndex = 21;
-            this.picture_partidas.TabStop = false;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(380, 80);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(85, 11);
-            this.label5.TabIndex = 19;
-            this.label5.Text = "DERROTAS";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(93, 80);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 11);
-            this.label3.TabIndex = 17;
-            this.label3.Text = "PARTIDAS";
-            // 
-            // picture_derrotas
-            // 
-            this.picture_derrotas.Image = global::Ajedrez.Properties.Resources.no_aprobado;
-            this.picture_derrotas.Location = new System.Drawing.Point(321, 78);
-            this.picture_derrotas.Name = "picture_derrotas";
-            this.picture_derrotas.Size = new System.Drawing.Size(44, 42);
-            this.picture_derrotas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picture_derrotas.TabIndex = 20;
-            this.picture_derrotas.TabStop = false;
-            // 
-            // label
-            // 
-            this.label.AutoSize = true;
-            this.label.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label.Location = new System.Drawing.Point(93, 26);
-            this.label.Name = "label";
-            this.label.Size = new System.Drawing.Size(35, 11);
-            this.label.TabIndex = 16;
-            this.label.Text = "ELO";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(380, 26);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(87, 11);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "VICTORIAS";
-            // 
-            // picture_victorias
-            // 
-            this.picture_victorias.Image = global::Ajedrez.Properties.Resources.trofeo;
-            this.picture_victorias.Location = new System.Drawing.Point(321, 22);
-            this.picture_victorias.Name = "picture_victorias";
-            this.picture_victorias.Size = new System.Drawing.Size(44, 50);
-            this.picture_victorias.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picture_victorias.TabIndex = 22;
-            this.picture_victorias.TabStop = false;
-            // 
-            // picture_elo
-            // 
-            this.picture_elo.Image = global::Ajedrez.Properties.Resources.elo;
-            this.picture_elo.Location = new System.Drawing.Point(16, 22);
-            this.picture_elo.Name = "picture_elo";
-            this.picture_elo.Size = new System.Drawing.Size(44, 50);
-            this.picture_elo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picture_elo.TabIndex = 23;
-            this.picture_elo.TabStop = false;
             // 
             // button1
             // 
@@ -264,30 +265,30 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(264, 233);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(112, 11);
+            this.label10.Size = new System.Drawing.Size(83, 13);
             this.label10.TabIndex = 31;
             this.label10.Text = "DESCRIPCION:";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label9.Location = new System.Drawing.Point(264, 196);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(92, 11);
+            this.label9.Size = new System.Drawing.Size(67, 13);
             this.label9.TabIndex = 30;
             this.label9.Text = "VICTORIAS:";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.Location = new System.Drawing.Point(264, 159);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(70, 11);
+            this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 29;
             this.label8.Text = "CORREO:";
             // 
@@ -295,20 +296,20 @@
             // 
             this.label7.AccessibleRole = System.Windows.Forms.AccessibleRole.SplitButton;
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(264, 120);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(40, 11);
+            this.label7.Size = new System.Drawing.Size(31, 13);
             this.label7.TabIndex = 28;
             this.label7.Text = "ELO:";
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("04b", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(264, 81);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(71, 11);
+            this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 27;
             this.label6.Text = "NOMBRE:";
             // 
@@ -323,10 +324,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("04b", 15.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(278, 24);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 21);
+            this.label1.Size = new System.Drawing.Size(85, 25);
             this.label1.TabIndex = 25;
             this.label1.Text = "PERFIL";
             // 
@@ -350,16 +351,17 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Perfil";
             this.Text = "PERFIL";
             this.Load += new System.EventHandler(this.Perfil_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picture_elo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_partidas)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_derrotas)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picture_elo)).EndInit();
+            this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

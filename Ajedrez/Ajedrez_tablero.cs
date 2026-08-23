@@ -8,6 +8,7 @@ namespace Ajedrez
 {
     public partial class Ajedrez_tablero : Form
     {
+     
         private const int BOARD_SIZE = 8;
         private const int CELL_SIZE = 60;
         private PictureBox[,] board;
@@ -20,6 +21,7 @@ namespace Ajedrez
 
         public Ajedrez_tablero()
         {
+        
             InitializeComponent();
             InitializeBoard();
             SetupPieces();
@@ -81,10 +83,10 @@ namespace Ajedrez
             // Fila 7 - Piezas mayores blancas
             PlacePiece(7, 0, "torre", "white", "rook");
             PlacePiece(7, 1, "caballo", "white", "knight");
-            PlacePiece(7, 2, "alfil", "white", "bishop");
+            PlacePiece(7, 2, "alfil_blanco", "white", "bishop");
             PlacePiece(7, 3, "reina", "white", "queen");
             PlacePiece(7, 4, "rey", "white", "king");
-            PlacePiece(7, 5, "alfil", "white", "bishop");
+            PlacePiece(7, 5, "alfil_blanco", "white", "bishop");
             PlacePiece(7, 6, "caballo", "white", "knight");
             PlacePiece(7, 7, "torre", "white", "rook");
         }
@@ -613,14 +615,18 @@ namespace Ajedrez
 
         private void m_claro_Click(object sender, EventArgs e)
         {
+            
             Tema.SetTheme(false);      // Cambia a tema claro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
         {
+          
+           
             Tema.SetTheme(true);       // Cambia a tema oscuro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
+
         }
 
         private void menu_Click(object sender, EventArgs e)

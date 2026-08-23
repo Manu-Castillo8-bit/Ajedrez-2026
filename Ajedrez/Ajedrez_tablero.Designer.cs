@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ajedrez_tablero));
             this.G = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.puntos_n = new System.Windows.Forms.PictureBox();
+            this.puntos_b = new System.Windows.Forms.PictureBox();
             this.p_negras = new System.Windows.Forms.Label();
             this.p_blancas = new System.Windows.Forms.Label();
             this.m_oscuro = new System.Windows.Forms.Button();
@@ -39,8 +40,8 @@
             this.menu = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).BeginInit();
             this.SuspendLayout();
             // 
             // G
@@ -51,25 +52,25 @@
             this.G.Size = new System.Drawing.Size(484, 484);
             this.G.TabIndex = 0;
             // 
-            // pictureBox1
+            // puntos_n
             // 
-            this.pictureBox1.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
-            this.pictureBox1.Location = new System.Drawing.Point(667, 298);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.puntos_n.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
+            this.puntos_n.Location = new System.Drawing.Point(667, 298);
+            this.puntos_n.Name = "puntos_n";
+            this.puntos_n.Size = new System.Drawing.Size(50, 50);
+            this.puntos_n.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.puntos_n.TabIndex = 1;
+            this.puntos_n.TabStop = false;
             // 
-            // pictureBox2
+            // puntos_b
             // 
-            this.pictureBox2.Image = global::Ajedrez.Properties.Resources.peon;
-            this.pictureBox2.Location = new System.Drawing.Point(667, 166);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(50, 50);
-            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox2.TabIndex = 2;
-            this.pictureBox2.TabStop = false;
+            this.puntos_b.Image = global::Ajedrez.Properties.Resources.peon;
+            this.puntos_b.Location = new System.Drawing.Point(667, 166);
+            this.puntos_b.Name = "puntos_b";
+            this.puntos_b.Size = new System.Drawing.Size(50, 50);
+            this.puntos_b.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.puntos_b.TabIndex = 2;
+            this.puntos_b.TabStop = false;
             // 
             // p_negras
             // 
@@ -161,15 +162,16 @@
             this.Controls.Add(this.m_claro);
             this.Controls.Add(this.p_blancas);
             this.Controls.Add(this.p_negras);
-            this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.puntos_b);
+            this.Controls.Add(this.puntos_n);
             this.Controls.Add(this.G);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Ajedrez_tablero";
             this.Text = "AJEDREZ";
             this.Load += new System.EventHandler(this.Ajedrez_tablero_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -178,8 +180,8 @@
         #endregion
 
         private System.Windows.Forms.Panel G;
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox puntos_n;
+        private System.Windows.Forms.PictureBox puntos_b;
         private System.Windows.Forms.Label p_negras;
         private System.Windows.Forms.Label p_blancas;
         private System.Windows.Forms.Button m_oscuro;
