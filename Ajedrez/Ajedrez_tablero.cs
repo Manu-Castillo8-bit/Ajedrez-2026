@@ -25,6 +25,7 @@ namespace Ajedrez
             InitializeComponent();
             InitializeBoard();
             SetupPieces();
+            Tema.ApplyTheme(this);
         }
 
         private void Ajedrez_tablero_Load(object sender, EventArgs e)

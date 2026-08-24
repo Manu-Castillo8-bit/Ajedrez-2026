@@ -37,7 +37,7 @@
             this.m_oscuro = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.deshacer = new System.Windows.Forms.Button();
-            this.menu = new System.Windows.Forms.Button();
+            this.ir_menu = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).BeginInit();
@@ -94,42 +94,47 @@
             // 
             // m_oscuro
             // 
+            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_blanca;
+            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_oscuro.Location = new System.Drawing.Point(728, 22);
             this.m_oscuro.Name = "m_oscuro";
-            this.m_oscuro.Size = new System.Drawing.Size(59, 44);
+            this.m_oscuro.Size = new System.Drawing.Size(40, 40);
             this.m_oscuro.TabIndex = 8;
-            this.m_oscuro.Text = "MODO OSCURO";
             this.m_oscuro.UseVisualStyleBackColor = true;
             this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
             // m_claro
             // 
-            this.m_claro.Location = new System.Drawing.Point(648, 22);
+            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
+            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.m_claro.ForeColor = System.Drawing.Color.Transparent;
+            this.m_claro.Location = new System.Drawing.Point(667, 22);
             this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(59, 44);
+            this.m_claro.Size = new System.Drawing.Size(40, 40);
             this.m_claro.TabIndex = 9;
-            this.m_claro.Text = "MODO CLARO";
             this.m_claro.UseVisualStyleBackColor = true;
             this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
             // 
             // deshacer
             // 
-            this.deshacer.Location = new System.Drawing.Point(648, 449);
+            this.deshacer.BackgroundImage = global::Ajedrez.Properties.Resources.regresar_negro;
+            this.deshacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.deshacer.Location = new System.Drawing.Point(667, 449);
             this.deshacer.Name = "deshacer";
-            this.deshacer.Size = new System.Drawing.Size(59, 45);
+            this.deshacer.Size = new System.Drawing.Size(43, 43);
             this.deshacer.TabIndex = 11;
-            this.deshacer.Text = "DESHACER";
             this.deshacer.UseVisualStyleBackColor = true;
             // 
-            // menu
+            // ir_menu
             // 
-            this.menu.Location = new System.Drawing.Point(728, 449);
-            this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(60, 45);
-            this.menu.TabIndex = 10;
-            this.menu.Text = "MENU";
-            this.menu.UseVisualStyleBackColor = true;
-            this.menu.Click += new System.EventHandler(this.menu_Click_1);
+            this.ir_menu.BackgroundImage = global::Ajedrez.Properties.Resources.menu_negro;
+            this.ir_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ir_menu.Location = new System.Drawing.Point(728, 449);
+            this.ir_menu.Name = "ir_menu";
+            this.ir_menu.Size = new System.Drawing.Size(43, 43);
+            this.ir_menu.TabIndex = 10;
+            this.ir_menu.UseVisualStyleBackColor = true;
+            this.ir_menu.Click += new System.EventHandler(this.menu_Click_1);
             // 
             // label1
             // 
@@ -157,7 +162,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.deshacer);
-            this.Controls.Add(this.menu);
+            this.Controls.Add(this.ir_menu);
             this.Controls.Add(this.m_oscuro);
             this.Controls.Add(this.m_claro);
             this.Controls.Add(this.p_blancas);
@@ -187,7 +192,7 @@
         private System.Windows.Forms.Button m_oscuro;
         private System.Windows.Forms.Button m_claro;
         private System.Windows.Forms.Button deshacer;
-        private System.Windows.Forms.Button menu;
+        private System.Windows.Forms.Button ir_menu;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
     }

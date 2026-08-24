@@ -250,6 +250,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo_final.ico" />
+    <None Include="Resources\Logo_final.png" />
+    <None Include="Resources\Logo_final.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\peon_blanco.png" />

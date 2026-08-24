@@ -69,29 +69,34 @@
             // 
             // m_oscuro
             // 
+            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_blanca;
+            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_oscuro.Location = new System.Drawing.Point(94, 19);
             this.m_oscuro.Name = "m_oscuro";
-            this.m_oscuro.Size = new System.Drawing.Size(55, 40);
+            this.m_oscuro.Size = new System.Drawing.Size(40, 40);
             this.m_oscuro.TabIndex = 13;
-            this.m_oscuro.Text = "MODO OSCURO";
             this.m_oscuro.UseVisualStyleBackColor = true;
+            this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
             // m_claro
             // 
+            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
+            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_claro.Location = new System.Drawing.Point(19, 19);
             this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(55, 40);
+            this.m_claro.Size = new System.Drawing.Size(40, 40);
             this.m_claro.TabIndex = 14;
-            this.m_claro.Text = "MODO CLARO";
             this.m_claro.UseVisualStyleBackColor = true;
+            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
             // 
             // ir_menu
             // 
-            this.ir_menu.Location = new System.Drawing.Point(38, 376);
+            this.ir_menu.BackgroundImage = global::Ajedrez.Properties.Resources.menu_negro;
+            this.ir_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ir_menu.Location = new System.Drawing.Point(58, 368);
             this.ir_menu.Name = "ir_menu";
-            this.ir_menu.Size = new System.Drawing.Size(101, 35);
+            this.ir_menu.Size = new System.Drawing.Size(49, 43);
             this.ir_menu.TabIndex = 12;
-            this.ir_menu.Text = "MENU";
             this.ir_menu.UseVisualStyleBackColor = true;
             this.ir_menu.Click += new System.EventHandler(this.ir_menu_Click);
             // 
@@ -228,7 +233,7 @@
             // 
             this.todas.Location = new System.Drawing.Point(18, 62);
             this.todas.Name = "todas";
-            this.todas.Size = new System.Drawing.Size(96, 43);
+            this.todas.Size = new System.Drawing.Size(110, 43);
             this.todas.TabIndex = 19;
             this.todas.Text = "TODAS";
             this.todas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -237,9 +242,9 @@
             // 
             // ganadas
             // 
-            this.ganadas.Location = new System.Drawing.Point(122, 60);
+            this.ganadas.Location = new System.Drawing.Point(134, 60);
             this.ganadas.Name = "ganadas";
-            this.ganadas.Size = new System.Drawing.Size(117, 43);
+            this.ganadas.Size = new System.Drawing.Size(126, 43);
             this.ganadas.TabIndex = 20;
             this.ganadas.Text = "VICTORIAS";
             this.ganadas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -248,9 +253,9 @@
             // 
             // perdidas
             // 
-            this.perdidas.Location = new System.Drawing.Point(243, 60);
+            this.perdidas.Location = new System.Drawing.Point(266, 60);
             this.perdidas.Name = "perdidas";
-            this.perdidas.Size = new System.Drawing.Size(119, 43);
+            this.perdidas.Size = new System.Drawing.Size(129, 43);
             this.perdidas.TabIndex = 21;
             this.perdidas.Text = "DERROTAS";
             this.perdidas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -259,9 +264,9 @@
             // 
             // tablas
             // 
-            this.tablas.Location = new System.Drawing.Point(369, 60);
+            this.tablas.Location = new System.Drawing.Point(401, 60);
             this.tablas.Name = "tablas";
-            this.tablas.Size = new System.Drawing.Size(115, 43);
+            this.tablas.Size = new System.Drawing.Size(119, 43);
             this.tablas.TabIndex = 22;
             this.tablas.Text = "EMPATES";
             this.tablas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -271,9 +276,9 @@
             // fecha
             // 
             this.fecha.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.fecha.Location = new System.Drawing.Point(488, 59);
+            this.fecha.Location = new System.Drawing.Point(526, 60);
             this.fecha.Name = "fecha";
-            this.fecha.Size = new System.Drawing.Size(95, 43);
+            this.fecha.Size = new System.Drawing.Size(100, 43);
             this.fecha.TabIndex = 23;
             this.fecha.Text = "FECHA";
             this.fecha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -304,7 +309,7 @@
             // 
             // picture_todas
             // 
-            this.picture_todas.BackColor = System.Drawing.Color.Transparent;
+            this.picture_todas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
             this.picture_todas.Image = global::Ajedrez.Properties.Resources.batalla;
             this.picture_todas.Location = new System.Drawing.Point(23, 67);
             this.picture_todas.Name = "picture_todas";
@@ -315,9 +320,9 @@
             // 
             // picture_victorias
             // 
-            this.picture_victorias.BackColor = System.Drawing.Color.Transparent;
+            this.picture_victorias.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(184)))), ((int)(((byte)(40)))));
             this.picture_victorias.Image = global::Ajedrez.Properties.Resources.aprobado;
-            this.picture_victorias.Location = new System.Drawing.Point(126, 65);
+            this.picture_victorias.Location = new System.Drawing.Point(140, 65);
             this.picture_victorias.Name = "picture_victorias";
             this.picture_victorias.Size = new System.Drawing.Size(45, 33);
             this.picture_victorias.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -326,9 +331,9 @@
             // 
             // picture_derrotas
             // 
-            this.picture_derrotas.BackColor = System.Drawing.Color.Transparent;
+            this.picture_derrotas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(23)))), ((int)(((byte)(19)))));
             this.picture_derrotas.Image = global::Ajedrez.Properties.Resources.no_aprobado;
-            this.picture_derrotas.Location = new System.Drawing.Point(247, 65);
+            this.picture_derrotas.Location = new System.Drawing.Point(271, 65);
             this.picture_derrotas.Name = "picture_derrotas";
             this.picture_derrotas.Size = new System.Drawing.Size(45, 33);
             this.picture_derrotas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -337,9 +342,9 @@
             // 
             // picture_empates
             // 
-            this.picture_empates.BackColor = System.Drawing.Color.Transparent;
+            this.picture_empates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(211)))), ((int)(((byte)(5)))));
             this.picture_empates.Image = global::Ajedrez.Properties.Resources.empate;
-            this.picture_empates.Location = new System.Drawing.Point(375, 65);
+            this.picture_empates.Location = new System.Drawing.Point(406, 65);
             this.picture_empates.Name = "picture_empates";
             this.picture_empates.Size = new System.Drawing.Size(45, 33);
             this.picture_empates.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -348,9 +353,9 @@
             // 
             // picture_fecha
             // 
-            this.picture_fecha.BackColor = System.Drawing.Color.Transparent;
+            this.picture_fecha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(61)))), ((int)(((byte)(219)))));
             this.picture_fecha.Image = global::Ajedrez.Properties.Resources.fecha;
-            this.picture_fecha.Location = new System.Drawing.Point(492, 64);
+            this.picture_fecha.Location = new System.Drawing.Point(533, 65);
             this.picture_fecha.Name = "picture_fecha";
             this.picture_fecha.Size = new System.Drawing.Size(45, 33);
             this.picture_fecha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

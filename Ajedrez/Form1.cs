@@ -16,6 +16,7 @@ namespace Ajedrez
         public Form1()
         {
             InitializeComponent();
+            Tema.ApplyTheme(this);
         }
         int n;
         PictureBox[,] P;

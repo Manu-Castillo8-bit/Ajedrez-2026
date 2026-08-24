@@ -163,7 +163,7 @@ namespace Ajedrez
             {
                 // Ocultar contraseña
                 contraseña.UseSystemPasswordChar = true;
-                checkBox1.Text = "👁️ Mostrar";
+                checkBox1.Text = "Ver contraseña";
 
                 // Restaurar el color de fondo según el tema
                 if (Tema.IsDarkMode)

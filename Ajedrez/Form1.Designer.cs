@@ -74,41 +74,45 @@
             // 
             // deshacer
             // 
+            this.deshacer.BackgroundImage = global::Ajedrez.Properties.Resources.regresar_negro;
+            this.deshacer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.deshacer.Location = new System.Drawing.Point(648, 448);
             this.deshacer.Name = "deshacer";
-            this.deshacer.Size = new System.Drawing.Size(55, 46);
+            this.deshacer.Size = new System.Drawing.Size(43, 43);
             this.deshacer.TabIndex = 6;
-            this.deshacer.Text = "DESHACER";
             this.deshacer.UseVisualStyleBackColor = true;
             this.deshacer.Click += new System.EventHandler(this.partidas_Click);
             // 
             // ir_menu
             // 
+            this.ir_menu.BackgroundImage = global::Ajedrez.Properties.Resources.menu_negro;
+            this.ir_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ir_menu.Location = new System.Drawing.Point(728, 448);
             this.ir_menu.Name = "ir_menu";
-            this.ir_menu.Size = new System.Drawing.Size(55, 46);
+            this.ir_menu.Size = new System.Drawing.Size(43, 43);
             this.ir_menu.TabIndex = 6;
-            this.ir_menu.Text = "MENU";
             this.ir_menu.UseVisualStyleBackColor = true;
             this.ir_menu.Click += new System.EventHandler(this.ir_menu_Click);
             // 
             // m_claro
             // 
+            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
+            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_claro.Location = new System.Drawing.Point(648, 22);
             this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(55, 40);
+            this.m_claro.Size = new System.Drawing.Size(40, 40);
             this.m_claro.TabIndex = 7;
-            this.m_claro.Text = "MODO CLARO";
             this.m_claro.UseVisualStyleBackColor = true;
             this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
             // 
             // m_oscuro
             // 
+            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_blanca;
+            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.m_oscuro.Location = new System.Drawing.Point(728, 22);
             this.m_oscuro.Name = "m_oscuro";
-            this.m_oscuro.Size = new System.Drawing.Size(55, 40);
+            this.m_oscuro.Size = new System.Drawing.Size(40, 40);
             this.m_oscuro.TabIndex = 7;
-            this.m_oscuro.Text = "MODO OSCURO";
             this.m_oscuro.UseVisualStyleBackColor = true;
             this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
@@ -188,9 +192,9 @@
         private System.Windows.Forms.Button deshacer;
         private System.Windows.Forms.Button ir_menu;
         private System.Windows.Forms.Button m_claro;
-        private System.Windows.Forms.Button m_oscuro;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button m_oscuro;
     }
 }
 

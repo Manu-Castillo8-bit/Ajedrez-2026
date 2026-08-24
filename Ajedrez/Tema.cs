@@ -214,6 +214,22 @@ namespace Ajedrez
                         case "ir_menu":
                             button.BackColor = ColorTranslator.FromHtml("#22b8f0");
                             break;
+                        case "todas":
+                            button.BackColor = ColorTranslator.FromHtml("#f0f0f0");
+                            button.ForeColor = Color.Black;
+                            break;
+                        case "ganadas":
+                            button.BackColor = ColorTranslator.FromHtml("#58b828");
+                            break;
+                        case "perdidas":
+                            button.BackColor = ColorTranslator.FromHtml("#f01916");
+                            break;
+                        case "tablas":
+                            button.BackColor = ColorTranslator.FromHtml("#fcd305");
+                            break;
+                        case "fecha":
+                            button.BackColor = ColorTranslator.FromHtml("#943edb");
+                            break;
                         default:
                             button.BackColor = ColorTranslator.FromHtml("#4a8af4");
                             break;
@@ -318,6 +334,21 @@ namespace Ajedrez
                             break;
                         case "m_claro":
                             button.BackColor = SystemColors.Control;
+                            break;
+                        case "todas":
+                            button.BackColor = ColorTranslator.FromHtml("#f0f0f0");
+                            break;
+                        case "ganadas":
+                            button.BackColor = ColorTranslator.FromHtml("#58b828");
+                            break;
+                        case "perdidas":
+                            button.BackColor = ColorTranslator.FromHtml("#f01916");
+                            break;
+                        case "tablas":
+                            button.BackColor = ColorTranslator.FromHtml("#fcd305");
+                            break;
+                        case "fecha":
+                              button.BackColor = ColorTranslator.FromHtml("#943edb");
                             break;
                         default:
                             button.BackColor = SystemColors.Control;

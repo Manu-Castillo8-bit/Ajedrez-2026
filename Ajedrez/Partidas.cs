@@ -16,6 +16,8 @@ namespace Ajedrez
         {
             InitializeComponent();
             //Prueva de vinculación con una máquina virtual
+            Tema.ApplyTheme(this);
+           
         }
 
         private void ir_menu_Click(object sender, EventArgs e)
@@ -48,6 +50,22 @@ namespace Ajedrez
         private void button1_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void m_claro_Click(object sender, EventArgs e)
+        {
+            Tema.SetTheme(false);      // Cambia a tema claro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario 
+       
+        }
+
+        private void m_oscuro_Click(object sender, EventArgs e)
+        {
+
+            Tema.SetTheme(true);       // Cambia a tema oscuro
+            Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
+         
+           
         }
     }
 }
