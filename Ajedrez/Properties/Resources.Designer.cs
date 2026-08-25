@@ -63,6 +63,16 @@ namespace Ajedrez.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap ajedrez1 {
+            get {
+                object obj = ResourceManager.GetObject("ajedrez1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap alfil_blanco {
             get {
                 object obj = ResourceManager.GetObject("alfil_blanco", resourceCulture);
@@ -96,6 +106,16 @@ namespace Ajedrez.Properties {
         internal static System.Drawing.Bitmap batalla {
             get {
                 object obj = ResourceManager.GetObject("batalla", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap batalla_btn {
+            get {
+                object obj = ResourceManager.GetObject("batalla_btn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -143,6 +163,36 @@ namespace Ajedrez.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap corona_b {
+            get {
+                object obj = ResourceManager.GetObject("corona_b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap corona_n {
+            get {
+                object obj = ResourceManager.GetObject("corona_n", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap damas {
+            get {
+                object obj = ResourceManager.GetObject("damas", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap elo {
             get {
                 object obj = ResourceManager.GetObject("elo", resourceCulture);
@@ -156,6 +206,26 @@ namespace Ajedrez.Properties {
         internal static System.Drawing.Bitmap empate {
             get {
                 object obj = ResourceManager.GetObject("empate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap f_blanca {
+            get {
+                object obj = ResourceManager.GetObject("f_blanca", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap f_negra {
+            get {
+                object obj = ResourceManager.GetObject("f_negra", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -276,6 +346,16 @@ namespace Ajedrez.Properties {
         internal static System.Drawing.Bitmap peon_negro_pixel {
             get {
                 object obj = ResourceManager.GetObject("peon_negro_pixel", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap perfil {
+            get {
+                object obj = ResourceManager.GetObject("perfil", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -29,71 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(menu));
-            this.ajedrez = new System.Windows.Forms.Button();
-            this.ir_damas = new System.Windows.Forms.Button();
-            this.ir_perfil = new System.Windows.Forms.Button();
-            this.ir_partidas = new System.Windows.Forms.Button();
             this.ir_login = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.m_claro = new System.Windows.Forms.Button();
-            this.m_oscuro = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.m_claro = new System.Windows.Forms.Button();
+            this.m_oscuro = new System.Windows.Forms.Button();
+            this.ir_partidas = new System.Windows.Forms.Button();
+            this.ir_perfil = new System.Windows.Forms.Button();
+            this.ir_damas = new System.Windows.Forms.Button();
+            this.ajedrez = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ajedrez
-            // 
-            this.ajedrez.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
-            this.ajedrez.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ajedrez.Location = new System.Drawing.Point(44, 66);
-            this.ajedrez.Name = "ajedrez";
-            this.ajedrez.Size = new System.Drawing.Size(160, 83);
-            this.ajedrez.TabIndex = 9;
-            this.ajedrez.Text = "AJEDREZ";
-            this.ajedrez.UseVisualStyleBackColor = false;
-            this.ajedrez.Click += new System.EventHandler(this.ajedrez_Click);
-            // 
-            // ir_damas
-            // 
-            this.ir_damas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
-            this.ir_damas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_damas.Location = new System.Drawing.Point(292, 66);
-            this.ir_damas.Name = "ir_damas";
-            this.ir_damas.Size = new System.Drawing.Size(160, 83);
-            this.ir_damas.TabIndex = 10;
-            this.ir_damas.Text = "DAMAS";
-            this.ir_damas.UseVisualStyleBackColor = false;
-            this.ir_damas.Click += new System.EventHandler(this.ir_damas_Click);
-            // 
-            // ir_perfil
-            // 
-            this.ir_perfil.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
-            this.ir_perfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_perfil.Location = new System.Drawing.Point(44, 201);
-            this.ir_perfil.Name = "ir_perfil";
-            this.ir_perfil.Size = new System.Drawing.Size(160, 83);
-            this.ir_perfil.TabIndex = 11;
-            this.ir_perfil.Text = "PERFIL";
-            this.ir_perfil.UseVisualStyleBackColor = false;
-            this.ir_perfil.Click += new System.EventHandler(this.ir_perfil_Click);
-            // 
-            // ir_partidas
-            // 
-            this.ir_partidas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
-            this.ir_partidas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_partidas.Location = new System.Drawing.Point(292, 201);
-            this.ir_partidas.Name = "ir_partidas";
-            this.ir_partidas.Size = new System.Drawing.Size(160, 83);
-            this.ir_partidas.TabIndex = 12;
-            this.ir_partidas.Text = "REGISTRO DE PARTIDAS";
-            this.ir_partidas.UseVisualStyleBackColor = false;
-            this.ir_partidas.Click += new System.EventHandler(this.ir_movimientos_Click);
             // 
             // ir_login
             // 
@@ -129,29 +81,6 @@
             this.label2.Size = new System.Drawing.Size(46, 17);
             this.label2.TabIndex = 8;
             this.label2.Text = "TEMA";
-            // 
-            // m_claro
-            // 
-            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
-            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.m_claro.Location = new System.Drawing.Point(41, 49);
-            this.m_claro.Name = "m_claro";
-            this.m_claro.Size = new System.Drawing.Size(40, 38);
-            this.m_claro.TabIndex = 5;
-            this.m_claro.UseVisualStyleBackColor = true;
-            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
-            // 
-            // m_oscuro
-            // 
-            this.m_oscuro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(138)))), ((int)(((byte)(244)))));
-            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_blanca;
-            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.m_oscuro.Location = new System.Drawing.Point(105, 49);
-            this.m_oscuro.Name = "m_oscuro";
-            this.m_oscuro.Size = new System.Drawing.Size(40, 38);
-            this.m_oscuro.TabIndex = 2;
-            this.m_oscuro.UseVisualStyleBackColor = false;
-            this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
             // 
             // label1
             // 
@@ -206,6 +135,90 @@
             this.label3.TabIndex = 19;
             this.label3.Text = "Bienvenido";
             this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // m_claro
+            // 
+            this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
+            this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.m_claro.Location = new System.Drawing.Point(41, 49);
+            this.m_claro.Name = "m_claro";
+            this.m_claro.Size = new System.Drawing.Size(40, 38);
+            this.m_claro.TabIndex = 5;
+            this.m_claro.UseVisualStyleBackColor = true;
+            this.m_claro.Click += new System.EventHandler(this.m_claro_Click);
+            // 
+            // m_oscuro
+            // 
+            this.m_oscuro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(74)))), ((int)(((byte)(138)))), ((int)(((byte)(244)))));
+            this.m_oscuro.BackgroundImage = global::Ajedrez.Properties.Resources.luna_blanca;
+            this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.m_oscuro.Location = new System.Drawing.Point(105, 49);
+            this.m_oscuro.Name = "m_oscuro";
+            this.m_oscuro.Size = new System.Drawing.Size(40, 38);
+            this.m_oscuro.TabIndex = 2;
+            this.m_oscuro.UseVisualStyleBackColor = false;
+            this.m_oscuro.Click += new System.EventHandler(this.m_oscuro_Click);
+            // 
+            // ir_partidas
+            // 
+            this.ir_partidas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.ir_partidas.BackgroundImage = global::Ajedrez.Properties.Resources.batalla_btn;
+            this.ir_partidas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ir_partidas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ir_partidas.Location = new System.Drawing.Point(292, 201);
+            this.ir_partidas.Name = "ir_partidas";
+            this.ir_partidas.Size = new System.Drawing.Size(160, 83);
+            this.ir_partidas.TabIndex = 12;
+            this.ir_partidas.Text = "PARTIDAS";
+            this.ir_partidas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ir_partidas.UseVisualStyleBackColor = false;
+            this.ir_partidas.Click += new System.EventHandler(this.ir_movimientos_Click);
+            // 
+            // ir_perfil
+            // 
+            this.ir_perfil.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
+            this.ir_perfil.BackgroundImage = global::Ajedrez.Properties.Resources.perfil;
+            this.ir_perfil.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ir_perfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ir_perfil.Location = new System.Drawing.Point(44, 201);
+            this.ir_perfil.Name = "ir_perfil";
+            this.ir_perfil.Size = new System.Drawing.Size(160, 83);
+            this.ir_perfil.TabIndex = 11;
+            this.ir_perfil.Text = "PERFIL";
+            this.ir_perfil.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ir_perfil.UseVisualStyleBackColor = false;
+            this.ir_perfil.Click += new System.EventHandler(this.ir_perfil_Click);
+            // 
+            // ir_damas
+            // 
+            this.ir_damas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
+            this.ir_damas.BackgroundImage = global::Ajedrez.Properties.Resources.damas;
+            this.ir_damas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ir_damas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ir_damas.Location = new System.Drawing.Point(292, 66);
+            this.ir_damas.Name = "ir_damas";
+            this.ir_damas.Size = new System.Drawing.Size(160, 83);
+            this.ir_damas.TabIndex = 10;
+            this.ir_damas.Text = "DAMAS";
+            this.ir_damas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ir_damas.UseVisualStyleBackColor = false;
+            this.ir_damas.Click += new System.EventHandler(this.ir_damas_Click);
+            // 
+            // ajedrez
+            // 
+            this.ajedrez.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(246)))), ((int)(((byte)(255)))));
+            this.ajedrez.BackgroundImage = global::Ajedrez.Properties.Resources.ajedrez1;
+            this.ajedrez.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ajedrez.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ajedrez.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.ajedrez.Location = new System.Drawing.Point(44, 66);
+            this.ajedrez.Name = "ajedrez";
+            this.ajedrez.Size = new System.Drawing.Size(160, 83);
+            this.ajedrez.TabIndex = 9;
+            this.ajedrez.Text = "AJEDREZ";
+            this.ajedrez.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.ajedrez.UseVisualStyleBackColor = false;
+            this.ajedrez.Click += new System.EventHandler(this.ajedrez_Click);
             // 
             // menu
             // 

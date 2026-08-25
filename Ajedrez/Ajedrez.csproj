@@ -250,6 +250,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo_final.ico" />
+    <None Include="Resources\batalla_btn.png" />
+    <None Include="Resources\ajedrez2.png" />
+    <None Include="Resources\ajedrez1.png" />
+    <None Include="Resources\damas.png" />
+    <None Include="Resources\perfil.png" />
+    <None Include="Resources\ajedrez.png" />
     <None Include="Resources\Logo_final.png" />
     <None Include="Resources\Logo_final.ico" />
   </ItemGroup>

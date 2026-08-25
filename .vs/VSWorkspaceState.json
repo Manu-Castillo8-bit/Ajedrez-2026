@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Ajedrez"
   ],
-  "SelectedNode": "\\Ajedrez.slnx",
+  "SelectedNode": "\\Ajedrez\\LOGIN.cs",
   "PreviewInSolutionExplorer": false
 }
