@@ -121,10 +121,24 @@ namespace Ajedrez
             {
                 // LABELS
                 if (control is Label label)
+
                 {
-                    if (label.Name == "label1" || label.Name == "label2")
+                    label.Font = GestorFuentes.ObtenerFuente(10f, FontStyle.Regular); // <-- AGREGAR
+
+                    if (label.Name == "label1")
                     {
                         label.ForeColor = Color.White;
+                        label.Font = GestorFuentes.ObtenerFuente(11f, FontStyle.Bold); // <-- AGREGAR
+                    }
+                    else if (label.Name == "label2")
+                    {
+                        label.ForeColor = Color.White;
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular); // <-- AGREGAR
+                    }
+                    else if (label.Name == "ir_registro")
+                    {
+                        label.ForeColor = Color.White;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }
                     else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
@@ -139,6 +153,7 @@ namespace Ajedrez
                 // LINKLABEL - Para ir_registro
                 else if (control is LinkLabel linkLabel)
                 {
+                   
                     // Guardar el texto del enlace para forzar la actualización
                     string textoOriginal = linkLabel.Text;
 
@@ -166,12 +181,14 @@ namespace Ajedrez
                 // CHECKBOX - Para checkBox1
                 else if (control is CheckBox checkBox)
                 {
+                   // checkBox.Font = GestorFuentes.ObtenerFuente(10f, FontStyle.Regular); // <-- AGREGAR
                     checkBox.ForeColor = Color.White;
                     checkBox.BackColor = Color.Transparent;
                 }
                 // RADIOBUTTON
                 else if (control is RadioButton radioButton)
                 {
+                   
                     radioButton.ForeColor = Color.White;
                     radioButton.BackColor = Color.Transparent;
                 }
@@ -179,7 +196,8 @@ namespace Ajedrez
                 else if (control is Button button)
                 {
                     button.ForeColor = Color.White;
-                    button.Font = new Font(button.Font, FontStyle.Bold);
+                    button.Font = GestorFuentes.ObtenerFuente(10f); // <-- REEMPLAZAR new Font(...)
+                    /*  button.Font = new Font(button.Font, FontStyle.Bold);*/
 
                     // Colores específicos para cada botón del menú
                     switch (button.Name)
@@ -238,12 +256,15 @@ namespace Ajedrez
                 // GROUPBOX
                 else if (control is GroupBox groupBox)
                 {
+                   // groupBox.Font = GestorFuentes.ObtenerFuente(10f, FontStyle.Bold); // <-- AGREGAR
                     groupBox.BackColor = ColorTranslator.FromHtml("#1a2d4a");
                     groupBox.ForeColor = Color.White; // También cambiamos el texto del GroupBox
                 }
                 // TEXTBOX
                 else if (control is TextBox textBox)
                 {
+                    textBox.Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular);
+                   
                     textBox.BackColor = ColorTranslator.FromHtml("#1a2d4a");
                     textBox.ForeColor = Color.White;
                     textBox.BorderStyle = BorderStyle.FixedSingle;
@@ -281,8 +302,32 @@ namespace Ajedrez
                 // LABELS
                 if (control is Label label)
                 {
+                    label.Font = GestorFuentes.ObtenerFuente(10f, FontStyle.Regular); // <-- AGREGAR
+                    label.ForeColor = Color.Black;
+
+                    if (label.Name == "label1")
+                    {
+                        label.ForeColor = Color.Black;
+                        label.Font = GestorFuentes.ObtenerFuente(11f, FontStyle.Bold); // <-- AGREGAR
+                    }
+                    else if (label.Name == "label2")
+                    {
+                        label.ForeColor = Color.Black;
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular); // <-- AGREGAR
+                    }
+                    else if (label.Name == "ir_registro")
+                    {
+                        label.ForeColor = Color.Black;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                
+                else
+                {
                     label.ForeColor = Color.Black;
                 }
+                }
+            
+
                 // LINKLABEL - Para ir_registro
                 else if (control is LinkLabel linkLabel)
                 {
@@ -308,6 +353,8 @@ namespace Ajedrez
                 // BUTTONS
                 else if (control is Button button)
                 {
+                   button.Font = GestorFuentes.ObtenerFuente(10f); // <-- REEMPLAZAR new Font(...)
+
                     button.ForeColor = Color.Black;
                     button.Font = new Font(button.Font, FontStyle.Regular);
 
@@ -364,6 +411,7 @@ namespace Ajedrez
                 // TEXTBOX
                 else if (control is TextBox textBox)
                 {
+                    textBox.Font = new Font("Microsoft Sans Serif", 9f, FontStyle.Regular);
                     textBox.BackColor = SystemColors.Window;
                     textBox.ForeColor = SystemColors.WindowText;
                     textBox.BorderStyle = BorderStyle.Fixed3D;

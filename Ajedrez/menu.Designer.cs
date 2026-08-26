@@ -29,58 +29,23 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(menu));
-            this.ir_login = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ir_login = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.ir_partidas = new System.Windows.Forms.Button();
             this.ir_perfil = new System.Windows.Forms.Button();
             this.ir_damas = new System.Windows.Forms.Button();
             this.ajedrez = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // ir_login
-            // 
-            this.ir_login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
-            this.ir_login.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_login.Location = new System.Drawing.Point(51, 372);
-            this.ir_login.Name = "ir_login";
-            this.ir_login.Size = new System.Drawing.Size(94, 33);
-            this.ir_login.TabIndex = 13;
-            this.ir_login.Text = "LOGIN";
-            this.ir_login.UseVisualStyleBackColor = false;
-            this.ir_login.Click += new System.EventHandler(this.ir_login_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.ir_login);
-            this.groupBox1.Controls.Add(this.m_claro);
-            this.groupBox1.Controls.Add(this.m_oscuro);
-            this.groupBox1.Location = new System.Drawing.Point(532, -5);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(185, 426);
-            this.groupBox1.TabIndex = 16;
-            this.groupBox1.TabStop = false;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(62, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 17);
-            this.label2.TabIndex = 8;
-            this.label2.Text = "TEMA";
             // 
             // label1
             // 
@@ -135,6 +100,42 @@
             this.label3.TabIndex = 19;
             this.label3.Text = "Bienvenido";
             this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.ir_login);
+            this.groupBox1.Controls.Add(this.m_claro);
+            this.groupBox1.Controls.Add(this.m_oscuro);
+            this.groupBox1.Location = new System.Drawing.Point(532, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(169, 413);
+            this.groupBox1.TabIndex = 16;
+            this.groupBox1.TabStop = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(62, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 17);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "TEMA";
+            // 
+            // ir_login
+            // 
+            this.ir_login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
+            this.ir_login.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ir_login.Location = new System.Drawing.Point(51, 372);
+            this.ir_login.Name = "ir_login";
+            this.ir_login.Size = new System.Drawing.Size(94, 33);
+            this.ir_login.TabIndex = 13;
+            this.ir_login.Text = "LOGIN";
+            this.ir_login.UseVisualStyleBackColor = false;
+            this.ir_login.Click += new System.EventHandler(this.ir_login_Click);
             // 
             // m_claro
             // 
@@ -237,10 +238,10 @@
             this.Name = "menu";
             this.Text = "MENU";
             this.Load += new System.EventHandler(this.menu_Load);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

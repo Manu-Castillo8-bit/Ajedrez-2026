@@ -82,9 +82,9 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
-            this.groupBox1.Location = new System.Drawing.Point(416, -28);
+            this.groupBox1.Location = new System.Drawing.Point(445, -37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(161, 379);
+            this.groupBox1.Size = new System.Drawing.Size(180, 379);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
@@ -111,7 +111,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(47, 52);
+            this.label2.Location = new System.Drawing.Point(16, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(95, 13);
             this.label2.TabIndex = 8;
@@ -121,7 +121,7 @@
             // 
             this.m_claro.BackgroundImage = global::Ajedrez.Properties.Resources.sol_negro;
             this.m_claro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.m_claro.Location = new System.Drawing.Point(30, 76);
+            this.m_claro.Location = new System.Drawing.Point(46, 75);
             this.m_claro.Name = "m_claro";
             this.m_claro.Size = new System.Drawing.Size(40, 38);
             this.m_claro.TabIndex = 5;
@@ -132,7 +132,7 @@
             // 
             this.m_oscuro.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("m_oscuro.BackgroundImage")));
             this.m_oscuro.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.m_oscuro.Location = new System.Drawing.Point(99, 76);
+            this.m_oscuro.Location = new System.Drawing.Point(101, 75);
             this.m_oscuro.Name = "m_oscuro";
             this.m_oscuro.Size = new System.Drawing.Size(40, 38);
             this.m_oscuro.TabIndex = 2;
@@ -248,7 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 323);
+            this.ClientSize = new System.Drawing.Size(628, 323);
             this.Controls.Add(this.pictureBox6);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.pictureBox4);

@@ -15,6 +15,7 @@ namespace Ajedrez
 {
     public partial class LOGIN : Form
     {
+        
 
         // 🔥 IMPORTANTE: Reemplaza estos valores con los de tu proyecto
         private const string SUPABASE_HOST = "aws-0-eu-west-1.pooler.supabase.com"; // ← Cambia según tu región
@@ -26,6 +27,8 @@ namespace Ajedrez
         // Cadena de conexión con Session Pooler (IPv4)
         private static readonly string CONNECTION_STRING =
             $"Host={SUPABASE_HOST};Port={SUPABASE_PORT};Database={SUPABASE_DATABASE};Username={SUPABASE_USER};Password={SUPABASE_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;";
+     
+
         public LOGIN()
         {
             InitializeComponent();

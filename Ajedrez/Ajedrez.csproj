@@ -161,6 +161,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GestorFuentes.cs" />
     <Compile Include="LOGIN.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -229,6 +230,7 @@
     <EmbeddedResource Include="REGISTRADOR.resx">
       <DependentUpon>REGISTRADOR.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="fuente_04b.TTF" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -250,6 +252,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Logo_final.ico" />
+    <None Include="Resources\tema2.jpg" />
     <None Include="Resources\batalla_btn.png" />
     <None Include="Resources\ajedrez2.png" />
     <None Include="Resources\ajedrez1.png" />
