@@ -72,7 +72,7 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(414, 16);
+            this.label5.Location = new System.Drawing.Point(393, 16);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(59, 16);
             this.label5.TabIndex = 21;
@@ -83,7 +83,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(321, 16);
+            this.label4.Location = new System.Drawing.Point(300, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 16);
             this.label4.TabIndex = 20;
@@ -94,7 +94,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(177, 16);
+            this.label3.Location = new System.Drawing.Point(156, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 16);
             this.label3.TabIndex = 19;
@@ -166,9 +166,9 @@
             this.ir_partidas.BackgroundImage = global::Ajedrez.Properties.Resources.batalla_btn;
             this.ir_partidas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ir_partidas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_partidas.Location = new System.Drawing.Point(292, 201);
+            this.ir_partidas.Location = new System.Drawing.Point(288, 194);
             this.ir_partidas.Name = "ir_partidas";
-            this.ir_partidas.Size = new System.Drawing.Size(160, 83);
+            this.ir_partidas.Size = new System.Drawing.Size(205, 100);
             this.ir_partidas.TabIndex = 12;
             this.ir_partidas.Text = "PARTIDAS";
             this.ir_partidas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -181,9 +181,9 @@
             this.ir_perfil.BackgroundImage = global::Ajedrez.Properties.Resources.perfil;
             this.ir_perfil.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ir_perfil.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_perfil.Location = new System.Drawing.Point(44, 201);
+            this.ir_perfil.Location = new System.Drawing.Point(40, 194);
             this.ir_perfil.Name = "ir_perfil";
-            this.ir_perfil.Size = new System.Drawing.Size(160, 83);
+            this.ir_perfil.Size = new System.Drawing.Size(205, 100);
             this.ir_perfil.TabIndex = 11;
             this.ir_perfil.Text = "PERFIL";
             this.ir_perfil.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -196,9 +196,9 @@
             this.ir_damas.BackgroundImage = global::Ajedrez.Properties.Resources.damas;
             this.ir_damas.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ir_damas.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_damas.Location = new System.Drawing.Point(292, 66);
+            this.ir_damas.Location = new System.Drawing.Point(288, 59);
             this.ir_damas.Name = "ir_damas";
-            this.ir_damas.Size = new System.Drawing.Size(160, 83);
+            this.ir_damas.Size = new System.Drawing.Size(205, 100);
             this.ir_damas.TabIndex = 10;
             this.ir_damas.Text = "DAMAS";
             this.ir_damas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -212,9 +212,9 @@
             this.ajedrez.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ajedrez.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ajedrez.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.ajedrez.Location = new System.Drawing.Point(44, 66);
+            this.ajedrez.Location = new System.Drawing.Point(40, 59);
             this.ajedrez.Name = "ajedrez";
-            this.ajedrez.Size = new System.Drawing.Size(160, 83);
+            this.ajedrez.Size = new System.Drawing.Size(205, 100);
             this.ajedrez.TabIndex = 9;
             this.ajedrez.Text = "AJEDREZ";
             this.ajedrez.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -236,6 +236,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "menu";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MENU";
             this.Load += new System.EventHandler(this.menu_Load);
             this.groupBox2.ResumeLayout(false);

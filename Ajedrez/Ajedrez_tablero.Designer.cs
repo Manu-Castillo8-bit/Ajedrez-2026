@@ -38,8 +38,8 @@
             this.m_claro = new System.Windows.Forms.Button();
             this.deshacer = new System.Windows.Forms.Button();
             this.ir_menu = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.puntosn = new System.Windows.Forms.Label();
+            this.puntosb = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).BeginInit();
             this.SuspendLayout();
@@ -55,9 +55,9 @@
             // puntos_n
             // 
             this.puntos_n.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
-            this.puntos_n.Location = new System.Drawing.Point(667, 298);
+            this.puntos_n.Location = new System.Drawing.Point(612, 298);
             this.puntos_n.Name = "puntos_n";
-            this.puntos_n.Size = new System.Drawing.Size(50, 50);
+            this.puntos_n.Size = new System.Drawing.Size(49, 50);
             this.puntos_n.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.puntos_n.TabIndex = 1;
             this.puntos_n.TabStop = false;
@@ -65,9 +65,9 @@
             // puntos_b
             // 
             this.puntos_b.Image = global::Ajedrez.Properties.Resources.peon;
-            this.puntos_b.Location = new System.Drawing.Point(667, 166);
+            this.puntos_b.Location = new System.Drawing.Point(612, 166);
             this.puntos_b.Name = "puntos_b";
-            this.puntos_b.Size = new System.Drawing.Size(50, 50);
+            this.puntos_b.Size = new System.Drawing.Size(49, 50);
             this.puntos_b.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.puntos_b.TabIndex = 2;
             this.puntos_b.TabStop = false;
@@ -76,7 +76,7 @@
             // 
             this.p_negras.AutoSize = true;
             this.p_negras.Font = new System.Drawing.Font("Californian FB", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.p_negras.Location = new System.Drawing.Point(728, 317);
+            this.p_negras.Location = new System.Drawing.Point(673, 317);
             this.p_negras.Name = "p_negras";
             this.p_negras.Size = new System.Drawing.Size(28, 31);
             this.p_negras.TabIndex = 3;
@@ -86,7 +86,7 @@
             // 
             this.p_blancas.AutoSize = true;
             this.p_blancas.Font = new System.Drawing.Font("Californian FB", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.p_blancas.Location = new System.Drawing.Point(737, 185);
+            this.p_blancas.Location = new System.Drawing.Point(673, 185);
             this.p_blancas.Name = "p_blancas";
             this.p_blancas.Size = new System.Drawing.Size(28, 31);
             this.p_blancas.TabIndex = 4;
@@ -136,31 +136,31 @@
             this.ir_menu.UseVisualStyleBackColor = true;
             this.ir_menu.Click += new System.EventHandler(this.menu_Click_1);
             // 
-            // label1
+            // puntosn
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(658, 282);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(103, 13);
-            this.label1.TabIndex = 12;
-            this.label1.Text = "PUNTOS NEGRAS:";
+            this.puntosn.AutoSize = true;
+            this.puntosn.Location = new System.Drawing.Point(603, 282);
+            this.puntosn.Name = "puntosn";
+            this.puntosn.Size = new System.Drawing.Size(103, 13);
+            this.puntosn.TabIndex = 12;
+            this.puntosn.Text = "PUNTOS NEGRAS:";
             // 
-            // label2
+            // puntosb
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(658, 150);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(107, 13);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "PUNTOS BLANCAS:";
+            this.puntosb.AutoSize = true;
+            this.puntosb.Location = new System.Drawing.Point(603, 150);
+            this.puntosb.Name = "puntosb";
+            this.puntosb.Size = new System.Drawing.Size(107, 13);
+            this.puntosb.TabIndex = 13;
+            this.puntosb.Text = "PUNTOS BLANCAS:";
             // 
             // Ajedrez_tablero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 517);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.puntosb);
+            this.Controls.Add(this.puntosn);
             this.Controls.Add(this.deshacer);
             this.Controls.Add(this.ir_menu);
             this.Controls.Add(this.m_oscuro);
@@ -173,6 +173,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "Ajedrez_tablero";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AJEDREZ";
             this.Load += new System.EventHandler(this.Ajedrez_tablero_Load);
             ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).EndInit();
@@ -193,7 +194,7 @@
         private System.Windows.Forms.Button m_claro;
         private System.Windows.Forms.Button deshacer;
         private System.Windows.Forms.Button ir_menu;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label puntosn;
+        private System.Windows.Forms.Label puntosb;
     }
 }

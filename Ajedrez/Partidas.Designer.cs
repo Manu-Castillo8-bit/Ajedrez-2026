@@ -384,6 +384,7 @@
             this.Controls.Add(this.groupBox3);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Partidas";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PARTIDAS";
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);

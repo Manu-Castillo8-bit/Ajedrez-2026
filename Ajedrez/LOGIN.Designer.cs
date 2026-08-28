@@ -71,7 +71,7 @@
             // 
             // nombre
             // 
-            this.nombre.Location = new System.Drawing.Point(72, 165);
+            this.nombre.Location = new System.Drawing.Point(72, 184);
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(220, 20);
             this.nombre.TabIndex = 1;
@@ -79,7 +79,7 @@
             // 
             // contraseña
             // 
-            this.contraseña.Location = new System.Drawing.Point(72, 222);
+            this.contraseña.Location = new System.Drawing.Point(72, 251);
             this.contraseña.Name = "contraseña";
             this.contraseña.Size = new System.Drawing.Size(219, 20);
             this.contraseña.TabIndex = 4;
@@ -89,7 +89,7 @@
             // ingresar_
             // 
             this.ingresar_.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ingresar_.Location = new System.Drawing.Point(129, 272);
+            this.ingresar_.Location = new System.Drawing.Point(129, 307);
             this.ingresar_.Name = "ingresar_";
             this.ingresar_.Size = new System.Drawing.Size(169, 39);
             this.ingresar_.TabIndex = 6;
@@ -106,7 +106,7 @@
             this.groupBox1.Controls.Add(this.m_oscuro);
             this.groupBox1.Location = new System.Drawing.Point(445, -37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 379);
+            this.groupBox1.Size = new System.Drawing.Size(180, 409);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
@@ -115,7 +115,7 @@
             // 
             this.ir_registro.AutoSize = true;
             this.ir_registro.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_registro.Location = new System.Drawing.Point(33, 304);
+            this.ir_registro.Location = new System.Drawing.Point(33, 336);
             this.ir_registro.Name = "ir_registro";
             this.ir_registro.Size = new System.Drawing.Size(120, 13);
             this.ir_registro.TabIndex = 17;
@@ -124,7 +124,7 @@
             // registrarse
             // 
             this.registrarse.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.registrarse.Location = new System.Drawing.Point(18, 320);
+            this.registrarse.Location = new System.Drawing.Point(18, 352);
             this.registrarse.Name = "registrarse";
             this.registrarse.Size = new System.Drawing.Size(148, 30);
             this.registrarse.TabIndex = 9;
@@ -168,7 +168,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(70, 149);
+            this.label3.Location = new System.Drawing.Point(70, 168);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 13);
             this.label3.TabIndex = 8;
@@ -178,7 +178,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(79, 207);
+            this.label4.Location = new System.Drawing.Point(79, 236);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 9;
@@ -188,7 +188,7 @@
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(334, 225);
+            this.checkBox1.Location = new System.Drawing.Point(334, 254);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(98, 17);
             this.checkBox1.TabIndex = 16;
@@ -209,7 +209,7 @@
             // pictureBox6
             // 
             this.pictureBox6.Image = global::Ajedrez.Properties.Resources.ver_contra;
-            this.pictureBox6.Location = new System.Drawing.Point(298, 218);
+            this.pictureBox6.Location = new System.Drawing.Point(298, 247);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(32, 33);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -219,7 +219,7 @@
             // pictureBox5
             // 
             this.pictureBox5.Image = global::Ajedrez.Properties.Resources.candado_negro;
-            this.pictureBox5.Location = new System.Drawing.Point(34, 209);
+            this.pictureBox5.Location = new System.Drawing.Point(34, 238);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(32, 33);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -229,7 +229,7 @@
             // pictureBox4
             // 
             this.pictureBox4.Image = global::Ajedrez.Properties.Resources.persona_blanca;
-            this.pictureBox4.Location = new System.Drawing.Point(32, 152);
+            this.pictureBox4.Location = new System.Drawing.Point(32, 171);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(32, 33);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -239,7 +239,7 @@
             // pictureBox3
             // 
             this.pictureBox3.Image = global::Ajedrez.Properties.Resources.ver_contra_negro;
-            this.pictureBox3.Location = new System.Drawing.Point(298, 218);
+            this.pictureBox3.Location = new System.Drawing.Point(298, 247);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(32, 33);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -249,7 +249,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Ajedrez.Properties.Resources.candado_blanco;
-            this.pictureBox2.Location = new System.Drawing.Point(34, 209);
+            this.pictureBox2.Location = new System.Drawing.Point(34, 238);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(32, 33);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -259,7 +259,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Ajedrez.Properties.Resources.persona_negra;
-            this.pictureBox1.Location = new System.Drawing.Point(32, 152);
+            this.pictureBox1.Location = new System.Drawing.Point(32, 171);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(32, 33);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -270,7 +270,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 323);
+            this.ClientSize = new System.Drawing.Size(628, 359);
             this.Controls.Add(this.pictureBox7);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.pictureBox6);
@@ -288,6 +288,7 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "LOGIN";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LOGIN";
             this.Load += new System.EventHandler(this.LOGIN_Load);
             this.groupBox1.ResumeLayout(false);

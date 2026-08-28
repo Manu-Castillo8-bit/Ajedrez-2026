@@ -32,7 +32,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.ir_login = new System.Windows.Forms.Label();
             this.ingresar = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.m_claro = new System.Windows.Forms.Button();
@@ -48,6 +48,8 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
+            this.pictureBox7 = new System.Windows.Forms.PictureBox();
+            this.mensaje = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -55,21 +57,22 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
             this.SuspendLayout();
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(79, 127);
+            this.label4.Location = new System.Drawing.Point(79, 236);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(61, 13);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Contraseña";
+            this.label4.Text = "Contrasena";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(69, 60);
+            this.label3.Location = new System.Drawing.Point(70, 168);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(96, 13);
             this.label3.TabIndex = 16;
@@ -77,32 +80,34 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.mensaje);
+            this.groupBox1.Controls.Add(this.ir_login);
             this.groupBox1.Controls.Add(this.ingresar);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
             this.groupBox1.Location = new System.Drawing.Point(445, -37);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(180, 379);
+            this.groupBox1.Size = new System.Drawing.Size(180, 409);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "groupBox1";
             // 
-            // label5
+            // ir_login
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(14, 289);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(139, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "¿Ya tienes cuenta, ingresa?";
+            this.ir_login.AutoSize = true;
+            this.ir_login.Location = new System.Drawing.Point(33, 336);
+            this.ir_login.Name = "ir_login";
+            this.ir_login.Size = new System.Drawing.Size(139, 13);
+            this.ir_login.TabIndex = 18;
+            this.ir_login.Text = "¿Ya tienes cuenta, ingresa?";
             // 
             // ingresar
             // 
-            this.ingresar.Location = new System.Drawing.Point(28, 304);
+            this.ingresar.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.ingresar.Location = new System.Drawing.Point(18, 352);
             this.ingresar.Name = "ingresar";
-            this.ingresar.Size = new System.Drawing.Size(111, 35);
+            this.ingresar.Size = new System.Drawing.Size(148, 30);
             this.ingresar.TabIndex = 9;
             this.ingresar.Text = "INGRESAR";
             this.ingresar.UseVisualStyleBackColor = true;
@@ -141,7 +146,7 @@
             // 
             // g_usuario
             // 
-            this.g_usuario.Location = new System.Drawing.Point(123, 261);
+            this.g_usuario.Location = new System.Drawing.Point(129, 307);
             this.g_usuario.Name = "g_usuario";
             this.g_usuario.Size = new System.Drawing.Size(169, 39);
             this.g_usuario.TabIndex = 14;
@@ -151,7 +156,7 @@
             // 
             // contraseña
             // 
-            this.contraseña.Location = new System.Drawing.Point(72, 142);
+            this.contraseña.Location = new System.Drawing.Point(72, 251);
             this.contraseña.Name = "contraseña";
             this.contraseña.Size = new System.Drawing.Size(220, 20);
             this.contraseña.TabIndex = 13;
@@ -159,7 +164,7 @@
             // 
             // nombre
             // 
-            this.nombre.Location = new System.Drawing.Point(71, 76);
+            this.nombre.Location = new System.Drawing.Point(72, 184);
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(220, 20);
             this.nombre.TabIndex = 11;
@@ -167,7 +172,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(164, 9);
+            this.label1.Location = new System.Drawing.Point(123, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 10;
@@ -176,7 +181,7 @@
             // pictureBox1
             // 
             this.pictureBox1.Image = global::Ajedrez.Properties.Resources.persona_negra;
-            this.pictureBox1.Location = new System.Drawing.Point(29, 61);
+            this.pictureBox1.Location = new System.Drawing.Point(32, 171);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(36, 35);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -186,7 +191,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::Ajedrez.Properties.Resources.candado_blanco;
-            this.pictureBox2.Location = new System.Drawing.Point(29, 127);
+            this.pictureBox2.Location = new System.Drawing.Point(34, 238);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(36, 35);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -196,7 +201,7 @@
             // pictureBox3
             // 
             this.pictureBox3.Image = global::Ajedrez.Properties.Resources.ver_contra_negro;
-            this.pictureBox3.Location = new System.Drawing.Point(281, 135);
+            this.pictureBox3.Location = new System.Drawing.Point(298, 247);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(36, 35);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -206,7 +211,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(317, 145);
+            this.checkBox1.Location = new System.Drawing.Point(334, 254);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(98, 17);
             this.checkBox1.TabIndex = 21;
@@ -217,7 +222,7 @@
             // pictureBox4
             // 
             this.pictureBox4.Image = global::Ajedrez.Properties.Resources.persona_blanca;
-            this.pictureBox4.Location = new System.Drawing.Point(29, 60);
+            this.pictureBox4.Location = new System.Drawing.Point(32, 171);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(36, 35);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -227,7 +232,7 @@
             // pictureBox5
             // 
             this.pictureBox5.Image = global::Ajedrez.Properties.Resources.candado_negro;
-            this.pictureBox5.Location = new System.Drawing.Point(29, 127);
+            this.pictureBox5.Location = new System.Drawing.Point(34, 238);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(36, 35);
             this.pictureBox5.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -237,18 +242,38 @@
             // pictureBox6
             // 
             this.pictureBox6.Image = global::Ajedrez.Properties.Resources.ver_contra;
-            this.pictureBox6.Location = new System.Drawing.Point(281, 135);
+            this.pictureBox6.Location = new System.Drawing.Point(298, 247);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(36, 35);
             this.pictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox6.TabIndex = 24;
             this.pictureBox6.TabStop = false;
             // 
+            // pictureBox7
+            // 
+            this.pictureBox7.Image = global::Ajedrez.Properties.Resources.Logo_final1;
+            this.pictureBox7.Location = new System.Drawing.Point(157, 34);
+            this.pictureBox7.Name = "pictureBox7";
+            this.pictureBox7.Size = new System.Drawing.Size(113, 104);
+            this.pictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox7.TabIndex = 25;
+            this.pictureBox7.TabStop = false;
+            // 
+            // mensaje
+            // 
+            this.mensaje.AutoSize = true;
+            this.mensaje.Location = new System.Drawing.Point(45, 188);
+            this.mensaje.Name = "mensaje";
+            this.mensaje.Size = new System.Drawing.Size(105, 78);
+            this.mensaje.TabIndex = 19;
+            this.mensaje.Text = "\"Nos da gusto\r\nque estes interesado\r\nen probar nuestro\r\nproyecto\r\n\r\nGRACIAS\"";
+            // 
             // REGISTRADOR
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(628, 323);
+            this.ClientSize = new System.Drawing.Size(628, 359);
+            this.Controls.Add(this.pictureBox7);
             this.Controls.Add(this.pictureBox6);
             this.Controls.Add(this.pictureBox5);
             this.Controls.Add(this.pictureBox4);
@@ -265,6 +290,7 @@
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "REGISTRADOR";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "REGISTRADOR";
             this.Load += new System.EventHandler(this.REGISTRADOR_Load);
             this.groupBox1.ResumeLayout(false);
@@ -275,6 +301,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -300,6 +327,8 @@
         private System.Windows.Forms.PictureBox pictureBox5;
         private System.Windows.Forms.PictureBox pictureBox6;
         private System.Windows.Forms.Button ingresar;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label ir_login;
+        private System.Windows.Forms.PictureBox pictureBox7;
+        private System.Windows.Forms.Label mensaje;
     }
 }

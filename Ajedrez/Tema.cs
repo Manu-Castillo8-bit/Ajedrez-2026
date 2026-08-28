@@ -135,10 +135,22 @@ namespace Ajedrez
                         label.ForeColor = Color.White;
                         label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular); // <-- AGREGAR
                     }
+                   
+                    else if (label.Name == "mensaje")
+                    {
+                        label.ForeColor = Color.White;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Italic);
+
+                    }
                     else if (label.Name == "ir_registro")
                     {
                         label.ForeColor = Color.White;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (label.Name== "ir_login")
+                    {
+                        label.ForeColor = Color.White;
+                        label.Font=new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }
                     else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
@@ -314,6 +326,17 @@ namespace Ajedrez
                     {
                         label.ForeColor = Color.Black;
                         label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular); // <-- AGREGAR
+                    }
+                    else if (label.Name == "ir_login")
+                    {
+                        label.ForeColor = Color.Black;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (label.Name == "mensaje")
+                    {
+                        label.ForeColor = ColorTranslator.FromHtml("#242426");
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Italic);
+
                     }
                     else if (label.Name == "ir_registro")
                     {
