@@ -23,6 +23,9 @@ namespace Ajedrez
 
         string color = "r", k = "", B1 = "", B2 = "", k2="";
 
+        Stack<BoardSnapshot> boardHistory = new Stack<BoardSnapshot>();
+        bool canUndoForm1 = false;
+
         private void partidas_Click(object sender, EventArgs e)
         {
 
@@ -115,6 +118,9 @@ namespace Ajedrez
                             // 2. USAMOS nombreClic EN LUGAR DE p.Name PARA EVALUAR
                             if (nombreClic.Split(' ').Length > 2 && nombreClic.Split(' ')[2] == "b")
                             {
+                                SaveBoardState();
+                                canUndoForm1 = true;
+
                                 if (color == "r") color = "g";
                                 else color = "r";
 
@@ -232,6 +238,86 @@ namespace Ajedrez
                 y = Convert.ToInt32(B2.Split(' ')[1]);
                 P[x, y].Image = null;
             }
+        }
+
+
+        private void SaveBoardState()
+        {
+            if (P == null) return;
+
+            BoardSnapshot snap = new BoardSnapshot();
+            snap.Images = new Image[n, n];
+            snap.Names = new string[n, n];
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    snap.Images[i, j] = P[i, j].Image;
+                    snap.Names[i, j] = P[i, j].Name;
+                }
+            }
+
+            snap.k = k;
+            snap.color = color;
+            snap.blancas = blancas;
+            snap.negras = negras;
+            snap.pBlancasText = p_blancas.Text;
+            snap.pNegrasText = p_negras.Text;
+
+            boardHistory.Push(snap);
+        }
+
+        private void deshacer_Click(object sender, EventArgs e)
+        {
+            if (boardHistory.Count == 0)
+            {
+                MessageBox.Show("No hay movimientos para deshacer.", "DAMAS",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!canUndoForm1)
+            {
+                MessageBox.Show("Solo puedes deshacer el último movimiento, antes de que juegue el rival.", "DAMAS",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            BoardSnapshot snap = boardHistory.Pop();
+
+            for (int i = 0; i < n; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    P[i, j].Image = snap.Images[i, j];
+                    P[i, j].Name = snap.Names[i, j];
+                }
+            }
+
+            k = snap.k;
+            color = snap.color;
+            blancas = snap.blancas;
+            negras = snap.negras;
+            p_blancas.Text = snap.pBlancasText;
+            p_negras.Text = snap.pNegrasText;
+
+            B1 = "";
+            B2 = "";
+
+            canUndoForm1 = false;
+        }
+
+        private class BoardSnapshot
+        {
+            public Image[,] Images;
+            public string[,] Names;
+            public string k;
+            public string color;
+            public int blancas;
+            public int negras;
+            public string pBlancasText;
+            public string pNegrasText;
         }
 
 
