@@ -18,6 +18,8 @@ namespace Ajedrez
         private int whiteCaptures = 0;
         private int blackCaptures = 0;
         private List<Point> validMoves = new List<Point>();
+        private Stack<MoveHistory> moveHistory = new Stack<MoveHistory>();
+        private bool canUndo = false;
 
         public Ajedrez_tablero()
         {
@@ -205,6 +207,16 @@ namespace Ajedrez
 
             if (sourceInfo == null) return;
 
+            // Guardar el estado actual para poder deshacer
+            Image capturedImage = null;
+            object capturedTag = null;
+            if (board[targetPos.X, targetPos.Y].Image != null)
+            {
+                capturedImage = board[targetPos.X, targetPos.Y].Image;
+                capturedTag = board[targetPos.X, targetPos.Y].Tag;
+            }
+            moveHistory.Push(new MoveHistory(sourcePos, targetPos, capturedImage, capturedTag, sourceInfo.Color));
+
             // Capturar pieza si existe
             if (board[targetPos.X, targetPos.Y].Image != null)
             {
@@ -236,7 +248,9 @@ namespace Ajedrez
 
             // Verificar jaque o jaque mate
             CheckGameState();
-        
+
+            // El movimiento reciente se puede deshacer (una sola vez hasta el siguiente movimiento)
+            canUndo = true;
         }
 
         private List<Point> GetValidMoves(Point pos)
@@ -595,6 +609,12 @@ namespace Ajedrez
 
             // Limpiar selección
             ClearSelection();
+
+            // Limpiar historial de movimientos
+            moveHistory.Clear();
+
+            // Deshabilitar deshacer
+            canUndo = false;
         }
 
         // Clase para almacenar información de las piezas
@@ -640,6 +660,80 @@ namespace Ajedrez
             menu f_menu = new menu();
             f_menu.Show();
             this.Hide();
+        }
+
+        private void deshacer_Click(object sender, EventArgs e)
+        {
+            if (moveHistory.Count == 0)
+            {
+                MessageBox.Show("No hay movimientos para deshacer.", "Ajedrez",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (!canUndo)
+            {
+                MessageBox.Show("Solo puedes deshacer el último movimiento, antes de que juegue el rival.", "Ajedrez",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            ClearSelection();
+
+            MoveHistory move = moveHistory.Pop();
+
+            // Mover la pieza de vuelta a su casilla de origen
+            board[move.From.X, move.From.Y].Image = board[move.To.X, move.To.Y].Image;
+            board[move.From.X, move.From.Y].Tag = new PieceInfo(move.PieceColor, GetPieceType(board[move.To.X, move.To.Y]), move.From.X, move.From.Y);
+
+            // Restaurar lo que había en la casilla de destino (pieza capturada o vacía)
+            board[move.To.X, move.To.Y].Image = move.CapturedImage;
+            board[move.To.X, move.To.Y].Tag = move.CapturedTag ?? (object)new Point(move.To.X, move.To.Y);
+
+            // Ajustar contadores de capturas si se deshace una captura
+            if (move.CapturedImage != null)
+            {
+                if (move.CapturedTag is PieceInfo capInfo)
+                {
+                    if (capInfo.Color == "white")
+                        blackCaptures--;
+                    else
+                        whiteCaptures--;
+                    UpdateCaptureCounters();
+                }
+            }
+
+            // Cambiar el turno de vuelta
+            currentTurn = move.PieceColor;
+
+            // Ya no se puede deshacer hasta que se vuelva a mover una pieza
+            canUndo = false;
+        }
+
+        private string GetPieceType(PictureBox cell)
+        {
+            if (cell == null || cell.Tag == null || !(cell.Tag is PieceInfo))
+                return "unknown";
+            return ((PieceInfo)cell.Tag).Type;
+        }
+
+        // Clase para almacenar el historial de movimientos
+        private class MoveHistory
+        {
+            public Point From { get; set; }
+            public Point To { get; set; }
+            public Image CapturedImage { get; set; }
+            public object CapturedTag { get; set; }
+            public string PieceColor { get; set; }
+
+            public MoveHistory(Point from, Point to, Image capturedImage, object capturedTag, string pieceColor)
+            {
+                From = from;
+                To = to;
+                CapturedImage = capturedImage;
+                CapturedTag = capturedTag;
+                PieceColor = pieceColor;
+            }
         }
     }
 }

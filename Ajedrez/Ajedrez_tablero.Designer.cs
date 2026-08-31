@@ -124,6 +124,7 @@
             this.deshacer.Size = new System.Drawing.Size(43, 43);
             this.deshacer.TabIndex = 11;
             this.deshacer.UseVisualStyleBackColor = true;
+            this.deshacer.Click += new System.EventHandler(this.deshacer_Click);
             // 
             // ir_menu
             // 
