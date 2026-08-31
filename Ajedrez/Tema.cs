@@ -17,6 +17,10 @@ namespace Ajedrez
         private static Dictionary<string, (string lightControl, string darkControl)> _pictureBoxMappings
             = new Dictionary<string, (string, string)>();
 
+        // Labels de datos del formulario Perfil y las versiones "menu2" (aquí se mostrará la info de la BD)
+        private static string[] _profileValueLabels = { "nombre", "elo", "correo", "victorias", "descripcion",
+                                                        "elo_menu2", "victorias_menu2", "partidas_menu2", "derrotas_menu2" };
+
         // Método para cambiar el tema
         public static void SetTheme(bool isDark)
         {
@@ -155,6 +159,12 @@ namespace Ajedrez
                     else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
                         label.ForeColor = ColorTranslator.FromHtml("#9ab8e8");
+                    }
+                    else if (Array.Exists(_profileValueLabels, name => name == label.Name))
+                    {
+                        // Labels de datos del perfil: un poco más claros y delgados
+                        label.ForeColor = ColorTranslator.FromHtml("#b8ccf0");
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular);
                     }
                     else
                     {
@@ -342,6 +352,11 @@ namespace Ajedrez
                     {
                         label.ForeColor = Color.Black;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (Array.Exists(_profileValueLabels, name => name == label.Name))
+                    {
+                        // Labels de datos del perfil: un poco más grises que los demás
+                        label.ForeColor = ColorTranslator.FromHtml("#707070");
                     }
                 
                 else

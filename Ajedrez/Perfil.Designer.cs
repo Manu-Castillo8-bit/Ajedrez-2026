@@ -43,10 +43,10 @@
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
+            this.descripcion = new System.Windows.Forms.Label();
+            this.victorias = new System.Windows.Forms.Label();
+            this.correo = new System.Windows.Forms.Label();
+            this.elo = new System.Windows.Forms.Label();
             this.nombre = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
@@ -55,6 +55,10 @@
             this.label6 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.elo_menu2 = new System.Windows.Forms.Label();
+            this.partidas_menu2 = new System.Windows.Forms.Label();
+            this.victorias_menu2 = new System.Windows.Forms.Label();
+            this.derrotas_menu2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picture_elo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picture_victorias)).BeginInit();
@@ -66,6 +70,10 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.derrotas_menu2);
+            this.groupBox1.Controls.Add(this.victorias_menu2);
+            this.groupBox1.Controls.Add(this.partidas_menu2);
+            this.groupBox1.Controls.Add(this.elo_menu2);
             this.groupBox1.Controls.Add(this.picture_elo);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.picture_victorias);
@@ -217,46 +225,46 @@
             this.button1.TabIndex = 37;
             this.button1.UseVisualStyleBackColor = false;
             // 
-            // label14
+            // descripcion
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(375, 233);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(13, 13);
-            this.label14.TabIndex = 36;
-            this.label14.Text = "n";
+            this.descripcion.AutoSize = true;
+            this.descripcion.Location = new System.Drawing.Point(435, 233);
+            this.descripcion.Name = "descripcion";
+            this.descripcion.Size = new System.Drawing.Size(13, 13);
+            this.descripcion.TabIndex = 36;
+            this.descripcion.Text = "n";
             // 
-            // label13
+            // victorias
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(360, 196);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(13, 13);
-            this.label13.TabIndex = 35;
-            this.label13.Text = "n";
+            this.victorias.AutoSize = true;
+            this.victorias.Location = new System.Drawing.Point(435, 196);
+            this.victorias.Name = "victorias";
+            this.victorias.Size = new System.Drawing.Size(13, 13);
+            this.victorias.TabIndex = 35;
+            this.victorias.Text = "n";
             // 
-            // label12
+            // correo
             // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(341, 159);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(13, 13);
-            this.label12.TabIndex = 34;
-            this.label12.Text = "n";
+            this.correo.AutoSize = true;
+            this.correo.Location = new System.Drawing.Point(435, 159);
+            this.correo.Name = "correo";
+            this.correo.Size = new System.Drawing.Size(13, 13);
+            this.correo.TabIndex = 34;
+            this.correo.Text = "n";
             // 
-            // label11
+            // elo
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(336, 120);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(13, 13);
-            this.label11.TabIndex = 33;
-            this.label11.Text = "n";
+            this.elo.AutoSize = true;
+            this.elo.Location = new System.Drawing.Point(435, 120);
+            this.elo.Name = "elo";
+            this.elo.Size = new System.Drawing.Size(13, 13);
+            this.elo.TabIndex = 33;
+            this.elo.Text = "n";
             // 
             // nombre
             // 
             this.nombre.AutoSize = true;
-            this.nombre.Location = new System.Drawing.Point(341, 81);
+            this.nombre.Location = new System.Drawing.Point(435, 81);
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(13, 13);
             this.nombre.TabIndex = 32;
@@ -331,16 +339,52 @@
             this.label1.TabIndex = 25;
             this.label1.Text = "PERFIL";
             // 
+            // elo_menu2
+            // 
+            this.elo_menu2.AutoSize = true;
+            this.elo_menu2.Location = new System.Drawing.Point(95, 52);
+            this.elo_menu2.Name = "elo_menu2";
+            this.elo_menu2.Size = new System.Drawing.Size(35, 13);
+            this.elo_menu2.TabIndex = 24;
+            this.elo_menu2.Text = "label2";
+            // 
+            // partidas_menu2
+            // 
+            this.partidas_menu2.AutoSize = true;
+            this.partidas_menu2.Location = new System.Drawing.Point(96, 103);
+            this.partidas_menu2.Name = "partidas_menu2";
+            this.partidas_menu2.Size = new System.Drawing.Size(35, 13);
+            this.partidas_menu2.TabIndex = 25;
+            this.partidas_menu2.Text = "label2";
+            // 
+            // victorias_menu2
+            // 
+            this.victorias_menu2.AutoSize = true;
+            this.victorias_menu2.Location = new System.Drawing.Point(385, 53);
+            this.victorias_menu2.Name = "victorias_menu2";
+            this.victorias_menu2.Size = new System.Drawing.Size(35, 13);
+            this.victorias_menu2.TabIndex = 26;
+            this.victorias_menu2.Text = "label2";
+            // 
+            // derrotas_menu2
+            // 
+            this.derrotas_menu2.AutoSize = true;
+            this.derrotas_menu2.Location = new System.Drawing.Point(387, 109);
+            this.derrotas_menu2.Name = "derrotas_menu2";
+            this.derrotas_menu2.Size = new System.Drawing.Size(35, 13);
+            this.derrotas_menu2.TabIndex = 27;
+            this.derrotas_menu2.Text = "label2";
+            // 
             // Perfil
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.label14);
-            this.Controls.Add(this.label13);
-            this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
+            this.Controls.Add(this.descripcion);
+            this.Controls.Add(this.victorias);
+            this.Controls.Add(this.correo);
+            this.Controls.Add(this.elo);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
@@ -385,10 +429,10 @@
         private System.Windows.Forms.PictureBox picture_victorias;
         private System.Windows.Forms.PictureBox picture_elo;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label descripcion;
+        private System.Windows.Forms.Label victorias;
+        private System.Windows.Forms.Label correo;
+        private System.Windows.Forms.Label elo;
         private System.Windows.Forms.Label nombre;
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
@@ -397,5 +441,9 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label derrotas_menu2;
+        private System.Windows.Forms.Label victorias_menu2;
+        private System.Windows.Forms.Label partidas_menu2;
+        private System.Windows.Forms.Label elo_menu2;
     }
 }
