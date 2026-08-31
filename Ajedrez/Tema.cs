@@ -17,9 +17,10 @@ namespace Ajedrez
         private static Dictionary<string, (string lightControl, string darkControl)> _pictureBoxMappings
             = new Dictionary<string, (string, string)>();
 
-        // Labels de datos del formulario Perfil y las versiones "menu2" (aquí se mostrará la info de la BD)
+        // Labels de datos del formulario Perfil / Partidas y las versiones "menu2" (aquí se mostrará la info de la BD)
         private static string[] _profileValueLabels = { "nombre", "elo", "correo", "victorias", "descripcion",
-                                                        "elo_menu2", "victorias_menu2", "partidas_menu2", "derrotas_menu2" };
+                                                        "elo_menu2", "victorias_menu2", "partidas_menu2", "derrotas_menu2",
+                                                        "victorias_", "derrotas", "empates", "total" };
 
         // Método para cambiar el tema
         public static void SetTheme(bool isDark)
@@ -159,6 +160,12 @@ namespace Ajedrez
                     else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
                         label.ForeColor = ColorTranslator.FromHtml("#9ab8e8");
+                    }
+                    else if (label.Name == "line1" || label.Name == "line2" || label.Name == "line3" || label.Name == "line4")
+                    {
+                        // Sin formato especial: estilo por defecto
+                        label.ForeColor = Color.White;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }
                     else if (Array.Exists(_profileValueLabels, name => name == label.Name))
                     {
@@ -350,6 +357,12 @@ namespace Ajedrez
                     }
                     else if (label.Name == "ir_registro")
                     {
+                        label.ForeColor = Color.Black;
+                        label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (label.Name == "line1" || label.Name == "line2" || label.Name == "line3" || label.Name == "line4")
+                    {
+                        // Sin formato especial: estilo por defecto
                         label.ForeColor = Color.Black;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }

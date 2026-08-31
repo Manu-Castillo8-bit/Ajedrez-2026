@@ -34,15 +34,18 @@
             this.ir_menu = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.ganadas_ = new System.Windows.Forms.Label();
+            this.perdidas_ = new System.Windows.Forms.Label();
+            this.empates_ = new System.Windows.Forms.Label();
+            this.line4 = new System.Windows.Forms.Label();
+            this.line3 = new System.Windows.Forms.Label();
+            this.line2 = new System.Windows.Forms.Label();
+            this.line1 = new System.Windows.Forms.Label();
+            this.todas_ = new System.Windows.Forms.Label();
+            this.total = new System.Windows.Forms.Label();
+            this.empates = new System.Windows.Forms.Label();
+            this.derrotas = new System.Windows.Forms.Label();
+            this.victorias_ = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.todas = new System.Windows.Forms.Button();
@@ -93,7 +96,7 @@
             // 
             this.ir_menu.BackgroundImage = global::Ajedrez.Properties.Resources.menu_negro;
             this.ir_menu.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ir_menu.Location = new System.Drawing.Point(58, 368);
+            this.ir_menu.Location = new System.Drawing.Point(80, 368);
             this.ir_menu.Name = "ir_menu";
             this.ir_menu.Size = new System.Drawing.Size(49, 43);
             this.ir_menu.TabIndex = 12;
@@ -106,110 +109,140 @@
             this.groupBox3.Controls.Add(this.ir_menu);
             this.groupBox3.Controls.Add(this.m_oscuro);
             this.groupBox3.Controls.Add(this.m_claro);
-            this.groupBox3.Location = new System.Drawing.Point(720, 12);
+            this.groupBox3.Location = new System.Drawing.Point(874, 12);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(165, 426);
+            this.groupBox3.Size = new System.Drawing.Size(204, 426);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.label7);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(19, 81);
+            this.groupBox1.Controls.Add(this.ganadas_);
+            this.groupBox1.Controls.Add(this.perdidas_);
+            this.groupBox1.Controls.Add(this.empates_);
+            this.groupBox1.Controls.Add(this.line4);
+            this.groupBox1.Controls.Add(this.line3);
+            this.groupBox1.Controls.Add(this.line2);
+            this.groupBox1.Controls.Add(this.line1);
+            this.groupBox1.Controls.Add(this.todas_);
+            this.groupBox1.Controls.Add(this.total);
+            this.groupBox1.Controls.Add(this.empates);
+            this.groupBox1.Controls.Add(this.derrotas);
+            this.groupBox1.Controls.Add(this.victorias_);
+            this.groupBox1.Location = new System.Drawing.Point(19, 79);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(129, 273);
+            this.groupBox1.Size = new System.Drawing.Size(170, 273);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "ESTADISTICAS:";
             // 
-            // label10
+            // ganadas_
             // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(16, 214);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(97, 13);
-            this.label10.TabIndex = 8;
-            this.label10.Text = "_______________";
+            this.ganadas_.AutoSize = true;
+            this.ganadas_.Location = new System.Drawing.Point(16, 46);
+            this.ganadas_.Name = "ganadas_";
+            this.ganadas_.Size = new System.Drawing.Size(35, 13);
+            this.ganadas_.TabIndex = 11;
+            this.ganadas_.Text = "label4";
             // 
-            // label9
+            // perdidas_
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(16, 162);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(97, 13);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "_______________";
+            this.perdidas_.AutoSize = true;
+            this.perdidas_.Location = new System.Drawing.Point(16, 91);
+            this.perdidas_.Name = "perdidas_";
+            this.perdidas_.Size = new System.Drawing.Size(35, 13);
+            this.perdidas_.TabIndex = 10;
+            this.perdidas_.Text = "label3";
             // 
-            // label8
+            // empates_
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(16, 111);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(97, 13);
-            this.label8.TabIndex = 6;
-            this.label8.Text = "_______________";
+            this.empates_.AutoSize = true;
+            this.empates_.Location = new System.Drawing.Point(16, 143);
+            this.empates_.Name = "empates_";
+            this.empates_.Size = new System.Drawing.Size(35, 13);
+            this.empates_.TabIndex = 9;
+            this.empates_.Text = "label2";
             // 
-            // label7
+            // line4
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(16, 60);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(97, 13);
-            this.label7.TabIndex = 5;
-            this.label7.Text = "_______________";
+            this.line4.AutoSize = true;
+            this.line4.Location = new System.Drawing.Point(16, 214);
+            this.line4.Name = "line4";
+            this.line4.Size = new System.Drawing.Size(133, 13);
+            this.line4.TabIndex = 8;
+            this.line4.Text = "_____________________";
             // 
-            // label6
+            // line3
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(72, 246);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(35, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "label6";
+            this.line3.AutoSize = true;
+            this.line3.Location = new System.Drawing.Point(16, 162);
+            this.line3.Name = "line3";
+            this.line3.Size = new System.Drawing.Size(133, 13);
+            this.line3.TabIndex = 7;
+            this.line3.Text = "_____________________";
             // 
-            // label5
+            // line2
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(72, 193);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(35, 13);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "label5";
+            this.line2.AutoSize = true;
+            this.line2.Location = new System.Drawing.Point(16, 111);
+            this.line2.Name = "line2";
+            this.line2.Size = new System.Drawing.Size(133, 13);
+            this.line2.TabIndex = 6;
+            this.line2.Text = "_____________________";
             // 
-            // label4
+            // line1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(72, 143);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "label4";
+            this.line1.AutoSize = true;
+            this.line1.Location = new System.Drawing.Point(16, 60);
+            this.line1.Name = "line1";
+            this.line1.Size = new System.Drawing.Size(133, 13);
+            this.line1.TabIndex = 5;
+            this.line1.Text = "_____________________";
             // 
-            // label3
+            // todas_
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(72, 91);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(35, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "label3";
+            this.todas_.AutoSize = true;
+            this.todas_.Location = new System.Drawing.Point(16, 193);
+            this.todas_.Name = "todas_";
+            this.todas_.Size = new System.Drawing.Size(35, 13);
+            this.todas_.TabIndex = 4;
+            this.todas_.Text = "label6";
             // 
-            // label2
+            // total
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(72, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(35, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "label2";
+            this.total.AutoSize = true;
+            this.total.Location = new System.Drawing.Point(103, 193);
+            this.total.Name = "total";
+            this.total.Size = new System.Drawing.Size(35, 13);
+            this.total.TabIndex = 3;
+            this.total.Text = "label5";
+            // 
+            // empates
+            // 
+            this.empates.AutoSize = true;
+            this.empates.Location = new System.Drawing.Point(103, 143);
+            this.empates.Name = "empates";
+            this.empates.Size = new System.Drawing.Size(35, 13);
+            this.empates.TabIndex = 2;
+            this.empates.Text = "label4";
+            // 
+            // derrotas
+            // 
+            this.derrotas.AutoSize = true;
+            this.derrotas.Location = new System.Drawing.Point(103, 91);
+            this.derrotas.Name = "derrotas";
+            this.derrotas.Size = new System.Drawing.Size(35, 13);
+            this.derrotas.TabIndex = 1;
+            this.derrotas.Text = "label3";
+            // 
+            // victorias_
+            // 
+            this.victorias_.AutoSize = true;
+            this.victorias_.Location = new System.Drawing.Point(103, 46);
+            this.victorias_.Name = "victorias_";
+            this.victorias_.Size = new System.Drawing.Size(35, 13);
+            this.victorias_.TabIndex = 0;
+            this.victorias_.Text = "label2";
             // 
             // label1
             // 
@@ -226,14 +259,14 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(12, 111);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(694, 312);
+            this.dataGridView1.Size = new System.Drawing.Size(856, 312);
             this.dataGridView1.TabIndex = 18;
             // 
             // todas
             // 
             this.todas.Location = new System.Drawing.Point(18, 62);
             this.todas.Name = "todas";
-            this.todas.Size = new System.Drawing.Size(110, 43);
+            this.todas.Size = new System.Drawing.Size(133, 43);
             this.todas.TabIndex = 19;
             this.todas.Text = "TODAS";
             this.todas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -242,9 +275,9 @@
             // 
             // ganadas
             // 
-            this.ganadas.Location = new System.Drawing.Point(134, 60);
+            this.ganadas.Location = new System.Drawing.Point(154, 60);
             this.ganadas.Name = "ganadas";
-            this.ganadas.Size = new System.Drawing.Size(126, 43);
+            this.ganadas.Size = new System.Drawing.Size(168, 43);
             this.ganadas.TabIndex = 20;
             this.ganadas.Text = "VICTORIAS";
             this.ganadas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -253,9 +286,9 @@
             // 
             // perdidas
             // 
-            this.perdidas.Location = new System.Drawing.Point(266, 60);
+            this.perdidas.Location = new System.Drawing.Point(325, 60);
             this.perdidas.Name = "perdidas";
-            this.perdidas.Size = new System.Drawing.Size(129, 43);
+            this.perdidas.Size = new System.Drawing.Size(170, 43);
             this.perdidas.TabIndex = 21;
             this.perdidas.Text = "DERROTAS";
             this.perdidas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -264,9 +297,9 @@
             // 
             // tablas
             // 
-            this.tablas.Location = new System.Drawing.Point(401, 60);
+            this.tablas.Location = new System.Drawing.Point(500, 60);
             this.tablas.Name = "tablas";
-            this.tablas.Size = new System.Drawing.Size(119, 43);
+            this.tablas.Size = new System.Drawing.Size(167, 43);
             this.tablas.TabIndex = 22;
             this.tablas.Text = "EMPATES";
             this.tablas.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -276,9 +309,9 @@
             // fecha
             // 
             this.fecha.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.fecha.Location = new System.Drawing.Point(526, 60);
+            this.fecha.Location = new System.Drawing.Point(668, 60);
             this.fecha.Name = "fecha";
-            this.fecha.Size = new System.Drawing.Size(100, 43);
+            this.fecha.Size = new System.Drawing.Size(117, 43);
             this.fecha.TabIndex = 23;
             this.fecha.Text = "FECHA";
             this.fecha.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -288,7 +321,7 @@
             // damas
             // 
             this.damas.AutoSize = true;
-            this.damas.Location = new System.Drawing.Point(632, 53);
+            this.damas.Location = new System.Drawing.Point(794, 58);
             this.damas.Name = "damas";
             this.damas.Size = new System.Drawing.Size(63, 17);
             this.damas.TabIndex = 24;
@@ -299,7 +332,7 @@
             // ajedrez
             // 
             this.ajedrez.AutoSize = true;
-            this.ajedrez.Location = new System.Drawing.Point(632, 78);
+            this.ajedrez.Location = new System.Drawing.Point(794, 83);
             this.ajedrez.Name = "ajedrez";
             this.ajedrez.Size = new System.Drawing.Size(74, 17);
             this.ajedrez.TabIndex = 25;
@@ -322,7 +355,7 @@
             // 
             this.picture_victorias.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(91)))), ((int)(((byte)(184)))), ((int)(((byte)(40)))));
             this.picture_victorias.Image = global::Ajedrez.Properties.Resources.aprobado;
-            this.picture_victorias.Location = new System.Drawing.Point(140, 65);
+            this.picture_victorias.Location = new System.Drawing.Point(163, 65);
             this.picture_victorias.Name = "picture_victorias";
             this.picture_victorias.Size = new System.Drawing.Size(45, 33);
             this.picture_victorias.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -333,7 +366,7 @@
             // 
             this.picture_derrotas.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(237)))), ((int)(((byte)(23)))), ((int)(((byte)(19)))));
             this.picture_derrotas.Image = global::Ajedrez.Properties.Resources.no_aprobado;
-            this.picture_derrotas.Location = new System.Drawing.Point(271, 65);
+            this.picture_derrotas.Location = new System.Drawing.Point(330, 65);
             this.picture_derrotas.Name = "picture_derrotas";
             this.picture_derrotas.Size = new System.Drawing.Size(45, 33);
             this.picture_derrotas.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -344,9 +377,9 @@
             // 
             this.picture_empates.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(211)))), ((int)(((byte)(5)))));
             this.picture_empates.Image = global::Ajedrez.Properties.Resources.empate;
-            this.picture_empates.Location = new System.Drawing.Point(406, 65);
+            this.picture_empates.Location = new System.Drawing.Point(505, 65);
             this.picture_empates.Name = "picture_empates";
-            this.picture_empates.Size = new System.Drawing.Size(45, 33);
+            this.picture_empates.Size = new System.Drawing.Size(53, 33);
             this.picture_empates.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picture_empates.TabIndex = 29;
             this.picture_empates.TabStop = false;
@@ -355,9 +388,9 @@
             // 
             this.picture_fecha.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(146)))), ((int)(((byte)(61)))), ((int)(((byte)(219)))));
             this.picture_fecha.Image = global::Ajedrez.Properties.Resources.fecha;
-            this.picture_fecha.Location = new System.Drawing.Point(533, 65);
+            this.picture_fecha.Location = new System.Drawing.Point(673, 65);
             this.picture_fecha.Name = "picture_fecha";
-            this.picture_fecha.Size = new System.Drawing.Size(45, 33);
+            this.picture_fecha.Size = new System.Drawing.Size(42, 33);
             this.picture_fecha.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picture_fecha.TabIndex = 30;
             this.picture_fecha.TabStop = false;
@@ -366,7 +399,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(895, 450);
+            this.ClientSize = new System.Drawing.Size(1090, 450);
             this.Controls.Add(this.picture_fecha);
             this.Controls.Add(this.picture_empates);
             this.Controls.Add(this.picture_derrotas);
@@ -416,19 +449,22 @@
         private System.Windows.Forms.RadioButton damas;
         private System.Windows.Forms.RadioButton ajedrez;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label line4;
+        private System.Windows.Forms.Label line3;
+        private System.Windows.Forms.Label line2;
+        private System.Windows.Forms.Label line1;
+        private System.Windows.Forms.Label todas_;
+        private System.Windows.Forms.Label total;
+        private System.Windows.Forms.Label empates;
+        private System.Windows.Forms.Label derrotas;
+        private System.Windows.Forms.Label victorias_;
         private System.Windows.Forms.PictureBox picture_todas;
         private System.Windows.Forms.PictureBox picture_victorias;
         private System.Windows.Forms.PictureBox picture_derrotas;
         private System.Windows.Forms.PictureBox picture_empates;
         private System.Windows.Forms.PictureBox picture_fecha;
+        private System.Windows.Forms.Label ganadas_;
+        private System.Windows.Forms.Label perdidas_;
+        private System.Windows.Forms.Label empates_;
     }
 }
