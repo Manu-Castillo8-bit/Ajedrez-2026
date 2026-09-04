@@ -136,7 +136,7 @@
             // 
             // puntos_b
             // 
-            this.puntos_b.Image = global::Ajedrez.Properties.Resources.peon;
+            this.puntos_b.Image = global::Ajedrez.Properties.Resources.f_blanca;
             this.puntos_b.Location = new System.Drawing.Point(612, 166);
             this.puntos_b.Name = "puntos_b";
             this.puntos_b.Size = new System.Drawing.Size(50, 50);
@@ -146,7 +146,7 @@
             // 
             // puntos_n
             // 
-            this.puntos_n.Image = global::Ajedrez.Properties.Resources.peon_negro_pixel;
+            this.puntos_n.Image = global::Ajedrez.Properties.Resources.f_negra;
             this.puntos_n.Location = new System.Drawing.Point(612, 298);
             this.puntos_n.Name = "puntos_n";
             this.puntos_n.Size = new System.Drawing.Size(50, 50);

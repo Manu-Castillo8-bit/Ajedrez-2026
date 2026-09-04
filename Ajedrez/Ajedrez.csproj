@@ -200,6 +200,8 @@
     <Compile Include="REGISTRADOR.Designer.cs">
       <DependentUpon>REGISTRADOR.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sesion.cs" />
+    <Compile Include="SupabaseConfig.cs" />
     <Compile Include="Tema.cs" />
     <EmbeddedResource Include="Ajedrez_tablero.resx">
       <DependentUpon>Ajedrez_tablero.cs</DependentUpon>

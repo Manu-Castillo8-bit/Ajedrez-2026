@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace Ajedrez
@@ -87,92 +91,84 @@ namespace Ajedrez
         {
             Tema.SetTheme(false);      // Cambia a tema claro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
-            /*
-            //FONDO
-            this.BackColor = SystemColors.Control;
-
-            //LABELS
-            label1.ForeColor = Color.Black;
-            label2.ForeColor = Color.Black;
-            label3.ForeColor = Color.Black;
-            label4.ForeColor = Color.Black;
-            label5.ForeColor = Color.Black;
-
-            //NEGRITA DE LOS BOTONES Y COLOR DE FUENTE
-            ajedrez.Font = new Font(ajedrez.Font, FontStyle.Regular);
-            ajedrez.ForeColor = Color.Black;
-
-            ir_damas.Font = new Font(ajedrez.Font, FontStyle.Regular);
-            ir_damas.ForeColor = Color.Black;
-
-            ir_perfil.Font = new Font(ajedrez.Font, FontStyle.Regular);
-            ir_perfil.ForeColor = Color.Black;
-
-            ir_partidas.Font = new Font(ajedrez.Font, FontStyle.Regular);
-            ir_partidas.ForeColor = Color.Black;
-
-            ir_login.Font = new Font(ajedrez.Font, FontStyle.Regular);
-            ir_login.ForeColor = Color.Black;
-
-            //COLORES DE LOS BOTONES Y GROUPBOX
-            groupBox1.BackColor = SystemColors.ControlLight;
-            ajedrez.BackColor = ColorTranslator.FromHtml("#F0F6FF");
-            ir_damas.BackColor = ColorTranslator.FromHtml("#DCE4F0");
-            ir_perfil.BackColor = ColorTranslator.FromHtml("#DCE4F0");
-            ir_partidas.BackColor = ColorTranslator.FromHtml("#F0F6FF");
-            ir_login.BackColor = ColorTranslator.FromHtml("#DCE4F0");
-            m_oscuro.BackColor = ColorTranslator.FromHtml("#4a8af4");
-
-            */
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
         {
             Tema.SetTheme(true);       // Cambia a tema oscuro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
-            /*
-            //FONDO
-            this.BackColor = ColorTranslator.FromHtml("#0a1628");
-
-            //LABELS
-            label1.ForeColor = Color.White;
-            label2.ForeColor = Color.White; 
-            label3.ForeColor = ColorTranslator.FromHtml(" #9ab8e8");
-            label4.ForeColor = ColorTranslator.FromHtml(" #9ab8e8");
-            label5.ForeColor = ColorTranslator.FromHtml(" #9ab8e8");
-
-            //NEGRITA DE LOS BOTONES Y COLOR DE FUENTE
-            ajedrez.Font = new Font(ajedrez.Font, FontStyle.Bold);
-            ajedrez.ForeColor = Color.White;
-
-            ir_damas.Font = new Font(ajedrez.Font, FontStyle.Bold);
-            ir_damas.ForeColor = Color.White;
-
-            ir_perfil.Font = new Font(ajedrez.Font, FontStyle.Bold);
-            ir_perfil.ForeColor = Color.White;
-
-            ir_partidas.Font = new Font(ajedrez.Font, FontStyle.Bold);
-            ir_partidas.ForeColor = Color.White;
-
-            ir_login.Font = new Font(ajedrez.Font, FontStyle.Bold);
-            ir_login.ForeColor = Color.White;
-
-
-            //COLORES DE LOS BOTONES Y GROUPBOX
-            groupBox1.BackColor = ColorTranslator.FromHtml(" #1a2d4a ");
-            ajedrez.BackColor = ColorTranslator.FromHtml("#22b8f0");
-            ir_damas.BackColor = ColorTranslator.FromHtml("#4a8af4");
-            ir_perfil.BackColor = ColorTranslator.FromHtml("#4a8af4");
-            ir_partidas.BackColor = ColorTranslator.FromHtml("#22b8f0");
-            ir_login.BackColor = ColorTranslator.FromHtml("#4a8af4");
-            m_oscuro.BackColor = ColorTranslator.FromHtml("#4a8af4");
-            */
+           
 
         }
 
-        private void menu_Load(object sender, EventArgs e)
+        private async void menu_Load(object sender, EventArgs e)
         {
+            // Activa el protocolo de seguridad HTTPS para .NET 4.7.2
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+            lbl_usuario.Text = Sesion.NombreUsuario;
+
+            // Cargar imagen de perfil desde Supabase
+            await CargarUsuarioMenu();
+        }
+
+        // Recargar el nombre y la foto cada vez que vuelves al menú (para que sea dinámico)
+        private async void menu_Activated(object sender, EventArgs e)
+        {
+            lbl_usuario.Text = Sesion.NombreUsuario;
+            await CargarUsuarioMenu();
+        }
+
+        // Carga el nombre y la imagen del usuario activo desde Supabase
+        public async Task CargarUsuarioMenu()
+        {
+            string nombreUsuario = Sesion.NombreUsuario;
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                lbl_usuario.Text = "Invitado";
+                pic_usuario.Image = null;
+                return;
+            }
+
+            lbl_usuario.Text = nombreUsuario;
+
+            try
+            {
+                string url = $"{SupabaseConfig.SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url";
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("apikey", SupabaseConfig.SupabaseKey);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseConfig.SupabaseKey}");
+
+                    HttpResponseMessage response = await client.GetAsync(url);
+                    if (!response.IsSuccessStatusCode)
+                        return;
+
+                    string json = await response.Content.ReadAsStringAsync();
+                    dynamic usuarios = JsonConvert.DeserializeObject(json);
+
+                    if (usuarios != null && usuarios.Count > 0 && usuarios[0].imagen_url != null)
+                    {
+                        string urlImagen = usuarios[0].imagen_url.ToString();
+                        if (string.IsNullOrWhiteSpace(urlImagen))
+                            return;
+
+                        HttpResponseMessage imgResponse = await client.GetAsync(urlImagen);
+                        if (imgResponse.IsSuccessStatusCode)
+                        {
+                            byte[] bytes = await imgResponse.Content.ReadAsByteArrayAsync();
+                            using (MemoryStream ms = new MemoryStream(bytes))
+                            {
+                                pic_usuario.Image = Image.FromStream(ms);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fallo al cargar usuario en menú: " + ex.Message);
+            }
         }
     }
     }

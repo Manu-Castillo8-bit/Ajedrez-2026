@@ -33,7 +33,9 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.lbl_usuario = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.pic_usuario = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ir_login = new System.Windows.Forms.Button();
@@ -44,6 +46,7 @@
             this.ir_damas = new System.Windows.Forms.Button();
             this.ajedrez = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_usuario)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -51,20 +54,21 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(161, 20);
+            this.label1.Location = new System.Drawing.Point(210, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(131, 22);
+            this.label1.Size = new System.Drawing.Size(119, 22);
             this.label1.TabIndex = 17;
-            this.label1.Text = "BIENVENIDOS";
+            this.label1.Text = "BIENVENIDO";
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Controls.Add(this.lbl_usuario);
             this.groupBox2.Controls.Add(this.label3);
-            this.groupBox2.Location = new System.Drawing.Point(9, 305);
+            this.groupBox2.Location = new System.Drawing.Point(9, 327);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(517, 101);
+            this.groupBox2.Size = new System.Drawing.Size(517, 79);
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             // 
@@ -83,23 +87,43 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(300, 16);
+            this.label4.Location = new System.Drawing.Point(234, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(33, 16);
             this.label4.TabIndex = 20;
             this.label4.Text = "ELO";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
+            // lbl_usuario
+            // 
+            this.lbl_usuario.AutoSize = true;
+            this.lbl_usuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_usuario.Location = new System.Drawing.Point(28, 48);
+            this.lbl_usuario.Name = "lbl_usuario";
+            this.lbl_usuario.Size = new System.Drawing.Size(14, 18);
+            this.lbl_usuario.TabIndex = 22;
+            this.lbl_usuario.Text = "-";
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(156, 16);
+            this.label3.Location = new System.Drawing.Point(28, 16);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 16);
             this.label3.TabIndex = 19;
             this.label3.Text = "Bienvenido";
             this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // pic_usuario
+            // 
+            this.pic_usuario.BackColor = System.Drawing.Color.Transparent;
+            this.pic_usuario.Location = new System.Drawing.Point(9, 3);
+            this.pic_usuario.Name = "pic_usuario";
+            this.pic_usuario.Size = new System.Drawing.Size(53, 50);
+            this.pic_usuario.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pic_usuario.TabIndex = 23;
+            this.pic_usuario.TabStop = false;
             // 
             // groupBox1
             // 
@@ -229,6 +253,7 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.pic_usuario);
             this.Controls.Add(this.ir_partidas);
             this.Controls.Add(this.ir_perfil);
             this.Controls.Add(this.ir_damas);
@@ -238,9 +263,11 @@
             this.Name = "menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MENU";
+            this.Activated += new System.EventHandler(this.menu_Activated);
             this.Load += new System.EventHandler(this.menu_Load);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_usuario)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
@@ -264,5 +291,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lbl_usuario;
+        private System.Windows.Forms.PictureBox pic_usuario;
     }
 }

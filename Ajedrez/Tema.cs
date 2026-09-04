@@ -20,7 +20,7 @@ namespace Ajedrez
         // Labels de datos del formulario Perfil / Partidas y las versiones "menu2" (aquí se mostrará la info de la BD)
         private static string[] _profileValueLabels = { "nombre", "elo", "correo", "victorias", "descripcion",
                                                         "elo_menu2", "victorias_menu2", "partidas_menu2", "derrotas_menu2",
-                                                        "victorias_", "derrotas", "empates", "total" };
+                                                        "victorias_", "derrotas", "empates", "total", "lbl_usuario" };
 
         // Método para cambiar el tema
         public static void SetTheme(bool isDark)

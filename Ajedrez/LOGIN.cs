@@ -98,17 +98,21 @@ namespace Ajedrez
                     await conn.OpenAsync();
 
                     // Consulta para verificar si existe el usuario
-                    string sql = "SELECT COUNT(*) FROM usuarios WHERE nombre_usuario = @nombre AND contrasena = @contrasena";
+                    string sql = "SELECT nombre_usuario FROM usuarios WHERE nombre_usuario = @nombre AND contrasena = @contrasena";
 
                     using (var cmd = new Npgsql.NpgsqlCommand(sql, conn))
                     {
                         cmd.Parameters.AddWithValue("@nombre", nombre.Text.Trim());
                         cmd.Parameters.AddWithValue("@contrasena", contraseña.Text);
 
-                        int existe = Convert.ToInt32(await cmd.ExecuteScalarAsync());
+                        string usuarioEncontrado = (await cmd.ExecuteScalarAsync()) as string;
 
-                        if (existe > 0)
+                        if (!string.IsNullOrEmpty(usuarioEncontrado))
                         {
+                            // Guardar en la sesión el usuario que inició sesión
+                            Sesion.NombreUsuario = usuarioEncontrado;
+                            Sesion.ImagenUrl = string.Empty;
+
                             MessageBox.Show("✅ Usuario encontrado. Credenciales correctas.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             menu f_menu = new menu();
                             f_menu.Show();
