@@ -40,10 +40,17 @@ namespace Ajedrez
 
         private void ir_damas_Click(object sender, EventArgs e)
         {
-            Form1 f_damas = new Form1();
-            Tema.ApplyTheme(f_damas);
-            f_damas.Show();
-            this.Hide();
+            using (NombresPartida dlg = new NombresPartida())
+            {
+                Tema.ApplyTheme(dlg);
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                Form1 f_damas = new Form1(dlg.NombreLocal, dlg.NombreOponente);
+                Tema.ApplyTheme(f_damas);
+                f_damas.Show();
+                this.Hide();
+            }
         }
 
         private void ir_perfil_Click(object sender, EventArgs e)

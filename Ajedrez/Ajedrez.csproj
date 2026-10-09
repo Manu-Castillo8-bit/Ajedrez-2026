@@ -177,6 +177,12 @@
     <Compile Include="Movimientos.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="NombresPartida.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NombresPartida.Designer.cs">
+      <DependentUpon>NombresPartida.cs</DependentUpon>
+    </Compile>
     <Compile Include="Movimientos.Designer.cs">
       <DependentUpon>Movimientos.cs</DependentUpon>
     </Compile>
