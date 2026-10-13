@@ -46,7 +46,7 @@ namespace Ajedrez
                 if (dlg.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                Form1 f_damas = new Form1(dlg.NombreLocal, dlg.NombreOponente);
+                Form1 f_damas = new Form1(dlg.NombreLocal, dlg.NombreOponente, dlg.ModoSoplar);
                 Tema.ApplyTheme(f_damas);
                 f_damas.Show();
                 this.Hide();

@@ -7,6 +7,7 @@ namespace Ajedrez
     {
         public string NombreLocal { get; private set; }
         public string NombreOponente { get; private set; }
+        public bool ModoSoplar { get; private set; }
 
         public NombresPartida()
         {
@@ -40,6 +41,7 @@ namespace Ajedrez
 
             NombreLocal = local;
             NombreOponente = visitante;
+            ModoSoplar = rbSoplar.Checked;
             DialogResult = DialogResult.OK;
             Close();
         }

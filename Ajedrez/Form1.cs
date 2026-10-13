@@ -14,10 +14,16 @@ namespace Ajedrez
         }
 
         public Form1(string jugadorLocal, string jugadorOponente)
+            : this(jugadorLocal, jugadorOponente, false)
+        {
+        }
+
+        public Form1(string jugadorLocal, string jugadorOponente, bool soplar)
         {
             InitializeComponent();
             nombreLocal = string.IsNullOrWhiteSpace(jugadorLocal) ? "Jugador" : jugadorLocal;
             nombreOponente = string.IsNullOrWhiteSpace(jugadorOponente) ? "Oponente" : jugadorOponente;
+            modoSoplar = soplar;
             Tema.ApplyTheme(this);
         }
 
@@ -29,6 +35,7 @@ namespace Ajedrez
         string nombreLocal = "Jugador";
         string nombreOponente = "Oponente";
         bool finPartida = false;
+        bool modoSoplar = false; // true = se sopla la pieza que podía comer; false = captura obligatoria
 
         int blancas = 0, negras = 0;
 
@@ -39,6 +46,7 @@ namespace Ajedrez
         List<Mov> movimientosSimplesActuales = null;
         int piezaR = -1, piezaC = -1, piezaV = 0;
         bool snapshotTomado = false;
+        bool canUndo = false; // solo se puede deshacer el último movimiento (una vez por jugada)
 
         Stack<BoardSnapshot> boardHistory = new Stack<BoardSnapshot>();
 
@@ -143,6 +151,32 @@ namespace Ajedrez
                 for (int j = 0; j < n; j++)
                     SetImagen(i, j);
             marcados.Clear();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            if (tablero == null) return;
+
+            using (Font f = new Font("Microsoft Sans Serif", 9f, FontStyle.Bold))
+            using (SolidBrush br = new SolidBrush(Tema.IsDarkMode ? Color.White : Color.Black))
+            {
+                StringFormat sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+
+                for (int j = 0; j < n; j++)
+                {
+                    RectangleF rect = new RectangleF(12 + j * 60, 494, 60, 16);
+                    e.Graphics.DrawString(((char)('a' + j)).ToString(), f, br, rect, sf);
+                }
+
+                for (int i = 0; i < n; i++)
+                {
+                    RectangleF rect = new RectangleF(0, 12 + i * 60, 11, 60);
+                    e.Graphics.DrawString((8 - i).ToString(), f, br, rect, sf);
+                }
+            }
         }
 
         private void Marcar(int r, int c)
@@ -257,6 +291,9 @@ namespace Ajedrez
                 Mov mov = movimientosSimplesActuales.FirstOrDefault(m => m.Pasos[0].R == r && m.Pasos[0].C == c);
                 if (mov == null) return;
 
+                // Piezas que podían comer antes de este movimiento (modo soplar)
+                List<Point> podianComer = modoSoplar ? PiezasQuePuedenComer(tablero, turno) : null;
+
                 if (!snapshotTomado) { SaveBoardState(); snapshotTomado = true; }
 
                 tablero[piezaR, piezaC] = 0;
@@ -271,6 +308,8 @@ namespace Ajedrez
                     tablero[r, c] = (v > 0) ? 2 : -2;
                     Render();
                 }
+
+                SoplarPiezas(podianComer);
 
                 TerminarTurno();
             }
@@ -302,6 +341,7 @@ namespace Ajedrez
             piezaR = piezaC = -1;
             piezaV = 0;
             snapshotTomado = false;
+            canUndo = true; // se acaba de mover: se puede deshacer una vez
 
             turno = -turno;
 
@@ -314,6 +354,69 @@ namespace Ajedrez
                 MessageBox.Show("¡Ganó " + nombreGanador + "!", "DAMAS",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        // ----- Regla de soplar -----
+        private List<Point> PiezasQuePuedenComer(int[,] b, int side)
+        {
+            var res = new List<Point>();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if (b[i, j] != 0 && Math.Sign(b[i, j]) == side && CapturasDePieza(b, i, j).Count > 0)
+                        res.Add(new Point(i, j));
+            return res;
+        }
+
+        private void SoplarPiezas(List<Point> piezas)
+        {
+            if (piezas == null || piezas.Count == 0) return;
+
+            List<Point> reales = piezas.Where(pt => tablero[pt.X, pt.Y] != 0).ToList();
+            if (reales.Count == 0) return;
+
+            // 1) Resaltar en rojo las casillas que se van a soplar
+            foreach (Point pt in reales)
+                P[pt.X, pt.Y].BackColor = Color.Red;
+
+            Refresh();
+            Application.DoEvents();
+
+            // 2) Aviso indicando la notación de la(s) ficha(s)
+            string nombres = string.Join(", ", reales.Select(pt => NombreCasilla(pt.X, pt.Y)).ToArray());
+            string aviso = reales.Count == 1
+                ? "¡No comiste! Se soplará la ficha que estaba en " + nombres + "."
+                : "¡No comiste! Se soplarán las fichas que estaban en " + nombres + ".";
+            MessageBox.Show(aviso, "SOPLADO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            // 3) Mantener el resaltado rojo ~medio segundo
+            System.Threading.Thread.Sleep(500);
+            Application.DoEvents();
+
+            // 4) Quitar las piezas y restaurar el color de las casillas
+            bool soplada = false;
+            foreach (Point pt in reales)
+            {
+                int v = tablero[pt.X, pt.Y];
+                if (v == 0) continue;
+
+                tablero[pt.X, pt.Y] = 0;
+                if (v > 0) negras++; else if (v < 0) blancas++;
+                soplada = true;
+
+                bool oscura = ((pt.X + pt.Y) % 2 == 0);
+                P[pt.X, pt.Y].BackColor = oscura ? Color.Black : Color.White;
+            }
+
+            if (soplada)
+            {
+                Render();
+                ActualizarPuntos();
+            }
+        }
+
+        private string NombreCasilla(int r, int c)
+        {
+            return ((char)('a' + c)).ToString() + (8 - r);
         }
 
         // ----- Generación de movimientos -----
@@ -350,7 +453,16 @@ namespace Ajedrez
             if (capturas.Count > 0)
             {
                 int max = capturas.Max(m => m.Pasos.Count(p => p.CapR >= 0));
-                return capturas.Where(m => m.Pasos.Count(p => p.CapR >= 0) == max).ToList();
+                var mejores = capturas.Where(m => m.Pasos.Count(p => p.CapR >= 0) == max).ToList();
+
+                // Modo normal: la captura es obligatoria y solo se ofrecen capturas.
+                // Modo soplar: también se ofrecen movimientos simples; si no comes,
+                // se soplará la pieza que podía comer.
+                if (!modoSoplar)
+                    return mejores;
+
+                mejores.AddRange(simples);
+                return mejores;
             }
 
             return simples;
@@ -499,6 +611,13 @@ namespace Ajedrez
                 return;
             }
 
+            if (!canUndo)
+            {
+                MessageBox.Show("Solo puedes deshacer el último movimiento antes de que se juegue la siguiente jugada.",
+                    "DAMAS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             BoardSnapshot snap = boardHistory.Pop();
 
             tablero = (int[,])snap.Tablero.Clone();
@@ -513,6 +632,7 @@ namespace Ajedrez
             piezaR = piezaC = -1;
             piezaV = 0;
             snapshotTomado = false;
+            canUndo = false;
 
             Render();
             ActualizarPuntos();

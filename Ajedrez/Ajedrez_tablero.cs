@@ -61,6 +61,32 @@ namespace Ajedrez
             }
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            if (board == null) return;
+
+            using (Font f = new Font("Microsoft Sans Serif", 9f, FontStyle.Bold))
+            using (SolidBrush br = new SolidBrush(Tema.IsDarkMode ? Color.White : Color.Black))
+            {
+                StringFormat sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+
+                for (int col = 0; col < BOARD_SIZE; col++)
+                {
+                    RectangleF rect = new RectangleF(12 + col * CELL_SIZE, 494, CELL_SIZE, 16);
+                    e.Graphics.DrawString(((char)('a' + col)).ToString(), f, br, rect, sf);
+                }
+
+                for (int row = 0; row < BOARD_SIZE; row++)
+                {
+                    RectangleF rect = new RectangleF(0, 12 + row * CELL_SIZE, 11, CELL_SIZE);
+                    e.Graphics.DrawString((BOARD_SIZE - row).ToString(), f, br, rect, sf);
+                }
+            }
+        }
+
         private void SetupPieces()
         {
             // Piezas negras (fila 0 y 1)
@@ -207,6 +233,11 @@ namespace Ajedrez
 
             if (sourceInfo == null) return;
 
+            // ¿Es un enroque? (el rey se desplaza dos columnas)
+            bool isCastle = sourceInfo.Type == "king"
+                            && targetPos.X == sourcePos.X
+                            && Math.Abs(targetPos.Y - sourcePos.Y) == 2;
+
             // Guardar el estado actual para poder deshacer
             Image capturedImage = null;
             object capturedTag = null;
@@ -215,7 +246,16 @@ namespace Ajedrez
                 capturedImage = board[targetPos.X, targetPos.Y].Image;
                 capturedTag = board[targetPos.X, targetPos.Y].Tag;
             }
-            moveHistory.Push(new MoveHistory(sourcePos, targetPos, capturedImage, capturedTag, sourceInfo.Color));
+
+            MoveHistory hist = new MoveHistory(sourcePos, targetPos, capturedImage, capturedTag, sourceInfo);
+            hist.IsCastle = isCastle;
+            if (isCastle)
+            {
+                hist.RookFrom = new Point(sourcePos.X, targetPos.Y > sourcePos.Y ? 7 : 0);
+                hist.RookTo = new Point(sourcePos.X, targetPos.Y > sourcePos.Y ? 5 : 3);
+                hist.RookInfo = GetPieceInfoFromCell(board[hist.RookFrom.X, hist.RookFrom.Y]);
+            }
+            moveHistory.Push(hist);
 
             // Capturar pieza si existe
             if (board[targetPos.X, targetPos.Y].Image != null)
@@ -232,13 +272,24 @@ namespace Ajedrez
                 UpdateCaptureCounters();
             }
 
-            // Mover la pieza
+            // Mover la pieza (marcada como movida)
             board[targetPos.X, targetPos.Y].Image = selectedPiece.Image;
-            board[targetPos.X, targetPos.Y].Tag = new PieceInfo(sourceInfo.Color, sourceInfo.Type, targetPos.X, targetPos.Y);
+            board[targetPos.X, targetPos.Y].Tag = new PieceInfo(sourceInfo.Color, sourceInfo.Type, targetPos.X, targetPos.Y, true);
 
             // Limpiar casilla origen
             selectedPiece.Image = null;
             selectedPiece.Tag = new Point(sourcePos.X, sourcePos.Y);
+
+            // Mover también la torre si es enroque
+            if (isCastle)
+            {
+                PictureBox rookFrom = board[hist.RookFrom.X, hist.RookFrom.Y];
+                PictureBox rookTo = board[hist.RookTo.X, hist.RookTo.Y];
+                rookTo.Image = rookFrom.Image;
+                rookTo.Tag = new PieceInfo(sourceInfo.Color, "rook", hist.RookTo.X, hist.RookTo.Y, true);
+                rookFrom.Image = null;
+                rookFrom.Tag = new Point(hist.RookFrom.X, hist.RookFrom.Y);
+            }
 
             // Cambiar turno
             currentTurn = currentTurn == "white" ? "black" : "white";
@@ -254,6 +305,11 @@ namespace Ajedrez
         }
 
         private List<Point> GetValidMoves(Point pos)
+        {
+            return GetValidMoves(pos, true);
+        }
+
+        private List<Point> GetValidMoves(Point pos, bool includeCastling)
         {
             List<Point> moves = new List<Point>();
             PieceInfo info = (PieceInfo)board[pos.X, pos.Y].Tag;
@@ -277,6 +333,8 @@ namespace Ajedrez
                     break;
                 case "king":
                     moves.AddRange(GetKingMoves(pos, info.Color));
+                    if (includeCastling)
+                        AddCastlingMoves(moves, pos, info.Color);
                     break;
             }
 
@@ -447,6 +505,65 @@ namespace Ajedrez
             return moves;
         }
 
+        // ----- Enroques -----
+        private void AddCastlingMoves(List<Point> moves, Point pos, string color)
+        {
+            int homeRow = color == "white" ? 7 : 0;
+
+            // El rey debe estar en su casilla inicial y no haberse movido
+            if (pos.X != homeRow || pos.Y != 4) return;
+
+            if (CanCastleKingSide(color))
+                moves.Add(new Point(homeRow, 6));
+
+            if (CanCastleQueenSide(color))
+                moves.Add(new Point(homeRow, 2));
+        }
+
+        private bool CanCastleKingSide(string color)
+        {
+            int row = color == "white" ? 7 : 0;
+
+            // Rey y torre presentes, del color correcto y sin haberse movido
+            if (!IsUnmovedPiece(row, 4, color, "king")) return false;
+            if (!IsUnmovedPiece(row, 7, color, "rook")) return false;
+
+            // Casillas intermedias vacías (columnas 5 y 6)
+            if (board[row, 5].Image != null || board[row, 6].Image != null) return false;
+
+            // El rey no puede estar en jaque ni pasar por casillas amenazadas
+            if (IsInCheck(new Point(row, 4))) return false;
+            if (IsInCheck(new Point(row, 5))) return false;
+            if (IsInCheck(new Point(row, 6))) return false;
+
+            return true;
+        }
+
+        private bool CanCastleQueenSide(string color)
+        {
+            int row = color == "white" ? 7 : 0;
+
+            // Rey y torre presentes, del color correcto y sin haberse movido
+            if (!IsUnmovedPiece(row, 4, color, "king")) return false;
+            if (!IsUnmovedPiece(row, 0, color, "rook")) return false;
+
+            // Casillas intermedias vacías (columnas 1, 2 y 3)
+            if (board[row, 1].Image != null || board[row, 2].Image != null || board[row, 3].Image != null) return false;
+
+            // El rey no puede estar en jaque ni pasar por casillas amenazadas
+            if (IsInCheck(new Point(row, 4))) return false;
+            if (IsInCheck(new Point(row, 3))) return false;
+            if (IsInCheck(new Point(row, 2))) return false;
+
+            return true;
+        }
+
+        private bool IsUnmovedPiece(int row, int col, string color, string type)
+        {
+            PieceInfo info = GetPieceInfoFromCell(board[row, col]);
+            return info != null && info.Color == color && info.Type == type && !info.HasMoved;
+        }
+
         private bool IsInBounds(int row, int col)
         {
             return row >= 0 && row < BOARD_SIZE && col >= 0 && col < BOARD_SIZE;
@@ -532,25 +649,95 @@ namespace Ajedrez
 
         private bool IsInCheck(Point kingPos)
         {
-            // Verificar si alguna pieza enemiga puede capturar al rey
+            if (kingPos.X == -1) return false;
             string enemyColor = currentTurn == "white" ? "black" : "white";
+            return IsSquareAttacked(kingPos, enemyColor);
+        }
 
-            for (int i = 0; i < BOARD_SIZE; i++)
+        // Verifica si la casilla es atacada por alguna pieza del color indicado
+        private bool IsSquareAttacked(Point sq, string byColor)
+        {
+            int r = sq.X, c = sq.Y;
+
+            // Peones: un peón de byColor ataca en diagonal según su sentido de avance
+            int pawnBack = byColor == "white" ? 1 : -1; // fila desde la que vendría el peón atacante
+            foreach (int dc in new int[] { -1, 1 })
             {
-                for (int j = 0; j < BOARD_SIZE; j++)
+                int pr = r + pawnBack, pc = c + dc;
+                if (IsInBounds(pr, pc))
                 {
-                    if (board[i, j].Image != null)
-                    {
-                        PieceInfo info = (PieceInfo)board[i, j].Tag;
-                        if (info.Color == enemyColor)
-                        {
-                            List<Point> moves = GetValidMoves(new Point(i, j));
-                            if (moves.Contains(kingPos))
-                                return true;
-                        }
-                    }
+                    PieceInfo pi = GetPieceInfoFromCell(board[pr, pc]);
+                    if (pi != null && pi.Color == byColor && pi.Type == "pawn")
+                        return true;
                 }
             }
+
+            // Caballos
+            int[,] knightOffsets = { { -2, -1 }, { -2, 1 }, { -1, -2 }, { -1, 2 },
+                                     { 1, -2 }, { 1, 2 }, { 2, -1 }, { 2, 1 } };
+            for (int i = 0; i < 8; i++)
+            {
+                int nr = r + knightOffsets[i, 0], nc = c + knightOffsets[i, 1];
+                if (IsInBounds(nr, nc))
+                {
+                    PieceInfo pi = GetPieceInfoFromCell(board[nr, nc]);
+                    if (pi != null && pi.Color == byColor && pi.Type == "knight")
+                        return true;
+                }
+            }
+
+            // Rey
+            int[,] kingOffsets = { { -1, -1 }, { -1, 0 }, { -1, 1 }, { 0, -1 },
+                                   { 0, 1 }, { 1, -1 }, { 1, 0 }, { 1, 1 } };
+            for (int i = 0; i < 8; i++)
+            {
+                int nr = r + kingOffsets[i, 0], nc = c + kingOffsets[i, 1];
+                if (IsInBounds(nr, nc))
+                {
+                    PieceInfo pi = GetPieceInfoFromCell(board[nr, nc]);
+                    if (pi != null && pi.Color == byColor && pi.Type == "king")
+                        return true;
+                }
+            }
+
+            // Torre / Reina (líneas rectas)
+            int[,] orth = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
+            for (int d = 0; d < 4; d++)
+            {
+                int rr = r + orth[d, 0], cc = c + orth[d, 1];
+                while (IsInBounds(rr, cc))
+                {
+                    PieceInfo pi = GetPieceInfoFromCell(board[rr, cc]);
+                    if (pi != null)
+                    {
+                        if (pi.Color == byColor && (pi.Type == "rook" || pi.Type == "queen"))
+                            return true;
+                        break;
+                    }
+                    rr += orth[d, 0];
+                    cc += orth[d, 1];
+                }
+            }
+
+            // Alfil / Reina (diagonales)
+            int[,] diag = { { -1, -1 }, { -1, 1 }, { 1, -1 }, { 1, 1 } };
+            for (int d = 0; d < 4; d++)
+            {
+                int rr = r + diag[d, 0], cc = c + diag[d, 1];
+                while (IsInBounds(rr, cc))
+                {
+                    PieceInfo pi = GetPieceInfoFromCell(board[rr, cc]);
+                    if (pi != null)
+                    {
+                        if (pi.Color == byColor && (pi.Type == "bishop" || pi.Type == "queen"))
+                            return true;
+                        break;
+                    }
+                    rr += diag[d, 0];
+                    cc += diag[d, 1];
+                }
+            }
+
             return false;
         }
 
@@ -573,7 +760,7 @@ namespace Ajedrez
 
                 // Deshacer movimiento
                 board[kingPos.X, kingPos.Y].Image = board[move.X, move.Y].Image;
-                board[kingPos.X, kingPos.Y].Tag = new PieceInfo(kingInfo.Color, kingInfo.Type, kingPos.X, kingPos.Y);
+                board[kingPos.X, kingPos.Y].Tag = kingInfo;
                 board[move.X, move.Y].Image = tempImage;
                 board[move.X, move.Y].Tag = tempTag;
 
@@ -624,13 +811,15 @@ namespace Ajedrez
             public string Type { get; set; }
             public int Row { get; set; }
             public int Col { get; set; }
+            public bool HasMoved { get; set; }
 
-            public PieceInfo(string color, string type, int row, int col)
+            public PieceInfo(string color, string type, int row, int col, bool hasMoved = false)
             {
                 Color = color;
                 Type = type;
                 Row = row;
                 Col = col;
+                HasMoved = hasMoved;
             }
         }
 
@@ -682,13 +871,22 @@ namespace Ajedrez
 
             MoveHistory move = moveHistory.Pop();
 
-            // Mover la pieza de vuelta a su casilla de origen
+            // Mover la pieza de vuelta a su casilla de origen (con su estado original, incl. HasMoved)
             board[move.From.X, move.From.Y].Image = board[move.To.X, move.To.Y].Image;
-            board[move.From.X, move.From.Y].Tag = new PieceInfo(move.PieceColor, GetPieceType(board[move.To.X, move.To.Y]), move.From.X, move.From.Y);
+            board[move.From.X, move.From.Y].Tag = move.MovedPiece;
 
             // Restaurar lo que había en la casilla de destino (pieza capturada o vacía)
             board[move.To.X, move.To.Y].Image = move.CapturedImage;
             board[move.To.X, move.To.Y].Tag = move.CapturedTag ?? (object)new Point(move.To.X, move.To.Y);
+
+            // Si fue un enroque, regresar también la torre
+            if (move.IsCastle)
+            {
+                board[move.RookFrom.X, move.RookFrom.Y].Image = board[move.RookTo.X, move.RookTo.Y].Image;
+                board[move.RookFrom.X, move.RookFrom.Y].Tag = move.RookInfo;
+                board[move.RookTo.X, move.RookTo.Y].Image = null;
+                board[move.RookTo.X, move.RookTo.Y].Tag = new Point(move.RookTo.X, move.RookTo.Y);
+            }
 
             // Ajustar contadores de capturas si se deshace una captura
             if (move.CapturedImage != null)
@@ -704,17 +902,10 @@ namespace Ajedrez
             }
 
             // Cambiar el turno de vuelta
-            currentTurn = move.PieceColor;
+            currentTurn = move.MovedPiece.Color;
 
             // Ya no se puede deshacer hasta que se vuelva a mover una pieza
             canUndo = false;
-        }
-
-        private string GetPieceType(PictureBox cell)
-        {
-            if (cell == null || cell.Tag == null || !(cell.Tag is PieceInfo))
-                return "unknown";
-            return ((PieceInfo)cell.Tag).Type;
         }
 
         // Clase para almacenar el historial de movimientos
@@ -724,15 +915,19 @@ namespace Ajedrez
             public Point To { get; set; }
             public Image CapturedImage { get; set; }
             public object CapturedTag { get; set; }
-            public string PieceColor { get; set; }
+            public PieceInfo MovedPiece { get; set; }
+            public bool IsCastle { get; set; }
+            public Point RookFrom { get; set; }
+            public Point RookTo { get; set; }
+            public PieceInfo RookInfo { get; set; }
 
-            public MoveHistory(Point from, Point to, Image capturedImage, object capturedTag, string pieceColor)
+            public MoveHistory(Point from, Point to, Image capturedImage, object capturedTag, PieceInfo movedPiece)
             {
                 From = from;
                 To = to;
                 CapturedImage = capturedImage;
                 CapturedTag = capturedTag;
-                PieceColor = pieceColor;
+                MovedPiece = movedPiece;
             }
         }
     }
