@@ -24,9 +24,15 @@ namespace Ajedrez
 
         private static readonly Dictionary<string, int> _idUsuarioCache = new Dictionary<string, int>();
 
+        // Un único HttpClient compartido: evita agotar los sockets creando una
+        // conexión nueva en cada petición.
+        private static readonly HttpClient _http = new HttpClient();
+
         static PartidaRepository()
         {
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+            // Un fallo de la base de datos no debe dejar la interfaz colgada.
+            _http.Timeout = TimeSpan.FromSeconds(15);
         }
 
         // ---------------- Modelos ----------------
@@ -67,39 +73,55 @@ namespace Ajedrez
         }
 
         // ---------------- Utilidades ----------------
-        private static HttpClient NuevoCliente()
-        {
-            var client = new HttpClient();
-            client.DefaultRequestHeaders.Add("apikey", Key);
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + Key);
-            return client;
-        }
-
         private static string Esc(string s) => Uri.EscapeDataString(s ?? "");
 
-        private static T Get<T>(string url) where T : class
+        /// <summary>
+        /// Ejecuta una petición HTTP contra Supabase. Devuelve true solo si la
+        /// respuesta fue correcta y deja el texto devuelto en
+        /// <paramref name="cuerpo"/>. Nunca lanza excepciones: ante cualquier
+        /// fallo (red, TLS, timeout, JSON inesperado...) devuelve false para
+        /// que el juego siga funcionando aunque la base de datos falle.
+        /// </summary>
+        private static bool Enviar(HttpMethod metodo, string url, JObject body, string prefer, out string cuerpo)
         {
-            using (var client = NuevoCliente())
+            cuerpo = null;
+            try
             {
-                var resp = client.GetAsync(url).GetAwaiter().GetResult();
-                if (!resp.IsSuccessStatusCode) return null;
-                string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                return JsonConvert.DeserializeObject<T>(json);
+                var req = new HttpRequestMessage(metodo, url);
+                req.Headers.Add("apikey", Key);
+                req.Headers.Add("Authorization", "Bearer " + Key);
+                if (!string.IsNullOrEmpty(prefer)) req.Headers.Add("Prefer", prefer);
+                if (body != null)
+                    req.Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
+
+                var resp = _http.SendAsync(req).GetAwaiter().GetResult();
+                if (!resp.IsSuccessStatusCode) return false;
+
+                cuerpo = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
+        /// <summary>GET que devuelve el resultado deserializado o null si falla.</summary>
+        private static T Get<T>(string url) where T : class
+        {
+            try
+            {
+                if (!Enviar(HttpMethod.Get, url, null, null, out string json)) return null;
+                if (string.IsNullOrWhiteSpace(json)) return null;
+                return JsonConvert.DeserializeObject<T>(json);
+            }
+            catch { return null; }
+        }
+
+        /// <summary>PATCH que devuelve true solo si el cambio se aplicó.</summary>
         private static bool Patch(string url, JObject body)
         {
-            using (var client = NuevoCliente())
-            {
-                client.DefaultRequestHeaders.Add("Prefer", "return=minimal");
-                var req = new HttpRequestMessage(new HttpMethod("PATCH"), url)
-                {
-                    Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json")
-                };
-                var resp = client.SendAsync(req).GetAwaiter().GetResult();
-                return resp.IsSuccessStatusCode;
-            }
+            return Enviar(new HttpMethod("PATCH"), url, body, "return=minimal", out _);
         }
 
         // ---------------- Partidas ----------------
@@ -118,32 +140,22 @@ namespace Ajedrez
                 if (soplar) body["soplar"] = true;
                 if (idUsuario.HasValue) body["id_usuario"] = idUsuario.Value;
 
-                using (var client = NuevoCliente())
+                string url = BaseUrl + "/partidas";
+                bool ok = Enviar(HttpMethod.Post, url, body, "return=representation", out string json);
+
+                // Si la columna 'soplar' todavía no existe en la tabla, se reintenta sin ella
+                if (!ok && soplar)
                 {
-                    client.DefaultRequestHeaders.Add("Prefer", "return=representation");
-                    var resp = PostPartida(client, body);
-
-                    // Si la columna 'soplar' todavía no existe en la tabla, se reintenta sin ella
-                    if (!resp.IsSuccessStatusCode && soplar)
-                    {
-                        body.Remove("soplar");
-                        resp = PostPartida(client, body);
-                    }
-                    if (!resp.IsSuccessStatusCode) return -1;
-
-                    string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var arr = JArray.Parse(json);
-                    if (arr.Count == 0) return -1;
-                    return (int)arr[0]["id_partida"];
+                    body.Remove("soplar");
+                    ok = Enviar(HttpMethod.Post, url, body, "return=representation", out json);
                 }
+                if (!ok || string.IsNullOrWhiteSpace(json)) return -1;
+
+                var arr = JArray.Parse(json);
+                if (arr.Count == 0) return -1;
+                return (int)arr[0]["id_partida"];
             }
             catch { return -1; }
-        }
-
-        private static System.Net.Http.HttpResponseMessage PostPartida(HttpClient client, JObject body)
-        {
-            var content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
-            return client.PostAsync(BaseUrl + "/partidas", content).GetAwaiter().GetResult();
         }
 
         /// <summary>Marca la partida como finalizada con su ganador.</summary>
@@ -222,21 +234,21 @@ namespace Ajedrez
         public static bool ObtenerMovimientoSeguro(int idPartida, out Movimiento mov)
         {
             mov = null;
+
+            string url = BaseUrl + "/movimientos?id_partida=eq." + idPartida + "&select=*&limit=1";
+            if (!Enviar(HttpMethod.Get, url, null, null, out string json))
+                return false; // no se pudo consultar
+
             try
             {
-                string url = BaseUrl + "/movimientos?id_partida=eq." + idPartida + "&select=*&limit=1";
-                using (var client = NuevoCliente())
-                {
-                    var resp = client.GetAsync(url).GetAwaiter().GetResult();
-                    if (!resp.IsSuccessStatusCode) return false;
-
-                    string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                    var list = JsonConvert.DeserializeObject<List<Movimiento>>(json);
-                    mov = (list != null && list.Count > 0) ? list[0] : null;
-                    return true;
-                }
+                var list = JsonConvert.DeserializeObject<List<Movimiento>>(json);
+                mov = (list != null && list.Count > 0) ? list[0] : null;
+                return true;
             }
-            catch { return false; }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>Inserta o actualiza el estado del tablero de una partida.</summary>
@@ -259,12 +271,7 @@ namespace Ajedrez
                     return Patch(BaseUrl + "/movimientos?id_partida=eq." + idPartida, body);
 
                 body["id_partida"] = idPartida;
-                using (var client = NuevoCliente())
-                {
-                    var content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
-                    var resp = client.PostAsync(BaseUrl + "/movimientos", content).GetAwaiter().GetResult();
-                    return resp.IsSuccessStatusCode;
-                }
+                return Enviar(HttpMethod.Post, BaseUrl + "/movimientos", body, null, out _);
             }
             catch { return false; }
         }
@@ -305,28 +312,35 @@ namespace Ajedrez
             if (string.IsNullOrWhiteSpace(jugadorA) || string.IsNullOrWhiteSpace(jugadorB)) return;
             if (string.Equals(jugadorA, jugadorB, StringComparison.OrdinalIgnoreCase)) return;
 
-            var ua = ObtenerUsuario(jugadorA);
-            var ub = ObtenerUsuario(jugadorB);
-
-            double eloA = ua != null ? ua.elo : ELO_POR_DEFECTO;
-            double eloB = ub != null ? ub.elo : ELO_POR_DEFECTO;
-
-            double sA, sB;
-            if (string.Equals(ganador, "empate", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                sA = 0.5; sB = 0.5;
-            }
-            else if (string.Equals(ganador, jugadorA, StringComparison.OrdinalIgnoreCase))
-            {
-                sA = 1; sB = 0;
-            }
-            else
-            {
-                sA = 0; sB = 1;
-            }
+                var ua = ObtenerUsuario(jugadorA);
+                var ub = ObtenerUsuario(jugadorB);
 
-            if (ua != null) ActualizarUsuario(ua, eloA, eloB, sA);
-            if (ub != null) ActualizarUsuario(ub, eloB, eloA, sB);
+                double eloA = ua != null ? ua.elo : ELO_POR_DEFECTO;
+                double eloB = ub != null ? ub.elo : ELO_POR_DEFECTO;
+
+                double sA, sB;
+                if (string.Equals(ganador, "empate", StringComparison.OrdinalIgnoreCase))
+                {
+                    sA = 0.5; sB = 0.5;
+                }
+                else if (string.Equals(ganador, jugadorA, StringComparison.OrdinalIgnoreCase))
+                {
+                    sA = 1; sB = 0;
+                }
+                else
+                {
+                    sA = 0; sB = 1;
+                }
+
+                if (ua != null) ActualizarUsuario(ua, eloA, eloB, sA);
+                if (ub != null) ActualizarUsuario(ub, eloB, eloA, sB);
+            }
+            catch
+            {
+                // El ELO es secundario: si falla no debe cerrar el juego.
+            }
         }
 
         private static void ActualizarUsuario(UsuarioDatos u, double propio, double rival, double s)
