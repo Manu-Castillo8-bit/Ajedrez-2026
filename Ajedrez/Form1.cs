@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ajedrez
 {
@@ -13,16 +15,16 @@ namespace Ajedrez
         {
         }
 
-        public Form1(string jugadorLocal, string jugadorOponente)
-            : this(jugadorLocal, jugadorOponente, false)
+        public Form1(string jugadorBlancas, string jugadorNegras)
+            : this(jugadorBlancas, jugadorNegras, false)
         {
         }
 
-        public Form1(string jugadorLocal, string jugadorOponente, bool soplar)
+        public Form1(string jugadorBlancas, string jugadorNegras, bool soplar)
         {
             InitializeComponent();
-            nombreLocal = string.IsNullOrWhiteSpace(jugadorLocal) ? "Jugador" : jugadorLocal;
-            nombreOponente = string.IsNullOrWhiteSpace(jugadorOponente) ? "Oponente" : jugadorOponente;
+            nombreBlancas = string.IsNullOrWhiteSpace(jugadorBlancas) ? "Jugador" : jugadorBlancas;
+            nombreNegras = string.IsNullOrWhiteSpace(jugadorNegras) ? "Oponente" : jugadorNegras;
             modoSoplar = soplar;
             Tema.ApplyTheme(this);
         }
@@ -32,8 +34,8 @@ namespace Ajedrez
         int[,] tablero;
         int turno = 1; // 1 = blancas (arriba / oponente), -1 = negras (abajo / jugador local)
 
-        string nombreLocal = "Jugador";
-        string nombreOponente = "Oponente";
+        string nombreBlancas = "Jugador";
+        string nombreNegras = "Oponente";
         bool finPartida = false;
         bool modoSoplar = false; // true = se sopla la pieza que podía comer; false = captura obligatoria
 
@@ -45,10 +47,25 @@ namespace Ajedrez
         List<List<Paso>> secuenciasPendientes = null;
         List<Mov> movimientosSimplesActuales = null;
         int piezaR = -1, piezaC = -1, piezaV = 0;
+        int selR = -1, selC = -1; // casilla de la ficha seleccionada (resaltado verde)
         bool snapshotTomado = false;
         bool canUndo = false; // solo se puede deshacer el último movimiento (una vez por jugada)
 
         Stack<BoardSnapshot> boardHistory = new Stack<BoardSnapshot>();
+
+        // ----- Persistencia en Supabase -----
+        private const string TIPO_JUEGO = "damas";
+        private int idPartida = -1;
+        private string estadoPendiente = null;
+        private int numMovimientos = 0;
+        private string ultimoMovimiento = "";
+
+        /// <summary>Prepara la partida para continuar desde un estado guardado.</summary>
+        public void ContinuarPartida(int id, string estadoJson)
+        {
+            idPartida = id;
+            estadoPendiente = estadoJson;
+        }
 
         // ----- Clases auxiliares -----
         private class Paso
@@ -90,9 +107,42 @@ namespace Ajedrez
 
         private void ir_menu_Click(object sender, EventArgs e)
         {
+            if (!ConfirmarIrAlMenu()) return;
+
             menu f_menu = new menu();
             f_menu.Show();
             this.Hide();
+        }
+
+        /// <summary>
+        /// Si hay una partida en curso, pregunta si finalizarla o continuarla
+        /// más tarde. Devuelve true si se puede ir al menú.
+        /// </summary>
+        private bool ConfirmarIrAlMenu()
+        {
+            if (finPartida || idPartida < 0) return true;
+
+            DialogResult r = MessageBox.Show(
+                "¿Quieres finalizar la partida o continuarla más tarde?\n\n" +
+                "Sí = Finalizar la partida (no se podrá continuar)\n" +
+                "No = Continuar más tarde (se guarda la posición)",
+                "Partida en curso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (r == DialogResult.Yes)
+            {
+                // Finalizar la partida: el resultado se decide por las piezas comidas
+                PartidaRepository.FinalizarPartida(idPartida, GanadorPorPiezasComidas());
+                idPartida = -1;
+                numMovimientos = 0;
+                ultimoMovimiento = "";
+                finPartida = true;
+            }
+            else
+            {
+                // Continuar más tarde: se guarda el estado actual
+                GuardarPartida();
+            }
+            return true;
         }
 
         // ----- Inicialización -----
@@ -132,6 +182,96 @@ namespace Ajedrez
 
             Render();
             ActualizarPuntos();
+
+            // Mostrar junto a los puntos el nombre del jugador que lleva cada color
+            puntosb.Text = "PUNTOS BLANCAS: " + nombreBlancas;
+            puntosn.Text = "PUNTOS NEGRAS: " + nombreNegras;
+
+            // Si venimos de una partida guardada, reconstruir el tablero.
+            if (!string.IsNullOrWhiteSpace(estadoPendiente))
+            {
+                AplicarEstado(estadoPendiente);
+                estadoPendiente = null;
+            }
+        }
+
+        // ----- Persistencia -----
+        private void GuardarPartida()
+        {
+            if (finPartida) return;
+            if (string.IsNullOrWhiteSpace(Sesion.NombreUsuario)) return;
+
+            if (idPartida < 0)
+            {
+                idPartida = PartidaRepository.CrearPartida(TIPO_JUEGO, nombreBlancas, nombreNegras,
+                                PartidaRepository.ObtenerIdUsuario(Sesion.NombreUsuario), modoSoplar);
+                if (idPartida < 0) return;
+            }
+
+            // turno_final solo admite 'blancas' o 'negras'
+            string turnoTexto = turno == 1 ? "blancas" : "negras";
+            PartidaRepository.GuardarEstado(idPartida, numMovimientos, turnoTexto,
+                                            ultimoMovimiento, SerializarTablero());
+        }
+
+        private string SerializarTablero()
+        {
+            int[] t = new int[n * n];
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    t[i * n + j] = tablero[i, j];
+
+            JObject o = new JObject
+            {
+                ["turno"] = turno,
+                ["blancas"] = blancas,
+                ["negras"] = negras,
+                ["soplar"] = modoSoplar,
+                ["t"] = new JArray(t)
+            };
+            return o.ToString(Formatting.None);
+        }
+
+        private void AplicarEstado(string json)
+        {
+            try
+            {
+                JObject o = JObject.Parse(json);
+                turno = o["turno"] != null ? (int)o["turno"] : 1;
+                blancas = o["blancas"] != null ? (int)o["blancas"] : 0;
+                negras = o["negras"] != null ? (int)o["negras"] : 0;
+
+                // Restaurar si en esta partida se podía soplar (regla de soplar)
+                if (o["soplar"] != null) modoSoplar = (bool)o["soplar"];
+
+                JArray arr = (JArray)o["t"];
+                for (int i = 0; i < n; i++)
+                    for (int j = 0; j < n; j++)
+                        tablero[i, j] = (int)arr[i * n + j];
+
+                finPartida = false;
+                Render();
+                ActualizarPuntos();
+            }
+            catch { }
+        }
+
+        private void RegistrarFinDamas(string ganadorNombre)
+        {
+            if (idPartida >= 0)
+            {
+                PartidaRepository.FinalizarPartida(idPartida, ganadorNombre);
+                PartidaRepository.RegistrarResultado(nombreBlancas, nombreNegras, ganadorNombre);
+            }
+            idPartida = -1;
+            numMovimientos = 0;
+            ultimoMovimiento = "";
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            GuardarPartida();
+            base.OnFormClosing(e);
         }
 
         // ----- Dibujo -----
@@ -147,6 +287,7 @@ namespace Ajedrez
 
         private void Render()
         {
+            LimpiarResaltadoSeleccion();
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     SetImagen(i, j);
@@ -192,10 +333,40 @@ namespace Ajedrez
             marcados.Clear();
         }
 
+        // Resalta en verde la casilla de la ficha seleccionada
+        private void ResaltarSeleccion(int r, int c)
+        {
+            LimpiarResaltadoSeleccion();
+            if (!Dentro(r, c)) return;
+            P[r, c].BackColor = Color.LimeGreen;
+            selR = r; selC = c;
+        }
+
+        private void LimpiarResaltadoSeleccion()
+        {
+            if (selR < 0 || selC < 0) return;
+            P[selR, selC].BackColor = ((selR + selC) % 2 == 0) ? Color.Black : Color.White;
+            selR = selC = -1;
+        }
+
         private void ActualizarPuntos()
         {
             p_blancas.Text = blancas + "";
             p_negras.Text = negras + "";
+        }
+
+        // Nombre del jugador según el lado (1 = blancas arriba, -1 = negras abajo)
+        private string NombreDeLado(int lado)
+        {
+            return lado == 1 ? nombreBlancas : nombreNegras;
+        }
+
+        // Al finalizar la partida, gana quien haya comido más piezas (empate si igualan)
+        private string GanadorPorPiezasComidas()
+        {
+            if (blancas > negras) return nombreBlancas;
+            if (negras > blancas) return nombreNegras;
+            return "empate";
         }
 
         // ----- Interacción -----
@@ -233,6 +404,7 @@ namespace Ajedrez
                 secuenciasPendientes = null;
                 movimientosSimplesActuales = dePieza;
                 foreach (Mov m in dePieza) Marcar(m.Pasos[0].R, m.Pasos[0].C);
+                ResaltarSeleccion(piezaR, piezaC);
             }
         }
 
@@ -244,6 +416,7 @@ namespace Ajedrez
                 if (seq.Count == 0) continue;
                 Marcar(seq[0].R, seq[0].C);
             }
+            ResaltarSeleccion(piezaR, piezaC);
         }
 
         private void EjecutarDestino(int r, int c)
@@ -340,6 +513,7 @@ namespace Ajedrez
             enCapturaMultiple = false;
             piezaR = piezaC = -1;
             piezaV = 0;
+            LimpiarResaltadoSeleccion();
             snapshotTomado = false;
             canUndo = true; // se acaba de mover: se puede deshacer una vez
 
@@ -350,9 +524,16 @@ namespace Ajedrez
             {
                 finPartida = true;
                 int ganador = -turno;
-                string nombreGanador = (ganador == -1) ? nombreLocal : nombreOponente;
+                string nombreGanador = NombreDeLado(ganador);
                 MessageBox.Show("¡Ganó " + nombreGanador + "!", "DAMAS",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RegistrarFinDamas(nombreGanador);
+            }
+            else
+            {
+                numMovimientos++;
+                ultimoMovimiento = "Jugada " + numMovimientos;
+                GuardarPartida();
             }
         }
 
@@ -631,11 +812,15 @@ namespace Ajedrez
             enCapturaMultiple = false;
             piezaR = piezaC = -1;
             piezaV = 0;
+            LimpiarResaltadoSeleccion();
             snapshotTomado = false;
             canUndo = false;
 
             Render();
             ActualizarPuntos();
+
+            if (numMovimientos > 0) numMovimientos--;
+            GuardarPartida();
         }
     }
 }

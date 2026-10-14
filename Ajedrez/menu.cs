@@ -29,24 +29,94 @@ namespace Ajedrez
 
         private void ajedrez_Click(object sender, EventArgs e)
         {
-            // Mostrar el nuevo formulario
-            Ajedrez_tablero f_ajedrez = new Ajedrez_tablero();
-            Tema.ApplyTheme(f_ajedrez);
-            f_ajedrez.Show();
+            string usuario = Sesion.NombreUsuario;
+            string tipo = "ajedrez";
 
-            // Opcional: ocultar el formulario actual
-            this.Hide();
-        }
+            // ¿Hay una partida de ajedrez sin terminar? Ofrecer continuarla.
+            if (!string.IsNullOrWhiteSpace(usuario))
+            {
+                PartidaRepository.Partida enCurso = PartidaRepository.BuscarPartidaEnCurso(tipo, usuario);
+                if (enCurso != null)
+                {
+                    DialogResult r = MessageBox.Show(
+                        "Tienes una partida de ajedrez sin terminar. ¿Deseas continuarla?",
+                        "Continuar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-        private void ir_damas_Click(object sender, EventArgs e)
-        {
-            using (NombresPartida dlg = new NombresPartida())
+                    if (r == DialogResult.Yes)
+                    {
+                        PartidaRepository.Movimiento mov = PartidaRepository.ObtenerMovimiento(enCurso.id_partida);
+                        string estado = (mov != null && mov.tablero != null)
+                            ? mov.tablero.ToString(Formatting.None) : null;
+
+                        Ajedrez_tablero f_cont = new Ajedrez_tablero(enCurso.jugador_blancas, enCurso.jugador_negras);
+                        if (!string.IsNullOrWhiteSpace(estado))
+                            f_cont.ContinuarPartida(enCurso.id_partida, estado);
+
+                        Tema.ApplyTheme(f_cont);
+                        f_cont.Show();
+                        this.Hide();
+                        return;
+                    }
+                }
+            }
+
+            using (NombresPartida dlg = new NombresPartida("ajedrez"))
             {
                 Tema.ApplyTheme(dlg);
                 if (dlg.ShowDialog(this) != DialogResult.OK)
                     return;
 
-                Form1 f_damas = new Form1(dlg.NombreLocal, dlg.NombreOponente, dlg.ModoSoplar);
+                string blancas = dlg.LocalEsBlancas ? dlg.NombreLocal : dlg.NombreOponente;
+                string negras = dlg.LocalEsBlancas ? dlg.NombreOponente : dlg.NombreLocal;
+                Ajedrez_tablero f_ajedrez = new Ajedrez_tablero(blancas, negras);
+                Tema.ApplyTheme(f_ajedrez);
+                f_ajedrez.Show();
+                this.Hide();
+            }
+        }
+
+        private void ir_damas_Click(object sender, EventArgs e)
+        {
+            string usuario = Sesion.NombreUsuario;
+            string tipo = "damas";
+
+            // ¿Hay una partida de damas sin terminar? Ofrecer continuarla.
+            if (!string.IsNullOrWhiteSpace(usuario))
+            {
+                PartidaRepository.Partida enCurso = PartidaRepository.BuscarPartidaEnCurso(tipo, usuario);
+                if (enCurso != null)
+                {
+                    DialogResult r = MessageBox.Show(
+                        "Tienes una partida de damas sin terminar. ¿Deseas continuarla?",
+                        "Continuar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (r == DialogResult.Yes)
+                    {
+                        PartidaRepository.Movimiento mov = PartidaRepository.ObtenerMovimiento(enCurso.id_partida);
+                        string estado = (mov != null && mov.tablero != null)
+                            ? mov.tablero.ToString(Formatting.None) : null;
+
+                        Form1 f_cont = new Form1(enCurso.jugador_blancas, enCurso.jugador_negras, enCurso.soplar);
+                        if (!string.IsNullOrWhiteSpace(estado))
+                            f_cont.ContinuarPartida(enCurso.id_partida, estado);
+
+                        Tema.ApplyTheme(f_cont);
+                        f_cont.Show();
+                        this.Hide();
+                        return;
+                    }
+                }
+            }
+
+            using (NombresPartida dlg = new NombresPartida("damas"))
+            {
+                Tema.ApplyTheme(dlg);
+                if (dlg.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                string blancas_d = dlg.LocalEsBlancas ? dlg.NombreLocal : dlg.NombreOponente;
+                string negras_d = dlg.LocalEsBlancas ? dlg.NombreOponente : dlg.NombreLocal;
+                Form1 f_damas = new Form1(blancas_d, negras_d, dlg.ModoSoplar);
                 Tema.ApplyTheme(f_damas);
                 f_damas.Show();
                 this.Hide();

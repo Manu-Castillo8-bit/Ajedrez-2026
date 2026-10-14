@@ -186,6 +186,7 @@
     <Compile Include="Movimientos.Designer.cs">
       <DependentUpon>Movimientos.cs</DependentUpon>
     </Compile>
+    <Compile Include="PartidaRepository.cs" />
     <Compile Include="Partidas.cs">
       <SubType>Form</SubType>
     </Compile>

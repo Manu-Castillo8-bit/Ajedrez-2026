@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ajedrez
 {
@@ -20,6 +22,18 @@ namespace Ajedrez
         private List<Point> validMoves = new List<Point>();
         private Stack<MoveHistory> moveHistory = new Stack<MoveHistory>();
         private bool canUndo = false;
+        private int consecutiveChecks = 0; // Contador global de jaques consecutivos/repetitivos
+        private const int MAX_CONSECUTIVE_CHECKS = 5; // Limite antes de declarar tablas
+
+        // ----- Persistencia en Supabase -----
+        private const string TIPO_JUEGO = "ajedrez";
+        private string nombreBlancas = "Blancas";
+        private string nombreNegras = "Negras";
+        private int idPartida = -1;
+        private string estadoPendiente = null;
+        private int numMovimientos = 0;
+        private string ultimoMovimiento = "";
+        private bool juegoTerminado = false;
 
         public Ajedrez_tablero()
         {
@@ -30,9 +44,31 @@ namespace Ajedrez
             Tema.ApplyTheme(this);
         }
 
+        public Ajedrez_tablero(string jugadorBlancas, string jugadorNegras) : this()
+        {
+            nombreBlancas = string.IsNullOrWhiteSpace(jugadorBlancas) ? "Blancas" : jugadorBlancas;
+            nombreNegras = string.IsNullOrWhiteSpace(jugadorNegras) ? "Negras" : jugadorNegras;
+        }
+
+        /// <summary>Prepara la partida para continuar desde un estado guardado.</summary>
+        public void ContinuarPartida(int id, string estadoJson)
+        {
+            idPartida = id;
+            estadoPendiente = estadoJson;
+        }
+
         private void Ajedrez_tablero_Load(object sender, EventArgs e)
         {
-            // El tablero ya se inicializa en el constructor
+            // Mostrar junto a los puntos el nombre del jugador que lleva cada color
+            puntosb.Text = "PUNTOS BLANCAS: " + nombreBlancas;
+            puntosn.Text = "PUNTOS NEGRAS: " + nombreNegras;
+
+            // El tablero ya se inicializa en el constructor; reconstruir si venimos de una partida guardada.
+            if (!string.IsNullOrWhiteSpace(estadoPendiente))
+            {
+                AplicarEstado(estadoPendiente);
+                estadoPendiente = null;
+            }
         }
 
         private void InitializeBoard()
@@ -233,6 +269,8 @@ namespace Ajedrez
 
             if (sourceInfo == null) return;
 
+            juegoTerminado = false;
+
             // ¿Es un enroque? (el rey se desplaza dos columnas)
             bool isCastle = sourceInfo.Type == "king"
                             && targetPos.X == sourcePos.X
@@ -294,14 +332,31 @@ namespace Ajedrez
             // Cambiar turno
             currentTurn = currentTurn == "white" ? "black" : "white";
 
+            // Registrar la jugada
+            numMovimientos++;
+            ultimoMovimiento = Notacion(sourcePos, targetPos);
+
             // Limpiar selección
             ClearSelection();
 
             // Verificar jaque o jaque mate
             CheckGameState();
 
+            // Guardar el estado para poder continuar la partida (si no terminó)
+            if (!juegoTerminado) GuardarPartida();
+
             // El movimiento reciente se puede deshacer (una sola vez hasta el siguiente movimiento)
             canUndo = true;
+        }
+
+        private string Notacion(Point from, Point to)
+        {
+            return NombreCasilla(from) + "-" + NombreCasilla(to);
+        }
+
+        private static string NombreCasilla(Point p)
+        {
+            return ((char)('a' + p.Y)).ToString() + (8 - p.X);
         }
 
         private List<Point> GetValidMoves(Point pos)
@@ -608,6 +663,14 @@ namespace Ajedrez
             p_negras.Text = blackCaptures.ToString();
         }
 
+        // Al finalizar la partida, gana quien haya comido más piezas (empate si igualan)
+        private string GanadorPorPiezasComidas()
+        {
+            if (whiteCaptures > blackCaptures) return nombreBlancas;
+            if (blackCaptures > whiteCaptures) return nombreNegras;
+            return "empate";
+        }
+
         private void CheckGameState()
         {
             // Buscar el rey del turno actual
@@ -616,17 +679,37 @@ namespace Ajedrez
 
             if (IsInCheck(kingPos))
             {
+                // Se registra la seguidilla de jaques consecutivos/repetitivos
+                consecutiveChecks++;
+
+                // Condicional de tablas por jaques: si se supera el limite es empate
+                if (consecutiveChecks >= MAX_CONSECUTIVE_CHECKS)
+                {
+                    MessageBox.Show("¡Tablas! Empate por jaques consecutivos.",
+                                  "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RegistrarFinAjedrez("empate");
+                    ResetGame();
+                    return;
+                }
+
                 MessageBox.Show($"¡Jaque al rey {currentTurn}!", "Ajedrez",
                               MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 // Verificar jaque mate
                 if (IsCheckMate(kingPos))
                 {
-                    string winner = currentTurn == "white" ? "Negras" : "Blancas";
-                    MessageBox.Show($"¡Jaque mate! ¡Ganan las {winner}!",
+                    string winnerColor = currentTurn == "white" ? "black" : "white";
+                    string winner = winnerColor == "white" ? nombreBlancas : nombreNegras;
+                    MessageBox.Show($"¡Jaque mate! ¡Ganan las {(winnerColor == "white" ? "Blancas" : "Negras")}!",
                                   "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RegistrarFinAjedrez(winner);
                     ResetGame();
                 }
+            }
+            else
+            {
+                // Sin jaque: se corta la seguidilla
+                consecutiveChecks = 0;
             }
         }
 
@@ -794,6 +877,16 @@ namespace Ajedrez
             // Reiniciar turno
             currentTurn = "white";
 
+            // Reiniciar contador de jaques consecutivos
+            consecutiveChecks = 0;
+
+            // Reiniciar datos de persistencia (nueva partida)
+            idPartida = -1;
+            estadoPendiente = null;
+            numMovimientos = 0;
+            ultimoMovimiento = "";
+            juegoTerminado = true;
+
             // Limpiar selección
             ClearSelection();
 
@@ -802,6 +895,144 @@ namespace Ajedrez
 
             // Deshabilitar deshacer
             canUndo = false;
+        }
+
+        // ----- Persistencia en Supabase -----
+        private void GuardarPartida()
+        {
+            if (juegoTerminado || numMovimientos <= 0) return;
+            if (string.IsNullOrWhiteSpace(Sesion.NombreUsuario)) return;
+
+            if (idPartida < 0)
+            {
+                idPartida = PartidaRepository.CrearPartida(TIPO_JUEGO, nombreBlancas, nombreNegras,
+                                PartidaRepository.ObtenerIdUsuario(Sesion.NombreUsuario));
+                if (idPartida < 0) return;
+            }
+
+            // turno_final solo admite 'blancas' o 'negras'
+            string turnoTexto = currentTurn == "white" ? "blancas" : "negras";
+            PartidaRepository.GuardarEstado(idPartida, numMovimientos, turnoTexto,
+                                            ultimoMovimiento, SerializarTablero());
+        }
+
+        private string SerializarTablero()
+        {
+            JArray cells = new JArray();
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    PieceInfo info = GetPieceInfoFromCell(board[r, c]);
+                    if (info == null)
+                    {
+                        cells.Add(JValue.CreateNull());
+                    }
+                    else
+                    {
+                        cells.Add(new JObject
+                        {
+                            ["c"] = info.Color,
+                            ["t"] = info.Type,
+                            ["m"] = info.HasMoved
+                        });
+                    }
+                }
+            }
+
+            JObject o = new JObject
+            {
+                ["turn"] = currentTurn,
+                ["wc"] = whiteCaptures,
+                ["bc"] = blackCaptures,
+                ["cells"] = cells
+            };
+            return o.ToString(Formatting.None);
+        }
+
+        private void AplicarEstado(string json)
+        {
+            try
+            {
+                JObject o = JObject.Parse(json);
+                currentTurn = o["turn"] != null ? (string)o["turn"] : "white";
+                whiteCaptures = o["wc"] != null ? (int)o["wc"] : 0;
+                blackCaptures = o["bc"] != null ? (int)o["bc"] : 0;
+
+                JArray cells = (JArray)o["cells"];
+                for (int r = 0; r < BOARD_SIZE; r++)
+                {
+                    for (int c = 0; c < BOARD_SIZE; c++)
+                    {
+                        JToken cell = cells[r * BOARD_SIZE + c];
+                        if (cell == null || cell.Type == JTokenType.Null)
+                        {
+                            board[r, c].Image = null;
+                            board[r, c].Tag = new Point(r, c);
+                        }
+                        else
+                        {
+                            string color = (string)cell["c"];
+                            string type = (string)cell["t"];
+                            bool moved = cell["m"] != null && (bool)cell["m"];
+                            board[r, c].Image = (Image)Properties.Resources.ResourceManager
+                                                .GetObject(NombreImagen(color, type));
+                            board[r, c].Tag = new PieceInfo(color, type, r, c, moved);
+                        }
+                    }
+                }
+
+                UpdateCaptureCounters();
+                juegoTerminado = false;
+            }
+            catch { }
+        }
+
+        private static string NombreImagen(string color, string type)
+        {
+            if (color == "black")
+            {
+                switch (type)
+                {
+                    case "rook": return "Torre_n";
+                    case "knight": return "caballo_n";
+                    case "bishop": return "alfil_n";
+                    case "queen": return "reina_n";
+                    case "king": return "rey_n";
+                    default: return "peon_negro_pixel";
+                }
+            }
+            else
+            {
+                switch (type)
+                {
+                    case "rook": return "torre";
+                    case "knight": return "caballo";
+                    case "bishop": return "alfil_blanco";
+                    case "queen": return "reina";
+                    case "king": return "rey";
+                    default: return "peon";
+                }
+            }
+        }
+
+        private void RegistrarFinAjedrez(string ganador)
+        {
+            juegoTerminado = true;
+            if (idPartida >= 0)
+            {
+                PartidaRepository.FinalizarPartida(idPartida, ganador);
+                PartidaRepository.RegistrarResultado(nombreBlancas, nombreNegras, ganador);
+            }
+            idPartida = -1;
+            numMovimientos = 0;
+            ultimoMovimiento = "";
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            GuardarPartida();
+            base.OnFormClosing(e);
         }
 
         // Clase para almacenar información de las piezas
@@ -846,9 +1077,42 @@ namespace Ajedrez
 
         private void menu_Click_1(object sender, EventArgs e)
         {
+            if (!ConfirmarIrAlMenu()) return;
+
             menu f_menu = new menu();
             f_menu.Show();
             this.Hide();
+        }
+
+        /// <summary>
+        /// Si hay una partida en curso, pregunta si finalizarla o continuarla
+        /// más tarde. Devuelve true si se puede ir al menú.
+        /// </summary>
+        private bool ConfirmarIrAlMenu()
+        {
+            if (juegoTerminado || idPartida < 0) return true;
+
+            DialogResult r = MessageBox.Show(
+                "¿Quieres finalizar la partida o continuarla más tarde?\n\n" +
+                "Sí = Finalizar la partida (no se podrá continuar)\n" +
+                "No = Continuar más tarde (se guarda la posición)",
+                "Partida en curso", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (r == DialogResult.Yes)
+            {
+                // Finalizar la partida: el resultado se decide por las piezas comidas
+                PartidaRepository.FinalizarPartida(idPartida, GanadorPorPiezasComidas());
+                idPartida = -1;
+                numMovimientos = 0;
+                ultimoMovimiento = "";
+                juegoTerminado = true;
+            }
+            else
+            {
+                // Continuar más tarde: se guarda el estado actual
+                GuardarPartida();
+            }
+            return true;
         }
 
         private void deshacer_Click(object sender, EventArgs e)
@@ -903,6 +1167,15 @@ namespace Ajedrez
 
             // Cambiar el turno de vuelta
             currentTurn = move.MovedPiece.Color;
+
+            // Al deshacer un movimiento se descuenta el jaque que hubiera generado
+            if (consecutiveChecks > 0)
+                consecutiveChecks--;
+
+            // Actualizar y guardar el estado de la partida
+            if (numMovimientos > 0) numMovimientos--;
+            ultimoMovimiento = "Deshacer";
+            GuardarPartida();
 
             // Ya no se puede deshacer hasta que se vuelva a mover una pieza
             canUndo = false;

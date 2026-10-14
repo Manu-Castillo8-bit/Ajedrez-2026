@@ -419,6 +419,9 @@
             this.Name = "Partidas";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PARTIDAS";
+            this.Load += new System.EventHandler(this.Partidas_Load);
+            this.damas.CheckedChanged += new System.EventHandler(this.tipo_CheckedChanged);
+            this.ajedrez.CheckedChanged += new System.EventHandler(this.tipo_CheckedChanged);
             this.groupBox3.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
