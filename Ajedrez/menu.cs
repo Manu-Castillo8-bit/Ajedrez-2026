@@ -36,28 +36,8 @@ namespace Ajedrez
             if (!string.IsNullOrWhiteSpace(usuario))
             {
                 PartidaRepository.Partida enCurso = PartidaRepository.BuscarPartidaEnCurso(tipo, usuario);
-                if (enCurso != null)
-                {
-                    DialogResult r = MessageBox.Show(
-                        "Tienes una partida de ajedrez sin terminar. ¿Deseas continuarla?",
-                        "Continuar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (r == DialogResult.Yes)
-                    {
-                        PartidaRepository.Movimiento mov = PartidaRepository.ObtenerMovimiento(enCurso.id_partida);
-                        string estado = (mov != null && mov.tablero != null)
-                            ? mov.tablero.ToString(Formatting.None) : null;
-
-                        Ajedrez_tablero f_cont = new Ajedrez_tablero(enCurso.jugador_blancas, enCurso.jugador_negras);
-                        if (!string.IsNullOrWhiteSpace(estado))
-                            f_cont.ContinuarPartida(enCurso.id_partida, estado);
-
-                        Tema.ApplyTheme(f_cont);
-                        f_cont.Show();
-                        this.Hide();
-                        return;
-                    }
-                }
+                if (enCurso != null && ContinuarODescartar(enCurso, tipo))
+                    return;
             }
 
             using (NombresPartida dlg = new NombresPartida("ajedrez"))
@@ -84,28 +64,8 @@ namespace Ajedrez
             if (!string.IsNullOrWhiteSpace(usuario))
             {
                 PartidaRepository.Partida enCurso = PartidaRepository.BuscarPartidaEnCurso(tipo, usuario);
-                if (enCurso != null)
-                {
-                    DialogResult r = MessageBox.Show(
-                        "Tienes una partida de damas sin terminar. ¿Deseas continuarla?",
-                        "Continuar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-                    if (r == DialogResult.Yes)
-                    {
-                        PartidaRepository.Movimiento mov = PartidaRepository.ObtenerMovimiento(enCurso.id_partida);
-                        string estado = (mov != null && mov.tablero != null)
-                            ? mov.tablero.ToString(Formatting.None) : null;
-
-                        Form1 f_cont = new Form1(enCurso.jugador_blancas, enCurso.jugador_negras, enCurso.soplar);
-                        if (!string.IsNullOrWhiteSpace(estado))
-                            f_cont.ContinuarPartida(enCurso.id_partida, estado);
-
-                        Tema.ApplyTheme(f_cont);
-                        f_cont.Show();
-                        this.Hide();
-                        return;
-                    }
-                }
+                if (enCurso != null && ContinuarODescartar(enCurso, tipo))
+                    return;
             }
 
             using (NombresPartida dlg = new NombresPartida("damas"))
@@ -121,6 +81,61 @@ namespace Ajedrez
                 f_damas.Show();
                 this.Hide();
             }
+        }
+
+        /// <summary>
+        /// Gestiona una partida que quedó "en_curso".
+        /// - Solo pregunta si de verdad hay una posición guardada que recuperar.
+        /// - Si se recupera (el jugador elige continuar) devuelve true.
+        /// - Si no hay nada que continuar, o el jugador decide no continuarla,
+        ///   la partida se finaliza para que NO vuelva a preguntarse al entrar.
+        /// </summary>
+        private bool ContinuarODescartar(PartidaRepository.Partida enCurso, string tipo)
+        {
+            PartidaRepository.Movimiento mov;
+            if (!PartidaRepository.ObtenerMovimientoSeguro(enCurso.id_partida, out mov))
+                return false; // no se pudo consultar: se reintenta la próxima vez
+
+            string estado = (mov != null && mov.tablero != null)
+                ? mov.tablero.ToString(Formatting.None) : null;
+
+            // Sin posición guardada (o sin jugadas) no hay nada que continuar.
+            if (string.IsNullOrWhiteSpace(estado) || mov.num_movimientos <= 0)
+            {
+                PartidaRepository.FinalizarPartida(enCurso.id_partida, null);
+                return false;
+            }
+
+            DialogResult r = MessageBox.Show(
+                "Tienes una partida de " + tipo + " sin terminar. ¿Deseas continuarla?\n\n" +
+                "Sí = Continuar la partida guardada\n" +
+                "No = Cerrarla (no se volverá a preguntar)",
+                "Continuar partida", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (r != DialogResult.Yes)
+            {
+                // No desea continuarla ahora: se cierra para no volver a preguntar.
+                PartidaRepository.FinalizarPartida(enCurso.id_partida, null);
+                return false;
+            }
+
+            if (tipo == "ajedrez")
+            {
+                Ajedrez_tablero f_cont = new Ajedrez_tablero(enCurso.jugador_blancas, enCurso.jugador_negras);
+                f_cont.ContinuarPartida(enCurso.id_partida, estado);
+                Tema.ApplyTheme(f_cont);
+                f_cont.Show();
+            }
+            else
+            {
+                Form1 f_cont = new Form1(enCurso.jugador_blancas, enCurso.jugador_negras, enCurso.soplar);
+                f_cont.ContinuarPartida(enCurso.id_partida, estado);
+                Tema.ApplyTheme(f_cont);
+                f_cont.Show();
+            }
+
+            this.Hide();
+            return true;
         }
 
         private void ir_perfil_Click(object sender, EventArgs e)

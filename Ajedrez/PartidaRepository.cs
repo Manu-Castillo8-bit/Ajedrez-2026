@@ -213,6 +213,32 @@ namespace Ajedrez
             catch { return null; }
         }
 
+        /// <summary>
+        /// Igual que ObtenerMovimiento, pero distingue los dos casos que
+        /// producen null: "no hay estado guardado" (devuelve true y mov = null)
+        /// y "no se pudo consultar" (devuelve false). Así, ante un fallo de red
+        /// no se cierra por error una partida que sí se podía continuar.
+        /// </summary>
+        public static bool ObtenerMovimientoSeguro(int idPartida, out Movimiento mov)
+        {
+            mov = null;
+            try
+            {
+                string url = BaseUrl + "/movimientos?id_partida=eq." + idPartida + "&select=*&limit=1";
+                using (var client = NuevoCliente())
+                {
+                    var resp = client.GetAsync(url).GetAwaiter().GetResult();
+                    if (!resp.IsSuccessStatusCode) return false;
+
+                    string json = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                    var list = JsonConvert.DeserializeObject<List<Movimiento>>(json);
+                    mov = (list != null && list.Count > 0) ? list[0] : null;
+                    return true;
+                }
+            }
+            catch { return false; }
+        }
+
         /// <summary>Inserta o actualiza el estado del tablero de una partida.</summary>
         public static bool GuardarEstado(int idPartida, int numMovimientos, string turnoFinal,
                                          string ultimoMovimiento, string tableroJson)
