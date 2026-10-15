@@ -147,6 +147,18 @@
       <HintPath>..\packages\Websocket.Client.4.6.1\lib\netstandard2.0\Websocket.Client.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="SQLite-net">
+      <HintPath>..\packages\sqlite-net-pcl.1.9.172\lib\netstandard2.0\SQLite-net.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.core">
+      <HintPath>..\packages\sqlitepclraw.core.2.1.11\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.e_sqlite3">
+      <HintPath>..\packages\sqlitepclraw.provider.e_sqlite3.2.1.11\lib\netstandard2.0\SQLitePCLRaw.provider.e_sqlite3.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.batteries_v2">
+      <HintPath>..\packages\sqlitepclraw.bundle_green.2.1.11\lib\netstandard2.0\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ajedrez_tablero.cs">
@@ -187,6 +199,23 @@
       <DependentUpon>Movimientos.cs</DependentUpon>
     </Compile>
     <Compile Include="PartidaRepository.cs" />
+    <Compile Include="BaseDatosLocal.cs" />
+    <Compile Include="Nube.cs" />
+    <Compile Include="Sincronizador.cs" />
+    <Compile Include="SQLiteNativo.cs" />
+    <Compile Include="Administradores.cs" />
+    <Compile Include="UsuarioEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UsuarioEditor.Designer.cs">
+      <DependentUpon>UsuarioEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminPanel.Designer.cs">
+      <DependentUpon>AdminPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Partidas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,6 +284,16 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\packages\sourcegear.sqlite3.3.53.3\runtimes\win-x64\native\e_sqlite3.dll">
+      <Link>runtimes\win-x64\native\e_sqlite3.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\packages\sourcegear.sqlite3.3.53.3\runtimes\win-x86\native\e_sqlite3.dll">
+      <Link>runtimes\win-x86\native\e_sqlite3.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -50,6 +50,35 @@ namespace Ajedrez
             this.Hide();
         }
 
+        // Sincroniza los datos entre Supabase y SQLite y vuelve a cargar la lista.
+        private async void actualizar_Click(object sender, EventArgs e)
+        {
+            string usuario = Sesion.NombreUsuario;
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                CargarPartidas();
+                return;
+            }
+
+            actualizar.Enabled = false;
+            string textoOriginal = actualizar.Text;
+            actualizar.Text = "Actualizando...";
+
+            try
+            {
+                await Task.Run(() => Sincronizador.Sincronizar(usuario));
+            }
+            catch
+            {
+                // Si falla la red, igualmente se muestra lo que haya en local.
+            }
+
+            CargarPartidas();
+
+            actualizar.Text = textoOriginal;
+            actualizar.Enabled = true;
+        }
+
         // ---------------- Filtros (botones) ----------------
         private void button1_Click(object sender, EventArgs e) // TODAS
         {

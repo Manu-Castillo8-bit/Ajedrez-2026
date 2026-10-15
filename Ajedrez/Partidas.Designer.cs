@@ -60,6 +60,7 @@
             this.picture_derrotas = new System.Windows.Forms.PictureBox();
             this.picture_empates = new System.Windows.Forms.PictureBox();
             this.picture_fecha = new System.Windows.Forms.PictureBox();
+            this.actualizar = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -395,11 +396,22 @@
             this.picture_fecha.TabIndex = 30;
             this.picture_fecha.TabStop = false;
             // 
+            // actualizar
+            // 
+            this.actualizar.Location = new System.Drawing.Point(668, 12);
+            this.actualizar.Name = "actualizar";
+            this.actualizar.Size = new System.Drawing.Size(117, 41);
+            this.actualizar.TabIndex = 31;
+            this.actualizar.Text = "ACTUALIZAR";
+            this.actualizar.UseVisualStyleBackColor = true;
+            this.actualizar.Click += new System.EventHandler(this.actualizar_Click);
+            // 
             // Partidas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1090, 450);
+            this.Controls.Add(this.actualizar);
             this.Controls.Add(this.picture_fecha);
             this.Controls.Add(this.picture_empates);
             this.Controls.Add(this.picture_derrotas);
@@ -469,5 +481,6 @@
         private System.Windows.Forms.Label ganadas_;
         private System.Windows.Forms.Label perdidas_;
         private System.Windows.Forms.Label empates_;
+        private System.Windows.Forms.Button actualizar;
     }
 }

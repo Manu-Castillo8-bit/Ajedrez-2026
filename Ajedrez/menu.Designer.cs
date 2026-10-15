@@ -39,6 +39,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
             this.ir_login = new System.Windows.Forms.Button();
+            this.ir_admin = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.ir_partidas = new System.Windows.Forms.Button();
@@ -130,6 +131,7 @@
             this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.ir_admin);
             this.groupBox1.Controls.Add(this.ir_login);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
@@ -160,6 +162,17 @@
             this.ir_login.Text = "LOGIN";
             this.ir_login.UseVisualStyleBackColor = false;
             this.ir_login.Click += new System.EventHandler(this.ir_login_Click);
+            // 
+            // ir_admin
+            // 
+            this.ir_admin.Location = new System.Drawing.Point(51, 320);
+            this.ir_admin.Name = "ir_admin";
+            this.ir_admin.Size = new System.Drawing.Size(94, 33);
+            this.ir_admin.TabIndex = 14;
+            this.ir_admin.Text = "ADMIN";
+            this.ir_admin.UseVisualStyleBackColor = true;
+            this.ir_admin.Visible = false;
+            this.ir_admin.Click += new System.EventHandler(this.ir_admin_Click);
             // 
             // m_claro
             // 
@@ -282,6 +295,7 @@
         private System.Windows.Forms.Button ir_perfil;
         private System.Windows.Forms.Button ir_partidas;
         private System.Windows.Forms.Button ir_login;
+        private System.Windows.Forms.Button ir_admin;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button m_claro;

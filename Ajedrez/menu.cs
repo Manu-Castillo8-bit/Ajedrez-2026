@@ -162,6 +162,14 @@ namespace Ajedrez
             this.Hide();
         }
 
+        private void ir_admin_Click(object sender, EventArgs e)
+        {
+            AdminPanel f_admin = new AdminPanel();
+            Tema.ApplyTheme(f_admin);
+            f_admin.Show();
+            this.Hide();
+        }
+
         private void label3_Click(object sender, EventArgs e)
         {
           //NO SIRVE
@@ -199,6 +207,12 @@ namespace Ajedrez
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             lbl_usuario.Text = Sesion.NombreUsuario;
+
+            // El botón de administración solo aparece para administradores.
+            ir_admin.Visible = Administradores.EsAdmin(Sesion.NombreUsuario);
+
+            // Sube pendientes y trae novedades del servidor sin bloquear la interfaz.
+            Sincronizador.EnSegundoPlano(Sesion.NombreUsuario);
 
             // Cargar imagen de perfil desde Supabase
             await CargarUsuarioMenu();

@@ -277,6 +277,12 @@ namespace Ajedrez
                         case "fecha":
                             button.BackColor = ColorTranslator.FromHtml("#943edb");
                             break;
+                        case "actualizar":
+                            button.BackColor = ColorTranslator.FromHtml("#18c484");
+                            break;
+                        case "ir_admin":
+                            button.BackColor = ColorTranslator.FromHtml("#e0533a");
+                            break;
                         default:
                             button.BackColor = ColorTranslator.FromHtml("#4a8af4");
                             break;
@@ -447,6 +453,12 @@ namespace Ajedrez
                             break;
                         case "fecha":
                               button.BackColor = ColorTranslator.FromHtml("#943edb");
+                            break;
+                        case "actualizar":
+                            button.BackColor = ColorTranslator.FromHtml("#18c484");
+                            break;
+                        case "ir_admin":
+                            button.BackColor = ColorTranslator.FromHtml("#e0533a");
                             break;
                         default:
                             button.BackColor = SystemColors.Control;
