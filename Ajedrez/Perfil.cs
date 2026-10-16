@@ -295,8 +295,8 @@ namespace Ajedrez
                     return;
                 }
 
-                // A. Borrar el archivo del almacenamiento
-                await EliminarArchivoStorage(nombreArchivo);
+                // A. Borrar el archivo del almacenamiento (si falla, igual quitamos la referencia)
+                bool borradoFisico = await EliminarArchivoStorage(nombreArchivo);
 
                 // B. Quitar la referencia en la tabla 'usuarios'
                 string urlTabla = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}";
@@ -328,7 +328,15 @@ namespace Ajedrez
                 Sesion.ImagenUrl = "";
                 pictureBox_perfil.Image = null;
 
-                MessageBox.Show("Foto de perfil eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                if (borradoFisico)
+                {
+                    MessageBox.Show("Foto de perfil eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("La foto se quitó de tu perfil, pero el archivo no se pudo borrar del almacenamiento.",
+                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             catch (Exception ex)
             {
@@ -378,43 +386,29 @@ namespace Ajedrez
             return resto.Trim('/');
         }
 
-        // Borra un archivo del bucket "perfiles" (endpoint masivo, idempotente)
-        private static async Task EliminarArchivoStorage(string nombreArchivo)
+        // Borra un archivo del bucket "perfiles" (endpoint de objeto individual).
+        // Devuelve true si el archivo quedó eliminado (o ya no existía); false si falló.
+        private static async Task<bool> EliminarArchivoStorage(string nombreArchivo)
         {
-            string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles";
+            string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles/{Uri.EscapeDataString(nombreArchivo)}";
 
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
                 client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
 
-                string jsonBody = JsonConvert.SerializeObject(new { prefixes = new[] { nombreArchivo } });
-                StringContent contentJson = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("DELETE"), urlStorage)
-                {
-                    Content = contentJson
-                };
-
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("DELETE"), urlStorage);
                 HttpResponseMessage response = await client.SendAsync(request);
 
-                string cuerpo = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                    return true;
 
-                if (!response.IsSuccessStatusCode)
-                {
-                    throw new Exception($"Error Storage ({(int)response.StatusCode}): {cuerpo}");
-                }
+                // Si el archivo ya no existe, lo consideramos eliminado.
+                if ((int)response.StatusCode == 404)
+                    return true;
 
-                // El endpoint devuelve la lista de objetos borrados. Si viene vacía,
-                // Supabase no eliminó nada (normalmente por falta de política DELETE).
-                var borrados = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(cuerpo);
-                if (borrados == null || borrados.Count == 0)
-                {
-                    throw new Exception(
-                        "Supabase no eliminó el archivo (0 objetos borrados).\n\n" +
-                        "Falta una política de DELETE en el bucket 'perfiles' " +
-                        "(Supabase → Storage → Policies).");
-                }
+                // 401/403 => falta la política DELETE en el bucket (Supabase → Storage → Policies).
+                return false;
             }
         }
 
