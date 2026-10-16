@@ -1,41 +1,29 @@
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Ajedrez
 {
     /// <summary>
-    /// Acceso a la base de datos de Supabase para el registro de partidas de
-    /// damas y ajedrez, el guardado del estado (para poder continuar) y el
-    /// cálculo/actualización del ELO de los usuarios.
+    /// Fachada de acceso a los datos de partidas. Trabaja SIEMPRE contra la base
+    /// local SQLite (para que el juego funcione sin conexión) y, tras cada
+    /// escritura, lanza una sincronización en segundo plano con Supabase.
+    ///
+    /// Los identificadores que se exponen a las ventanas son los de la fila
+    /// local (siempre positivos); el id real de Supabase se guarda aparte y solo
+    /// lo usa el <see cref="Sincronizador"/>.
     /// </summary>
     public static class PartidaRepository
     {
-        private static string BaseUrl => SupabaseConfig.SupabaseUrl + "/rest/v1";
-        private static string Key => SupabaseConfig.SupabaseKey;
-
         private const double K_FACTOR = 32.0;          // Factor K estándar
         private const double ELO_POR_DEFECTO = 1200.0; // ELO de un invitado sin cuenta
         private const int ELO_MINIMO = 100;
 
         private static readonly Dictionary<string, int> _idUsuarioCache = new Dictionary<string, int>();
 
-        // Un único HttpClient compartido: evita agotar los sockets creando una
-        // conexión nueva en cada petición.
-        private static readonly HttpClient _http = new HttpClient();
+        // ---------------- Modelos expuestos a la interfaz ----------------
 
-        static PartidaRepository()
-        {
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            // Un fallo de la base de datos no debe dejar la interfaz colgada.
-            _http.Timeout = TimeSpan.FromSeconds(15);
-        }
-
-        // ---------------- Modelos ----------------
         public class Partida
         {
             public int id_partida { get; set; }
@@ -61,99 +49,73 @@ namespace Ajedrez
             public JToken tablero { get; set; }
         }
 
-        private class UsuarioDatos
+        // ---------------- Utilidades de mapeo ----------------
+
+        private static Partida Mapear(PartidaLocal p)
         {
-            public int id_usuario { get; set; }
-            public string nombre_usuario { get; set; }
-            public double elo { get; set; }
-            public int partidas_jugadas { get; set; }
-            public int partidas_ganadas { get; set; }
-            public int partidas_empatadas { get; set; }
-            public int partidas_perdidas { get; set; }
+            if (p == null) return null;
+            return new Partida
+            {
+                id_partida = p.IdLocal,
+                jugador_blancas = p.JugadorBlancas,
+                jugador_negras = p.JugadorNegras,
+                ganador = p.Ganador,
+                estado = p.Estado,
+                modo = p.Modo,
+                soplar = p.Soplar,
+                tipo_juego = p.TipoJuego,
+                id_usuario = p.IdUsuario,
+                fecha_inicio = p.FechaInicio,
+                fecha_fin = p.FechaFin
+            };
         }
 
-        // ---------------- Utilidades ----------------
-        private static string Esc(string s) => Uri.EscapeDataString(s ?? "");
-
-        /// <summary>
-        /// Ejecuta una petición HTTP contra Supabase. Devuelve true solo si la
-        /// respuesta fue correcta y deja el texto devuelto en
-        /// <paramref name="cuerpo"/>. Nunca lanza excepciones: ante cualquier
-        /// fallo (red, TLS, timeout, JSON inesperado...) devuelve false para
-        /// que el juego siga funcionando aunque la base de datos falle.
-        /// </summary>
-        private static bool Enviar(HttpMethod metodo, string url, JObject body, string prefer, out string cuerpo)
+        private static Movimiento Mapear(MovimientoLocal m)
         {
-            cuerpo = null;
-            try
+            if (m == null) return null;
+            JToken tablero = null;
+            if (!string.IsNullOrWhiteSpace(m.Tablero))
             {
-                var req = new HttpRequestMessage(metodo, url);
-                req.Headers.Add("apikey", Key);
-                req.Headers.Add("Authorization", "Bearer " + Key);
-                if (!string.IsNullOrEmpty(prefer)) req.Headers.Add("Prefer", prefer);
-                if (body != null)
-                    req.Content = new StringContent(body.ToString(Formatting.None), Encoding.UTF8, "application/json");
-
-                var resp = _http.SendAsync(req).GetAwaiter().GetResult();
-                if (!resp.IsSuccessStatusCode) return false;
-
-                cuerpo = resp.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                return true;
+                try { tablero = JToken.Parse(m.Tablero); }
+                catch { tablero = null; }
             }
-            catch
+            return new Movimiento
             {
-                return false;
-            }
+                id_movimiento = m.IdLocal,
+                id_partida = m.IdPartidaLocal,
+                num_movimientos = m.NumMovimientos,
+                turno_final = m.TurnoFinal,
+                movimiento_final = m.MovimientoFinal,
+                tablero = tablero
+            };
         }
 
-        /// <summary>GET que devuelve el resultado deserializado o null si falla.</summary>
-        private static T Get<T>(string url) where T : class
+        private static void Sincronizar()
         {
-            try
-            {
-                if (!Enviar(HttpMethod.Get, url, null, null, out string json)) return null;
-                if (string.IsNullOrWhiteSpace(json)) return null;
-                return JsonConvert.DeserializeObject<T>(json);
-            }
-            catch { return null; }
-        }
-
-        /// <summary>PATCH que devuelve true solo si el cambio se aplicó.</summary>
-        private static bool Patch(string url, JObject body)
-        {
-            return Enviar(new HttpMethod("PATCH"), url, body, "return=minimal", out _);
+            Sincronizador.EnSegundoPlano(Sesion.NombreUsuario);
         }
 
         // ---------------- Partidas ----------------
-        /// <summary>Crea una partida nueva y devuelve su id (o -1 si falla).</summary>
+
+        /// <summary>Crea una partida nueva y devuelve su id local (o -1 si falla).</summary>
         public static int CrearPartida(string tipo, string blancas, string negras, int? idUsuario, bool soplar = false)
         {
             try
             {
-                var body = new JObject
+                var p = new PartidaLocal
                 {
-                    ["jugador_blancas"] = blancas,
-                    ["jugador_negras"] = negras,
-                    ["tipo_juego"] = tipo,
-                    ["estado"] = "en_curso"
+                    JugadorBlancas = blancas,
+                    JugadorNegras = negras,
+                    TipoJuego = tipo,
+                    Estado = "en_curso",
+                    Soplar = soplar,
+                    IdUsuario = idUsuario,
+                    FechaInicio = DateTime.Now,
+                    SyncState = EstadoSync.Pendiente
                 };
-                if (soplar) body["soplar"] = true;
-                if (idUsuario.HasValue) body["id_usuario"] = idUsuario.Value;
-
-                string url = BaseUrl + "/partidas";
-                bool ok = Enviar(HttpMethod.Post, url, body, "return=representation", out string json);
-
-                // Si la columna 'soplar' todavía no existe en la tabla, se reintenta sin ella
-                if (!ok && soplar)
-                {
-                    body.Remove("soplar");
-                    ok = Enviar(HttpMethod.Post, url, body, "return=representation", out json);
-                }
-                if (!ok || string.IsNullOrWhiteSpace(json)) return -1;
-
-                var arr = JArray.Parse(json);
-                if (arr.Count == 0) return -1;
-                return (int)arr[0]["id_partida"];
+                int id = BaseDatosLocal.InsertarPartida(p);
+                if (id > 0) Sincronizar();
+                return id;
             }
             catch { return -1; }
         }
@@ -164,15 +126,18 @@ namespace Ajedrez
             if (idPartida < 0) return false;
             try
             {
-                var body = new JObject
-                {
-                    ["estado"] = "finalizada",
-                    ["fecha_fin"] = DateTime.UtcNow.ToString("o")
-                };
+                var p = BaseDatosLocal.PartidaPorIdLocal(idPartida);
+                if (p == null) return false;
+
+                p.Estado = "finalizada";
+                p.FechaFin = DateTime.Now;
                 // Si no hay ganador (partida abandonada) se deja el campo sin tocar.
-                if (!string.IsNullOrWhiteSpace(ganador))
-                    body["ganador"] = ganador;
-                return Patch(BaseUrl + "/partidas?id_partida=eq." + idPartida, body);
+                if (!string.IsNullOrWhiteSpace(ganador)) p.Ganador = ganador;
+                p.SyncState = EstadoSync.Pendiente;
+
+                BaseDatosLocal.ActualizarPartida(p);
+                Sincronizar();
+                return true;
             }
             catch { return false; }
         }
@@ -184,13 +149,8 @@ namespace Ajedrez
             if (string.IsNullOrWhiteSpace(usuario)) return resultado;
             try
             {
-                string url = BaseUrl + "/partidas?select=*&or=(jugador_blancas.eq." + Esc(usuario)
-                             + ",jugador_negras.eq." + Esc(usuario) + ")";
-                if (!string.IsNullOrWhiteSpace(tipo)) url += "&tipo_juego=eq." + Esc(tipo);
-                url += "&order=fecha_inicio.desc";
-
-                var list = Get<List<Partida>>(url);
-                if (list != null) resultado = list;
+                foreach (var p in BaseDatosLocal.ListarPartidas(tipo, usuario))
+                    resultado.Add(Mapear(p));
             }
             catch { }
             return resultado;
@@ -202,25 +162,18 @@ namespace Ajedrez
             if (string.IsNullOrWhiteSpace(usuario)) return null;
             try
             {
-                string url = BaseUrl + "/partidas?select=*&estado=eq.en_curso&or=(jugador_blancas.eq."
-                             + Esc(usuario) + ",jugador_negras.eq." + Esc(usuario) + ")";
-                if (!string.IsNullOrWhiteSpace(tipo)) url += "&tipo_juego=eq." + Esc(tipo);
-                url += "&order=fecha_inicio.desc&limit=1";
-
-                var list = Get<List<Partida>>(url);
-                return (list != null && list.Count > 0) ? list[0] : null;
+                return Mapear(BaseDatosLocal.BuscarPartidaEnCurso(tipo, usuario));
             }
             catch { return null; }
         }
 
         // ---------------- Estado (continuar partida) ----------------
+
         public static Movimiento ObtenerMovimiento(int idPartida)
         {
             try
             {
-                string url = BaseUrl + "/movimientos?id_partida=eq." + idPartida + "&select=*&limit=1";
-                var list = Get<List<Movimiento>>(url);
-                return (list != null && list.Count > 0) ? list[0] : null;
+                return Mapear(BaseDatosLocal.MovimientoPorPartida(idPartida));
             }
             catch { return null; }
         }
@@ -228,21 +181,18 @@ namespace Ajedrez
         /// <summary>
         /// Igual que ObtenerMovimiento, pero distingue los dos casos que
         /// producen null: "no hay estado guardado" (devuelve true y mov = null)
-        /// y "no se pudo consultar" (devuelve false). Así, ante un fallo de red
-        /// no se cierra por error una partida que sí se podía continuar.
+        /// y "no se pudo consultar" (devuelve false). Así, ante un fallo local no
+        /// se cierra por error una partida que sí se podía continuar.
         /// </summary>
         public static bool ObtenerMovimientoSeguro(int idPartida, out Movimiento mov)
         {
             mov = null;
-
-            string url = BaseUrl + "/movimientos?id_partida=eq." + idPartida + "&select=*&limit=1";
-            if (!Enviar(HttpMethod.Get, url, null, null, out string json))
+            if (!BaseDatosLocal.Disponible)
                 return false; // no se pudo consultar
 
             try
             {
-                var list = JsonConvert.DeserializeObject<List<Movimiento>>(json);
-                mov = (list != null && list.Count > 0) ? list[0] : null;
+                mov = Mapear(BaseDatosLocal.MovimientoPorPartida(idPartida));
                 return true;
             }
             catch
@@ -256,55 +206,57 @@ namespace Ajedrez
                                          string ultimoMovimiento, string tableroJson)
         {
             if (idPartida < 0) return false;
+            if (!BaseDatosLocal.Disponible) return false;
             try
             {
-                var body = new JObject
-                {
-                    ["num_movimientos"] = numMovimientos,
-                    ["turno_final"] = turnoFinal ?? "",
-                    ["movimiento_final"] = ultimoMovimiento ?? ""
-                };
-                if (!string.IsNullOrWhiteSpace(tableroJson))
-                    body["tablero"] = JToken.Parse(tableroJson);
-
-                if (ObtenerMovimiento(idPartida) != null)
-                    return Patch(BaseUrl + "/movimientos?id_partida=eq." + idPartida, body);
-
-                body["id_partida"] = idPartida;
-                return Enviar(HttpMethod.Post, BaseUrl + "/movimientos", body, null, out _);
+                BaseDatosLocal.GuardarMovimiento(idPartida, numMovimientos, turnoFinal,
+                                                 ultimoMovimiento, tableroJson);
+                Sincronizar();
+                return true;
             }
             catch { return false; }
         }
 
         // ---------------- Usuarios y ELO ----------------
-        private static UsuarioDatos ObtenerUsuario(string nombre)
-        {
-            if (string.IsNullOrWhiteSpace(nombre)) return null;
-            try
-            {
-                string url = BaseUrl + "/usuarios?select=id_usuario,nombre_usuario,elo,partidas_jugadas,"
-                             + "partidas_ganadas,partidas_empatadas,partidas_perdidas"
-                             + "&nombre_usuario=eq." + Esc(nombre) + "&limit=1";
-                var list = Get<List<UsuarioDatos>>(url);
-                return (list != null && list.Count > 0) ? list[0] : null;
-            }
-            catch { return null; }
-        }
 
         /// <summary>Devuelve el id_usuario registrado o null si es un invitado.</summary>
         public static int? ObtenerIdUsuario(string nombre)
         {
             if (string.IsNullOrWhiteSpace(nombre)) return null;
             if (_idUsuarioCache.TryGetValue(nombre, out int id)) return id;
-            var u = ObtenerUsuario(nombre);
+
+            var local = BaseDatosLocal.ObtenerUsuario(nombre);
+            if (local != null && local.ServerId.HasValue)
+            {
+                _idUsuarioCache[nombre] = local.ServerId.Value;
+                return local.ServerId.Value;
+            }
+
+            var u = Nube.ObtenerUsuario(nombre);
             if (u == null) return null;
+
+            if (local == null) BaseDatosLocal.InsertarUsuarioDesdeServidor(u);
             _idUsuarioCache[nombre] = u.id_usuario;
             return u.id_usuario;
         }
 
+        private static UsuarioLocal AsegurarUsuario(string nombre)
+        {
+            var local = BaseDatosLocal.ObtenerUsuario(nombre);
+            if (local != null) return local;
+
+            var su = Nube.ObtenerUsuario(nombre);
+            if (su == null) return null;
+
+            BaseDatosLocal.InsertarUsuarioDesdeServidor(su);
+            return BaseDatosLocal.ObtenerUsuario(nombre);
+        }
+
         /// <summary>
         /// Registra el resultado de la partida y actualiza el ELO y las
-        /// estadísticas de los jugadores que tengan cuenta registrada.
+        /// estadísticas de los jugadores que tengan cuenta registrada. El cálculo
+        /// se hace contra la copia local para que funcione sin conexión; el
+        /// resultado se sube al servidor en la siguiente sincronización.
         /// <paramref name="ganador"/> puede ser el nombre de A, de B o "empate".
         /// </summary>
         public static void RegistrarResultado(string jugadorA, string jugadorB, string ganador)
@@ -314,11 +266,11 @@ namespace Ajedrez
 
             try
             {
-                var ua = ObtenerUsuario(jugadorA);
-                var ub = ObtenerUsuario(jugadorB);
+                var ua = AsegurarUsuario(jugadorA);
+                var ub = AsegurarUsuario(jugadorB);
 
-                double eloA = ua != null ? ua.elo : ELO_POR_DEFECTO;
-                double eloB = ub != null ? ub.elo : ELO_POR_DEFECTO;
+                double eloA = ua != null ? ua.Elo : ELO_POR_DEFECTO;
+                double eloB = ub != null ? ub.Elo : ELO_POR_DEFECTO;
 
                 double sA, sB;
                 if (string.Equals(ganador, "empate", StringComparison.OrdinalIgnoreCase))
@@ -336,6 +288,8 @@ namespace Ajedrez
 
                 if (ua != null) ActualizarUsuario(ua, eloA, eloB, sA);
                 if (ub != null) ActualizarUsuario(ub, eloB, eloA, sB);
+
+                Sincronizar();
             }
             catch
             {
@@ -343,21 +297,20 @@ namespace Ajedrez
             }
         }
 
-        private static void ActualizarUsuario(UsuarioDatos u, double propio, double rival, double s)
+        private static void ActualizarUsuario(UsuarioLocal u, double propio, double rival, double s)
         {
             double esperado = 1.0 / (1.0 + Math.Pow(10.0, (rival - propio) / 400.0));
             int nuevoElo = (int)Math.Round(propio + K_FACTOR * (s - esperado));
             if (nuevoElo < ELO_MINIMO) nuevoElo = ELO_MINIMO;
 
-            var body = new JObject
-            {
-                ["elo"] = nuevoElo,
-                ["partidas_jugadas"] = u.partidas_jugadas + 1,
-                ["partidas_ganadas"] = u.partidas_ganadas + (s == 1.0 ? 1 : 0),
-                ["partidas_empatadas"] = u.partidas_empatadas + (s == 0.5 ? 1 : 0),
-                ["partidas_perdidas"] = u.partidas_perdidas + (s == 0.0 ? 1 : 0)
-            };
-            Patch(BaseUrl + "/usuarios?id_usuario=eq." + u.id_usuario, body);
+            u.Elo = nuevoElo;
+            u.PartidasJugadas += 1;
+            u.PartidasGanadas += (s == 1.0 ? 1 : 0);
+            u.PartidasEmpatadas += (s == 0.5 ? 1 : 0);
+            u.PartidasPerdidas += (s == 0.0 ? 1 : 0);
+            u.SyncState = EstadoSync.Pendiente;
+
+            BaseDatosLocal.GuardarUsuario(u);
         }
     }
 }

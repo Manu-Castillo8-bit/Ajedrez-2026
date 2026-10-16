@@ -283,6 +283,9 @@ namespace Ajedrez
                         case "ir_admin":
                             button.BackColor = ColorTranslator.FromHtml("#e0533a");
                             break;
+                        case "eliminar_foto_btn":
+                            button.BackColor = ColorTranslator.FromHtml("#e0533a");
+                            break;
                         default:
                             button.BackColor = ColorTranslator.FromHtml("#4a8af4");
                             break;
@@ -458,6 +461,9 @@ namespace Ajedrez
                             button.BackColor = ColorTranslator.FromHtml("#18c484");
                             break;
                         case "ir_admin":
+                            button.BackColor = ColorTranslator.FromHtml("#e0533a");
+                            break;
+                        case "eliminar_foto_btn":
                             button.BackColor = ColorTranslator.FromHtml("#e0533a");
                             break;
                         default:

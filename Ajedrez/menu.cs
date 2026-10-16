@@ -233,6 +233,8 @@ namespace Ajedrez
             {
                 lbl_usuario.Text = "Invitado";
                 pic_usuario.Image = null;
+                label4.Text = "ELO";
+                label5.Text = "Victorias";
                 return;
             }
 
@@ -240,7 +242,7 @@ namespace Ajedrez
 
             try
             {
-                string url = $"{SupabaseConfig.SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url";
+                string url = $"{SupabaseConfig.SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url,elo,partidas_ganadas";
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("apikey", SupabaseConfig.SupabaseKey);
@@ -251,11 +253,17 @@ namespace Ajedrez
                         return;
 
                     string json = await response.Content.ReadAsStringAsync();
-                    dynamic usuarios = JsonConvert.DeserializeObject(json);
+                    var lista = JsonConvert.DeserializeObject<List<DatosMenu>>(json);
 
-                    if (usuarios != null && usuarios.Count > 0 && usuarios[0].imagen_url != null)
+                    if (lista != null && lista.Count > 0)
                     {
-                        string urlImagen = usuarios[0].imagen_url.ToString();
+                        DatosMenu d = lista[0];
+
+                        // Mostrar el ELO y las victorias del usuario en sus etiquetas
+                        label4.Text = "ELO: " + (d.elo ?? 0).ToString("0");
+                        label5.Text = "Victorias: " + (d.partidas_ganadas ?? 0);
+
+                        string urlImagen = d.imagen_url;
                         if (string.IsNullOrWhiteSpace(urlImagen))
                             return;
 
@@ -275,6 +283,14 @@ namespace Ajedrez
             {
                 Console.WriteLine("Fallo al cargar usuario en menú: " + ex.Message);
             }
+        }
+
+        // Datos del usuario que llegan de Supabase para el menú
+        private class DatosMenu
+        {
+            public string imagen_url { get; set; }
+            public double? elo { get; set; }
+            public int? partidas_ganadas { get; set; }
         }
     }
     }

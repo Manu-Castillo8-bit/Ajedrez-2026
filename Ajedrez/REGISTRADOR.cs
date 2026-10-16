@@ -27,7 +27,7 @@ namespace Ajedrez
 
         // Cadena de conexión con Session Pooler (IPv4)
         private static readonly string CONNECTION_STRING =
-            $"Host={SUPABASE_HOST};Port={SUPABASE_PORT};Database={SUPABASE_DATABASE};Username={SUPABASE_USER};Password={SUPABASE_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;";
+            $"Host={SUPABASE_HOST};Port={SUPABASE_PORT};Database={SUPABASE_DATABASE};Username={SUPABASE_USER};Password={SUPABASE_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;Timeout=5;";
 
         public REGISTRADOR()
         {
@@ -121,6 +121,24 @@ namespace Ajedrez
                 {
                     await conn.OpenAsync();
 
+                    // Comprobar si ya existe un usuario con el mismo nombre
+                    // (sin distinguir mayúsculas/minúsculas ni espacios sobrantes)
+                    string sqlExiste = "SELECT COUNT(*) FROM usuarios WHERE lower(nombre_usuario) = lower(@nombre)";
+
+                    using (var cmdExiste = new Npgsql.NpgsqlCommand(sqlExiste, conn))
+                    {
+                        cmdExiste.Parameters.AddWithValue("@nombre", nombre.Text.Trim());
+
+                        long existentes = Convert.ToInt64(await cmdExiste.ExecuteScalarAsync());
+
+                        if (existentes > 0)
+                        {
+                            MessageBox.Show("El nombre de usuario ya existe. Por favor, elige otro.", "Usuario duplicado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            nombre.Focus();
+                            return;
+                        }
+                    }
+
                     // Consulta SQL para insertar usuario
                     string sql = "INSERT INTO usuarios (nombre_usuario, contrasena) VALUES (@nombre, @contrasena)";
 
@@ -134,6 +152,10 @@ namespace Ajedrez
 
                         if (filasAfectadas > 0)
                         {
+                            // Guardar la credencial para poder iniciar sesión sin conexión luego.
+                            BaseDatosLocal.GuardarCredencial(nombre.Text.Trim(),
+                                BaseDatosLocal.HashContrasena(contraseña.Text));
+
                             MessageBox.Show("¡Usuario registrado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             nombre.Clear();
                             contraseña.Clear();

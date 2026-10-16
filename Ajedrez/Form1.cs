@@ -131,7 +131,9 @@ namespace Ajedrez
             if (r == DialogResult.Yes)
             {
                 // Finalizar la partida: el resultado se decide por las piezas comidas
-                PartidaRepository.FinalizarPartida(idPartida, GanadorPorPiezasComidas());
+                string ganador = GanadorPorPiezasComidas();
+                PartidaRepository.FinalizarPartida(idPartida, ganador);
+                PartidaRepository.RegistrarResultado(nombreBlancas, nombreNegras, ganador);
                 idPartida = -1;
                 numMovimientos = 0;
                 ultimoMovimiento = "";

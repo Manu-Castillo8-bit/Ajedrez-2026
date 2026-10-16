@@ -156,6 +156,21 @@ namespace Ajedrez
                     extension = ".jpg";
                 string nombreArchivo = $"avatar_{nuevoNombre}{extension}";
 
+                // Eliminar la foto anterior (si es distinta) para no acumular archivos en Storage
+                string archivoAnterior = ExtraerNombreArchivo(await ObtenerImagenUrlUsuario(nombreUsuario));
+                if (!string.IsNullOrEmpty(archivoAnterior) &&
+                    !string.Equals(archivoAnterior, nombreArchivo, StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
+                        await EliminarArchivoStorage(archivoAnterior);
+                    }
+                    catch
+                    {
+                        // Si no se puede borrar la anterior, continuar con el guardado de la nueva
+                    }
+                }
+
                 // A. Subir/sobrescribir imagen a Supabase Storage (bucket "perfiles")
                 byte[] bytesImagen = File.ReadAllBytes(rutaImagenSeleccionada);
                 string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles/{nombreArchivo}";
@@ -255,6 +270,154 @@ namespace Ajedrez
             }
         }
 
+        // 2b. Botón Eliminar la última foto guardada (libera espacio en Supabase)
+        private async void eliminar_foto_btn_Click(object sender, EventArgs e)
+        {
+            string nombreUsuario = Sesion.NombreUsuario;
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                MessageBox.Show("No hay una sesión iniciada. Vuelve a iniciar sesión.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show("¿Eliminar la última foto de perfil guardada? Esta acción no se puede deshacer.",
+                "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+                return;
+
+            try
+            {
+                string urlActual = await ObtenerImagenUrlUsuario(nombreUsuario);
+                string nombreArchivo = ExtraerNombreArchivo(urlActual);
+
+                if (string.IsNullOrEmpty(nombreArchivo))
+                {
+                    MessageBox.Show("No hay ninguna foto guardada para eliminar.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                // A. Borrar el archivo del almacenamiento
+                await EliminarArchivoStorage(nombreArchivo);
+
+                // B. Quitar la referencia en la tabla 'usuarios'
+                string urlTabla = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
+                    client.DefaultRequestHeaders.Add("Prefer", "return=minimal");
+
+                    string jsonBody = JsonConvert.SerializeObject(new { imagen_url = (string)null });
+                    StringContent contentJson = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), urlTabla)
+                    {
+                        Content = contentJson
+                    };
+
+                    HttpResponseMessage responseTabla = await client.SendAsync(request);
+
+                    if (!responseTabla.IsSuccessStatusCode)
+                    {
+                        string err = await responseTabla.Content.ReadAsStringAsync();
+                        throw new Exception($"Error DB ({responseTabla.StatusCode}): {err}");
+                    }
+                }
+
+                // C. Limpiar la interfaz y la sesión
+                Sesion.ImagenUrl = "";
+                pictureBox_perfil.Image = null;
+
+                MessageBox.Show("Foto de perfil eliminada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al eliminar la foto: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Devuelve la URL de la imagen guardada del usuario (o "" si no tiene)
+        private static async Task<string> ObtenerImagenUrlUsuario(string nombreUsuario)
+        {
+            string urlConsulta = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url";
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
+
+                HttpResponseMessage response = await client.GetAsync(urlConsulta);
+                if (!response.IsSuccessStatusCode)
+                    return "";
+
+                string jsonResult = await response.Content.ReadAsStringAsync();
+                dynamic usuarios = JsonConvert.DeserializeObject(jsonResult);
+
+                if (usuarios != null && usuarios.Count > 0 && usuarios[0].imagen_url != null)
+                    return usuarios[0].imagen_url.ToString();
+            }
+
+            return "";
+        }
+
+        // Extrae el nombre del archivo de una URL del bucket "perfiles"
+        private static string ExtraerNombreArchivo(string urlImagen)
+        {
+            if (string.IsNullOrEmpty(urlImagen))
+                return "";
+
+            int idx = urlImagen.IndexOf("/perfiles/", StringComparison.OrdinalIgnoreCase);
+            if (idx < 0)
+                return "";
+
+            string resto = urlImagen.Substring(idx + "/perfiles/".Length);
+            int q = resto.IndexOf('?');
+            if (q >= 0)
+                resto = resto.Substring(0, q);
+
+            return resto.Trim('/');
+        }
+
+        // Borra un archivo del bucket "perfiles" (endpoint masivo, idempotente)
+        private static async Task EliminarArchivoStorage(string nombreArchivo)
+        {
+            string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles";
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
+
+                string jsonBody = JsonConvert.SerializeObject(new { prefixes = new[] { nombreArchivo } });
+                StringContent contentJson = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("DELETE"), urlStorage)
+                {
+                    Content = contentJson
+                };
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                string cuerpo = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new Exception($"Error Storage ({(int)response.StatusCode}): {cuerpo}");
+                }
+
+                // El endpoint devuelve la lista de objetos borrados. Si viene vacía,
+                // Supabase no eliminó nada (normalmente por falta de política DELETE).
+                var borrados = JsonConvert.DeserializeObject<System.Collections.Generic.List<object>>(cuerpo);
+                if (borrados == null || borrados.Count == 0)
+                {
+                    throw new Exception(
+                        "Supabase no eliminó el archivo (0 objetos borrados).\n\n" +
+                        "Falta una política de DELETE en el bucket 'perfiles' " +
+                        "(Supabase → Storage → Policies).");
+                }
+            }
+        }
+
         private static bool EsCorreoValido(string correo)
         {
             try
@@ -299,7 +462,8 @@ namespace Ajedrez
 
             try
             {
-                string urlConsulta = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url,email";
+                string urlConsulta = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}"
+                                   + "&select=imagen_url,email,elo,partidas_jugadas,partidas_ganadas,partidas_perdidas";
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -311,36 +475,38 @@ namespace Ajedrez
                     if (response.IsSuccessStatusCode)
                     {
                         string jsonResult = await response.Content.ReadAsStringAsync();
-                        dynamic usuarios = JsonConvert.DeserializeObject(jsonResult);
+                        var usuarios = JsonConvert.DeserializeObject<List<DatosPerfil>>(jsonResult);
 
                         if (usuarios != null && usuarios.Count > 0)
                         {
+                            DatosPerfil d = usuarios[0];
+
                             // Rellenar nombre y correo (etiquetas y sesión)
-                            string email = usuarios[0].email != null ? usuarios[0].email.ToString() : "";
-                            Sesion.CorreoUsuario = email ?? "";
+                            string email = d.email ?? "";
+                            Sesion.CorreoUsuario = email;
                             Sesion.NombreUsuario = nombreUsuario;
                             nombre.Text = nombreUsuario;
                             correo.Text = CorreoMostrar(email);
 
-                            if (usuarios[0].imagen_url != null)
-                            {
-                                string urlImagen = usuarios[0].imagen_url.ToString();
+                            // Rellenar el ELO y las estadísticas en sus etiquetas
+                            MostrarEstadisticas(d);
 
-                                if (!string.IsNullOrWhiteSpace(urlImagen))
+                            string urlImagen = d.imagen_url;
+
+                            if (!string.IsNullOrWhiteSpace(urlImagen))
+                            {
+                                // Descarga limpia de la imagen mediante HttpClient
+                                HttpResponseMessage imgResponse = await client.GetAsync(urlImagen);
+                                if (imgResponse.IsSuccessStatusCode)
                                 {
-                                    // Descarga limpia de la imagen mediante HttpClient
-                                    HttpResponseMessage imgResponse = await client.GetAsync(urlImagen);
-                                    if (imgResponse.IsSuccessStatusCode)
+                                    byte[] bytes = await imgResponse.Content.ReadAsByteArrayAsync();
+                                    using (MemoryStream ms = new MemoryStream(bytes))
                                     {
-                                        byte[] bytes = await imgResponse.Content.ReadAsByteArrayAsync();
-                                        using (MemoryStream ms = new MemoryStream(bytes))
-                                        {
-                                            var img = Image.FromStream(ms);
-                                            pictureBox_perfil.Image = img;
-                                            pictureBox_perfil.SizeMode = PictureBoxSizeMode.Zoom;
-                                        }
-                                        return;
+                                        var img = Image.FromStream(ms);
+                                        pictureBox_perfil.Image = img;
+                                        pictureBox_perfil.SizeMode = PictureBoxSizeMode.Zoom;
                                     }
+                                    return;
                                 }
                             }
                         }
@@ -354,6 +520,34 @@ namespace Ajedrez
             }
 
             pictureBox_perfil.Image = null;
+        }
+
+        // Vuelca el ELO y las estadísticas del usuario en las etiquetas del perfil
+        private void MostrarEstadisticas(DatosPerfil d)
+        {
+            double eloValor = d.elo ?? 0;
+            int jugadas = d.partidas_jugadas ?? 0;
+            int ganadas = d.partidas_ganadas ?? 0;
+            int perdidas = d.partidas_perdidas ?? 0;
+
+            elo.Text = eloValor.ToString("0");
+            victorias.Text = ganadas.ToString();
+
+            elo_menu2.Text = eloValor.ToString("0");
+            victorias_menu2.Text = ganadas.ToString();
+            partidas_menu2.Text = jugadas.ToString();
+            derrotas_menu2.Text = perdidas.ToString();
+        }
+
+        // Datos del usuario que llegan de Supabase para el perfil
+        private class DatosPerfil
+        {
+            public string imagen_url { get; set; }
+            public string email { get; set; }
+            public double? elo { get; set; }
+            public int? partidas_jugadas { get; set; }
+            public int? partidas_ganadas { get; set; }
+            public int? partidas_perdidas { get; set; }
         }
     }
 }

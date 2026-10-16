@@ -1,0 +1,13 @@
+# SQLite nativo: la app es de Windows, solo se versionan los binarios de Windows
+packages/sourcegear.sqlite3.3.53.3/runtimes/*/
+!packages/sourcegear.sqlite3.3.53.3/runtimes/win-x64/
+!packages/sourcegear.sqlite3.3.53.3/runtimes/win-x86/
+
+# Paquetes NuGet (.nupkg): el contenido extraido (lib/, runtimes/win-*) ya esta versionado
+*.nupkg
+
+# Salidas de compilacion del ejecutable (se regeneran al compilar)
+Ajedrez/bin/**/Ajedrez.exe
+Ajedrez/bin/**/Ajedrez.pdb
+Ajedrez/obj/**/Ajedrez.exe
+Ajedrez/obj/**/Ajedrez.pdb

@@ -46,6 +46,7 @@
             this.ir_menu = new System.Windows.Forms.Button();
             this.guardar_btn = new System.Windows.Forms.Button();
             this.cancelar_btn = new System.Windows.Forms.Button();
+            this.eliminar_foto_btn = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.editar_btn = new System.Windows.Forms.Button();
@@ -212,6 +213,7 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.ir_menu);
+            this.groupBox3.Controls.Add(this.eliminar_foto_btn);
             this.groupBox3.Controls.Add(this.guardar_btn);
             this.groupBox3.Controls.Add(this.cancelar_btn);
             this.groupBox3.Controls.Add(this.m_claro);
@@ -259,6 +261,19 @@
             this.cancelar_btn.UseVisualStyleBackColor = false;
             this.cancelar_btn.Visible = false;
             this.cancelar_btn.Click += new System.EventHandler(this.cancelar_btn_Click);
+            // 
+            // eliminar_foto_btn
+            // 
+            this.eliminar_foto_btn.BackColor = System.Drawing.Color.Transparent;
+            this.eliminar_foto_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.eliminar_foto_btn.ForeColor = System.Drawing.Color.Firebrick;
+            this.eliminar_foto_btn.Location = new System.Drawing.Point(9, 275);
+            this.eliminar_foto_btn.Name = "eliminar_foto_btn";
+            this.eliminar_foto_btn.Size = new System.Drawing.Size(150, 33);
+            this.eliminar_foto_btn.TabIndex = 41;
+            this.eliminar_foto_btn.Text = "ELIMINAR FOTO";
+            this.eliminar_foto_btn.UseVisualStyleBackColor = false;
+            this.eliminar_foto_btn.Click += new System.EventHandler(this.eliminar_foto_btn_Click);
             // 
             // m_claro
             // 
@@ -501,5 +516,6 @@
         private System.Windows.Forms.TextBox nombre_txt;
         private System.Windows.Forms.TextBox correo_txt;
         private System.Windows.Forms.Button cancelar_btn;
+        private System.Windows.Forms.Button eliminar_foto_btn;
     }
 }

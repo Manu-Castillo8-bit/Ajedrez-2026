@@ -26,7 +26,7 @@ namespace Ajedrez
 
         // Cadena de conexión con Session Pooler (IPv4)
         private static readonly string CONNECTION_STRING =
-            $"Host={SUPABASE_HOST};Port={SUPABASE_PORT};Database={SUPABASE_DATABASE};Username={SUPABASE_USER};Password={SUPABASE_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;";
+            $"Host={SUPABASE_HOST};Port={SUPABASE_PORT};Database={SUPABASE_DATABASE};Username={SUPABASE_USER};Password={SUPABASE_PASSWORD};SSL Mode=Require;Trust Server Certificate=true;Timeout=5;";
      
 
         public LOGIN()
@@ -109,14 +109,12 @@ namespace Ajedrez
 
                         if (!string.IsNullOrEmpty(usuarioEncontrado))
                         {
-                            // Guardar en la sesión el usuario que inició sesión
-                            Sesion.NombreUsuario = usuarioEncontrado;
-                            Sesion.ImagenUrl = string.Empty;
+                            // Se guarda la credencial (con la contraseña hasheada, no en
+                            // texto plano) para poder iniciar sesión sin conexión luego.
+                            BaseDatosLocal.GuardarCredencial(usuarioEncontrado,
+                                BaseDatosLocal.HashContrasena(contraseña.Text));
 
-                            MessageBox.Show("✅ Usuario encontrado. Credenciales correctas.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            menu f_menu = new menu();
-                            f_menu.Show();
-                            this.Hide();
+                            EntrarAlMenu(usuarioEncontrado);
                         }
                         else
                         {
@@ -125,20 +123,40 @@ namespace Ajedrez
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                MessageBox.Show($"Error al verificar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Sin conexión (o el servidor no responde): se valida contra la copia
+                // local guardada en el último inicio de sesión con internet.
+                string usuario = nombre.Text.Trim();
+                if (BaseDatosLocal.ValidarCredencial(usuario, BaseDatosLocal.HashContrasena(contraseña.Text)))
+                {
+                    EntrarAlMenu(usuario);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "No hay conexión y no se pudieron validar las credenciales en este equipo.\n\n" +
+                        "Inicia sesión una vez con internet para poder hacerlo sin conexión después.",
+                        "Sin conexión", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             }
             finally
             {
                 // Rehabilitar botón
                 ingresar_.Enabled = true;
                 ingresar_.Text = "Verificar";
-
-                
-
             }
         
+        }
+
+        private void EntrarAlMenu(string usuario)
+        {
+            Sesion.NombreUsuario = usuario;
+            Sesion.ImagenUrl = string.Empty;
+
+            menu f_menu = new menu();
+            f_menu.Show();
+            this.Hide();
         }
 
         private void ir_registro_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
