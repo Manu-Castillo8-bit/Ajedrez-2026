@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -35,6 +37,13 @@ namespace Ajedrez
         private string ultimoMovimiento = "";
         private bool juegoTerminado = false;
 
+        // ----- Inteligencia artificial (Stockfish) -----
+        private bool modoIA = false;
+        private string colorIA = "black";
+        private int nivelIA = 5;
+        private StockfishEngine motor = null;
+        private bool iaPensando = false;
+
         public Ajedrez_tablero()
         {
         
@@ -57,6 +66,15 @@ namespace Ajedrez
             estadoPendiente = estadoJson;
         }
 
+        /// <summary>Activa el modo contra la IA con el color y la dificultad indicados.</summary>
+        public void ConfigurarIA(bool activo, string colorDeLaIA, int nivel)
+        {
+            modoIA = activo;
+            if (!string.IsNullOrWhiteSpace(colorDeLaIA))
+                colorIA = colorDeLaIA;
+            nivelIA = nivel;
+        }
+
         private void Ajedrez_tablero_Load(object sender, EventArgs e)
         {
             // Mostrar junto a los puntos el nombre del jugador que lleva cada color
@@ -69,6 +87,10 @@ namespace Ajedrez
                 AplicarEstado(estadoPendiente);
                 estadoPendiente = null;
             }
+
+            // Si la IA lleva las blancas, debe abrir la partida.
+            if (modoIA && !juegoTerminado && currentTurn == colorIA)
+                IniciarJugadaIA();
         }
 
         private void InitializeBoard()
@@ -168,14 +190,25 @@ namespace Ajedrez
             PictureBox clickedCell = sender as PictureBox;
             if (clickedCell == null) return;
 
+            // Durante el turno de la IA (o mientras esta pensando) no se permiten jugadas humanas
+            if (modoIA && (iaPensando || currentTurn == colorIA)) return;
+
             Point pos = GetCellPosition(clickedCell);
             if (pos.X == -1 && pos.Y == -1) return;
 
             // Si hay una pieza seleccionada y se hace clic en una casilla válida
             if (selectedPiece != null && validMoves.Contains(pos))
             {
+                string promocion = null;
+                PieceInfo moving = GetPieceInfoFromCell(board[selectedPosition.X, selectedPosition.Y]);
+                if (moving != null && moving.Type == "pawn"
+                    && (pos.X == 0 || pos.X == BOARD_SIZE - 1))
+                {
+                    promocion = PedirPromocion();
+                }
+
                 // Mover la pieza
-                MovePiece(pos);
+                AplicarMovimiento(selectedPosition, pos, promocion);
                 return;
             }
 
@@ -262,10 +295,11 @@ namespace Ajedrez
             validMoves.Clear();
         }
 
-        private void MovePiece(Point targetPos)
+        private void AplicarMovimiento(Point sourcePos, Point targetPos, string promocion)
         {
-            Point sourcePos = GetCellPosition(selectedPiece);
-            PieceInfo sourceInfo = GetPieceInfoFromCell(selectedPiece);
+            PictureBox origen = board[sourcePos.X, sourcePos.Y];
+            PictureBox destino = board[targetPos.X, targetPos.Y];
+            PieceInfo sourceInfo = GetPieceInfoFromCell(origen);
 
             if (sourceInfo == null) return;
 
@@ -279,13 +313,14 @@ namespace Ajedrez
             // Guardar el estado actual para poder deshacer
             Image capturedImage = null;
             object capturedTag = null;
-            if (board[targetPos.X, targetPos.Y].Image != null)
+            if (destino.Image != null)
             {
-                capturedImage = board[targetPos.X, targetPos.Y].Image;
-                capturedTag = board[targetPos.X, targetPos.Y].Tag;
+                capturedImage = destino.Image;
+                capturedTag = destino.Tag;
             }
 
             MoveHistory hist = new MoveHistory(sourcePos, targetPos, capturedImage, capturedTag, sourceInfo);
+            hist.MovedImage = origen.Image;
             hist.IsCastle = isCastle;
             if (isCastle)
             {
@@ -296,9 +331,9 @@ namespace Ajedrez
             moveHistory.Push(hist);
 
             // Capturar pieza si existe
-            if (board[targetPos.X, targetPos.Y].Image != null)
+            if (destino.Image != null)
             {
-                PieceInfo targetInfo = GetPieceInfoFromCell(board[targetPos.X, targetPos.Y]);
+                PieceInfo targetInfo = GetPieceInfoFromCell(destino);
                 if (targetInfo != null)
                 {
                     if (targetInfo.Color == "white")
@@ -310,13 +345,22 @@ namespace Ajedrez
                 UpdateCaptureCounters();
             }
 
+            // Promoción del peón que alcanza la última fila
+            string tipoFinal = sourceInfo.Type;
+            if (sourceInfo.Type == "pawn" && (targetPos.X == 0 || targetPos.X == BOARD_SIZE - 1))
+            {
+                tipoFinal = string.IsNullOrWhiteSpace(promocion) ? "queen" : promocion;
+            }
+
             // Mover la pieza (marcada como movida)
-            board[targetPos.X, targetPos.Y].Image = selectedPiece.Image;
-            board[targetPos.X, targetPos.Y].Tag = new PieceInfo(sourceInfo.Color, sourceInfo.Type, targetPos.X, targetPos.Y, true);
+            destino.Image = tipoFinal == sourceInfo.Type
+                ? origen.Image
+                : ImagenDe(sourceInfo.Color, tipoFinal);
+            destino.Tag = new PieceInfo(sourceInfo.Color, tipoFinal, targetPos.X, targetPos.Y, true);
 
             // Limpiar casilla origen
-            selectedPiece.Image = null;
-            selectedPiece.Tag = new Point(sourcePos.X, sourcePos.Y);
+            origen.Image = null;
+            origen.Tag = new Point(sourcePos.X, sourcePos.Y);
 
             // Mover también la torre si es enroque
             if (isCastle)
@@ -347,6 +391,52 @@ namespace Ajedrez
 
             // El movimiento reciente se puede deshacer (una sola vez hasta el siguiente movimiento)
             canUndo = true;
+
+            // Si ahora le toca a la IA, que responda
+            if (modoIA && !juegoTerminado && currentTurn == colorIA)
+                IniciarJugadaIA();
+        }
+
+        private static Image ImagenDe(string color, string type)
+        {
+            return (Image)Properties.Resources.ResourceManager.GetObject(NombreImagen(color, type));
+        }
+
+        /// <summary>Pregunta al jugador por la pieza a la que corona el peón.</summary>
+        private string PedirPromocion()
+        {
+            using (Form dlg = new Form())
+            {
+                dlg.Text = "Promoción";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.MaximizeBox = false;
+                dlg.MinimizeBox = false;
+                dlg.ClientSize = new Size(320, 70);
+
+                string[] tipos = { "queen", "rook", "bishop", "knight" };
+                string[] textos = { "Reina", "Torre", "Alfil", "Caballo" };
+                string elegido = "queen";
+
+                for (int i = 0; i < tipos.Length; i++)
+                {
+                    Button b = new Button();
+                    b.Text = textos[i];
+                    b.Tag = tipos[i];
+                    b.Size = new Size(74, 34);
+                    b.Location = new Point(10 + i * 77, 18);
+                    b.Click += delegate (object s, EventArgs e)
+                    {
+                        elegido = (string)((Button)s).Tag;
+                        dlg.DialogResult = DialogResult.OK;
+                        dlg.Close();
+                    };
+                    dlg.Controls.Add(b);
+                }
+
+                dlg.ShowDialog(this);
+                return elegido;
+            }
         }
 
         private string Notacion(Point from, Point to)
@@ -393,7 +483,15 @@ namespace Ajedrez
                     break;
             }
 
-            return moves;
+            // Descartar movimientos que dejarían al propio rey en jaque
+            List<Point> legales = new List<Point>();
+            foreach (Point m in moves)
+            {
+                if (!MovimientoDejaEnJaque(pos, m, info.Color))
+                    legales.Add(m);
+            }
+
+            return legales;
         }
 
         private List<Point> GetPawnMoves(Point pos, string color)
@@ -710,6 +808,15 @@ namespace Ajedrez
             {
                 // Sin jaque: se corta la seguidilla
                 consecutiveChecks = 0;
+
+                // ¿El jugador al que le toca no tiene jugadas legales? Tablas por ahogado.
+                if (!HayMovimientosLegales(currentTurn))
+                {
+                    MessageBox.Show("¡Tablas! Empate por ahogado (sin movimientos legales).",
+                                  "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RegistrarFinAjedrez("empate");
+                    ResetGame();
+                }
             }
         }
 
@@ -821,6 +928,77 @@ namespace Ajedrez
                 }
             }
 
+            return false;
+        }
+
+        /// <summary>¿Está el rey del color indicado atacado?</summary>
+        private bool ReyEnJaque(string color)
+        {
+            Point rey = BuscarRey(color);
+            if (rey.X == -1) return false;
+            string enemigo = color == "white" ? "black" : "white";
+            return IsSquareAttacked(rey, enemigo);
+        }
+
+        private Point BuscarRey(string color)
+        {
+            for (int i = 0; i < BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BOARD_SIZE; j++)
+                {
+                    PieceInfo info = GetPieceInfoFromCell(board[i, j]);
+                    if (info != null && info.Type == "king" && info.Color == color)
+                        return new Point(i, j);
+                }
+            }
+            return new Point(-1, -1);
+        }
+
+        /// <summary>Simula el movimiento y comprueba si deja al rey propio en jaque.</summary>
+        private bool MovimientoDejaEnJaque(Point from, Point to, string color)
+        {
+            PictureBox origen = board[from.X, from.Y];
+            PictureBox destino = board[to.X, to.Y];
+
+            object tagOrigen = origen.Tag;
+            Image imgDestino = destino.Image;
+            object tagDestino = destino.Tag;
+
+            PieceInfo pieza = tagOrigen as PieceInfo;
+            string tipo = pieza != null ? pieza.Type : "queen";
+
+            // Simular
+            destino.Image = origen.Image;
+            destino.Tag = new PieceInfo(color, tipo, to.X, to.Y, true);
+            origen.Image = null;
+            origen.Tag = new Point(from.X, from.Y);
+
+            bool enJaque = ReyEnJaque(color);
+
+            // Revertir
+            origen.Image = destino.Image;
+            origen.Tag = tagOrigen;
+            destino.Image = imgDestino;
+            destino.Tag = tagDestino;
+
+            return enJaque;
+        }
+
+        /// <summary>¿Tiene el color indicado al menos un movimiento legal?</summary>
+        private bool HayMovimientosLegales(string color)
+        {
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    PieceInfo info = GetPieceInfoFromCell(board[r, c]);
+                    if (info != null && info.Color == color)
+                    {
+                        if (GetValidMoves(new Point(r, c), false).Count > 0)
+                            return true;
+                    }
+                }
+            }
             return false;
         }
 
@@ -945,6 +1123,9 @@ namespace Ajedrez
                 ["turn"] = currentTurn,
                 ["wc"] = whiteCaptures,
                 ["bc"] = blackCaptures,
+                ["ia"] = modoIA,
+                ["cia"] = colorIA,
+                ["nivel"] = nivelIA,
                 ["cells"] = cells
             };
             return o.ToString(Formatting.None);
@@ -958,6 +1139,10 @@ namespace Ajedrez
                 currentTurn = o["turn"] != null ? (string)o["turn"] : "white";
                 whiteCaptures = o["wc"] != null ? (int)o["wc"] : 0;
                 blackCaptures = o["bc"] != null ? (int)o["bc"] : 0;
+
+                if (o["ia"] != null) modoIA = (bool)o["ia"];
+                if (o["cia"] != null) colorIA = (string)o["cia"];
+                if (o["nivel"] != null) nivelIA = (int)o["nivel"];
 
                 JArray cells = (JArray)o["cells"];
                 for (int r = 0; r < BOARD_SIZE; r++)
@@ -1029,9 +1214,219 @@ namespace Ajedrez
             ultimoMovimiento = "";
         }
 
+        // ----- Jugada de la IA (Stockfish) -----
+
+        /// <summary>Arranca el motor si hace falta (descargándolo la primera vez).</summary>
+        private bool AsegurarMotor()
+        {
+            if (motor != null)
+            {
+                try { motor.EstablecerNivel(nivelIA); return true; }
+                catch { try { motor.Dispose(); } catch { } motor = null; }
+            }
+
+            string exe = StockfishDescarga.Buscar();
+            if (exe == null)
+            {
+                DialogResult r = MessageBox.Show(
+                    "Para jugar contra la IA se necesita el motor Stockfish (~35 MB).\n\n" +
+                    "¿Descargarlo ahora desde el sitio oficial de Stockfish?",
+                    "Motor de ajedrez", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (r != DialogResult.Yes) return false;
+
+                exe = StockfishDescarga.Descargar(this);
+                if (exe == null)
+                {
+                    MessageBox.Show("No se pudo descargar el motor. La partida seguirá en modo local.",
+                                    "Ajedrez", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return false;
+                }
+            }
+
+            try
+            {
+                motor = new StockfishEngine(exe);
+                motor.Iniciar();
+                motor.EstablecerNivel(nivelIA);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo iniciar el motor de ajedrez: " + ex.Message,
+                                "Ajedrez", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                motor = null;
+                return false;
+            }
+        }
+
+        private int TiempoPorNivel()
+        {
+            if (nivelIA <= 2) return 300;
+            if (nivelIA <= 8) return 600;
+            if (nivelIA <= 15) return 1000;
+            return 1500;
+        }
+
+        /// <summary>Lanza en segundo plano el cálculo de la jugada de la IA.</summary>
+        private void IniciarJugadaIA()
+        {
+            if (iaPensando || juegoTerminado) return;
+            if (!AsegurarMotor())
+            {
+                // Sin motor: se desactiva la IA y el juego continúa en modo local
+                modoIA = false;
+                return;
+            }
+
+            iaPensando = true;
+            string fen = GenerarFen();
+            int tiempo = TiempoPorNivel();
+
+            Task.Factory.StartNew(delegate
+            {
+                string best = null;
+                Exception err = null;
+                try { best = motor.MejorMovimiento(fen, tiempo); }
+                catch (Exception ex) { err = ex; }
+
+                try
+                {
+                    this.BeginInvoke(new Action(delegate
+                    {
+                        iaPensando = false;
+
+                        if (err != null)
+                        {
+                            MessageBox.Show("Error del motor de ajedrez: " + err.Message,
+                                            "Ajedrez", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        ProcesarRespuestaIA(best);
+                    }));
+                }
+                catch { }
+            });
+        }
+
+        private void ProcesarRespuestaIA(string best)
+        {
+            if (string.IsNullOrWhiteSpace(best) || best == "(none)") return;
+            if (best.Length < 4) return;
+
+            Point from = PuntoDeCasilla(best.Substring(0, 2));
+            Point to = PuntoDeCasilla(best.Substring(2, 2));
+
+            PieceInfo info = GetPieceInfoFromCell(board[from.X, from.Y]);
+            if (info == null || info.Color != colorIA) return;
+
+            string promocion = null;
+            if (best.Length >= 5)
+            {
+                switch (char.ToLower(best[4]))
+                {
+                    case 'r': promocion = "rook"; break;
+                    case 'b': promocion = "bishop"; break;
+                    case 'n': promocion = "knight"; break;
+                    default: promocion = "queen"; break;
+                }
+            }
+
+            AplicarMovimiento(from, to, promocion);
+        }
+
+        private static Point PuntoDeCasilla(string casilla)
+        {
+            int col = casilla[0] - 'a';
+            int row = 8 - (casilla[1] - '0');
+            return new Point(row, col);
+        }
+
+        /// <summary>Genera la notación FEN de la posición actual.</summary>
+        private string GenerarFen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                int vacias = 0;
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    PieceInfo info = GetPieceInfoFromCell(board[r, c]);
+                    if (info == null)
+                    {
+                        vacias++;
+                        continue;
+                    }
+                    if (vacias > 0)
+                    {
+                        sb.Append(vacias);
+                        vacias = 0;
+                    }
+                    sb.Append(LetraFen(info));
+                }
+                if (vacias > 0) sb.Append(vacias);
+                if (r < BOARD_SIZE - 1) sb.Append('/');
+            }
+
+            string turno = currentTurn == "white" ? "w" : "b";
+            string enroques = CalcularEnroques();
+            return sb.ToString() + " " + turno + " " + enroques + " - 0 1";
+        }
+
+        private static char LetraFen(PieceInfo info)
+        {
+            char c;
+            switch (info.Type)
+            {
+                case "king": c = 'k'; break;
+                case "queen": c = 'q'; break;
+                case "rook": c = 'r'; break;
+                case "bishop": c = 'b'; break;
+                case "knight": c = 'n'; break;
+                default: c = 'p'; break;
+            }
+            return info.Color == "white" ? char.ToUpper(c) : c;
+        }
+
+        private string CalcularEnroques()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (DerechoEnroque(true, true)) sb.Append('K');
+            if (DerechoEnroque(true, false)) sb.Append('Q');
+            if (DerechoEnroque(false, true)) sb.Append('k');
+            if (DerechoEnroque(false, false)) sb.Append('q');
+            return sb.Length == 0 ? "-" : sb.ToString();
+        }
+
+        private bool DerechoEnroque(bool blancas, bool flancoRey)
+        {
+            string color = blancas ? "white" : "black";
+            int row = blancas ? 7 : 0;
+
+            if (!IsUnmovedPiece(row, 4, color, "king")) return false;
+
+            if (flancoRey)
+            {
+                if (!IsUnmovedPiece(row, 7, color, "rook")) return false;
+                return board[row, 5].Image == null && board[row, 6].Image == null;
+            }
+
+            if (!IsUnmovedPiece(row, 0, color, "rook")) return false;
+            return board[row, 1].Image == null && board[row, 2].Image == null && board[row, 3].Image == null;
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             GuardarPartida();
+
+            if (motor != null)
+            {
+                motor.Dispose();
+                motor = null;
+            }
+
             base.OnFormClosing(e);
         }
 
@@ -1133,12 +1528,36 @@ namespace Ajedrez
                 return;
             }
 
+            if (iaPensando)
+            {
+                MessageBox.Show("Espera a que la IA termine de pensar.", "Ajedrez",
+                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             ClearSelection();
 
+            // En modo IA se deshacen las dos últimas jugadas (la respuesta de la IA y la tuya)
+            int plies = modoIA ? 2 : 1;
+            while (plies > 0 && moveHistory.Count > 0)
+            {
+                DeshacerUnMovimiento();
+                plies--;
+            }
+
+            ultimoMovimiento = "Deshacer";
+            GuardarPartida();
+
+            // Ya no se puede deshacer hasta que se vuelva a mover una pieza
+            canUndo = false;
+        }
+
+        private void DeshacerUnMovimiento()
+        {
             MoveHistory move = moveHistory.Pop();
 
-            // Mover la pieza de vuelta a su casilla de origen (con su estado original, incl. HasMoved)
-            board[move.From.X, move.From.Y].Image = board[move.To.X, move.To.Y].Image;
+            // Mover la pieza de vuelta a su casilla de origen (con su imagen y estado originales)
+            board[move.From.X, move.From.Y].Image = move.MovedImage;
             board[move.From.X, move.From.Y].Tag = move.MovedPiece;
 
             // Restaurar lo que había en la casilla de destino (pieza capturada o vacía)
@@ -1157,7 +1576,8 @@ namespace Ajedrez
             // Ajustar contadores de capturas si se deshace una captura
             if (move.CapturedImage != null)
             {
-                if (move.CapturedTag is PieceInfo capInfo)
+                PieceInfo capInfo = move.CapturedTag as PieceInfo;
+                if (capInfo != null)
                 {
                     if (capInfo.Color == "white")
                         blackCaptures--;
@@ -1174,13 +1594,7 @@ namespace Ajedrez
             if (consecutiveChecks > 0)
                 consecutiveChecks--;
 
-            // Actualizar y guardar el estado de la partida
             if (numMovimientos > 0) numMovimientos--;
-            ultimoMovimiento = "Deshacer";
-            GuardarPartida();
-
-            // Ya no se puede deshacer hasta que se vuelva a mover una pieza
-            canUndo = false;
         }
 
         // Clase para almacenar el historial de movimientos
@@ -1191,6 +1605,7 @@ namespace Ajedrez
             public Image CapturedImage { get; set; }
             public object CapturedTag { get; set; }
             public PieceInfo MovedPiece { get; set; }
+            public Image MovedImage { get; set; }
             public bool IsCastle { get; set; }
             public Point RookFrom { get; set; }
             public Point RookTo { get; set; }

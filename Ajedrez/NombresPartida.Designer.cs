@@ -33,9 +33,15 @@ namespace Ajedrez
             this.lblModo = new System.Windows.Forms.Label();
             this.rbNormal = new System.Windows.Forms.RadioButton();
             this.rbSoplar = new System.Windows.Forms.RadioButton();
+            this.gbModo = new System.Windows.Forms.GroupBox();
+            this.lblNivel = new System.Windows.Forms.Label();
+            this.cmbNivel = new System.Windows.Forms.ComboBox();
+            this.rbIA = new System.Windows.Forms.RadioButton();
+            this.rbLocal = new System.Windows.Forms.RadioButton();
             this.btnIniciar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.gbFichas.SuspendLayout();
+            this.gbModo.SuspendLayout();
             this.SuspendLayout();
             // 
             // lblLocal
@@ -134,6 +140,66 @@ namespace Ajedrez
             this.rbSoplar.Text = "Soplar piezas si no comes";
             this.rbSoplar.UseVisualStyleBackColor = true;
             // 
+            // gbModo
+            // 
+            this.gbModo.Controls.Add(this.lblNivel);
+            this.gbModo.Controls.Add(this.cmbNivel);
+            this.gbModo.Controls.Add(this.rbIA);
+            this.gbModo.Controls.Add(this.rbLocal);
+            this.gbModo.Location = new System.Drawing.Point(24, 162);
+            this.gbModo.Name = "gbModo";
+            this.gbModo.Size = new System.Drawing.Size(326, 76);
+            this.gbModo.TabIndex = 8;
+            this.gbModo.TabStop = false;
+            this.gbModo.Text = "Modo de juego:";
+            // 
+            // rbLocal
+            // 
+            this.rbLocal.AutoSize = true;
+            this.rbLocal.Checked = true;
+            this.rbLocal.Location = new System.Drawing.Point(18, 20);
+            this.rbLocal.Name = "rbLocal";
+            this.rbLocal.Size = new System.Drawing.Size(166, 17);
+            this.rbLocal.TabIndex = 0;
+            this.rbLocal.TabStop = true;
+            this.rbLocal.Text = "Dos jugadores (local)";
+            this.rbLocal.UseVisualStyleBackColor = true;
+            this.rbLocal.CheckedChanged += new System.EventHandler(this.rbLocal_CheckedChanged);
+            // 
+            // rbIA
+            // 
+            this.rbIA.AutoSize = true;
+            this.rbIA.Location = new System.Drawing.Point(18, 44);
+            this.rbIA.Name = "rbIA";
+            this.rbIA.Size = new System.Drawing.Size(150, 17);
+            this.rbIA.TabIndex = 1;
+            this.rbIA.Text = "Jugar contra la IA";
+            this.rbIA.UseVisualStyleBackColor = true;
+            this.rbIA.CheckedChanged += new System.EventHandler(this.rbIA_CheckedChanged);
+            // 
+            // lblNivel
+            // 
+            this.lblNivel.AutoSize = true;
+            this.lblNivel.Location = new System.Drawing.Point(190, 22);
+            this.lblNivel.Name = "lblNivel";
+            this.lblNivel.Size = new System.Drawing.Size(58, 13);
+            this.lblNivel.TabIndex = 2;
+            this.lblNivel.Text = "Dificultad:";
+            // 
+            // cmbNivel
+            // 
+            this.cmbNivel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbNivel.FormattingEnabled = true;
+            this.cmbNivel.Items.AddRange(new object[] {
+            "Fácil",
+            "Media",
+            "Difícil",
+            "Experto"});
+            this.cmbNivel.Location = new System.Drawing.Point(190, 42);
+            this.cmbNivel.Name = "cmbNivel";
+            this.cmbNivel.Size = new System.Drawing.Size(120, 21);
+            this.cmbNivel.TabIndex = 3;
+            // 
             // btnIniciar
             // 
             this.btnIniciar.Location = new System.Drawing.Point(150, 222);
@@ -163,6 +229,7 @@ namespace Ajedrez
             this.ClientSize = new System.Drawing.Size(384, 268);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
+            this.Controls.Add(this.gbModo);
             this.Controls.Add(this.rbSoplar);
             this.Controls.Add(this.rbNormal);
             this.Controls.Add(this.lblModo);
@@ -179,6 +246,8 @@ namespace Ajedrez
             this.Text = "NUEVA PARTIDA - DAMAS";
             this.gbFichas.ResumeLayout(false);
             this.gbFichas.PerformLayout();
+            this.gbModo.ResumeLayout(false);
+            this.gbModo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
         }
@@ -195,6 +264,11 @@ namespace Ajedrez
         private System.Windows.Forms.Label lblModo;
         private System.Windows.Forms.RadioButton rbNormal;
         private System.Windows.Forms.RadioButton rbSoplar;
+        private System.Windows.Forms.GroupBox gbModo;
+        private System.Windows.Forms.Label lblNivel;
+        private System.Windows.Forms.ComboBox cmbNivel;
+        private System.Windows.Forms.RadioButton rbIA;
+        private System.Windows.Forms.RadioButton rbLocal;
         private System.Windows.Forms.Button btnIniciar;
         private System.Windows.Forms.Button btnCancelar;
     }

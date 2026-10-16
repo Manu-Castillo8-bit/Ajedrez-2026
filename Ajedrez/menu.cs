@@ -49,6 +49,14 @@ namespace Ajedrez
                 string blancas = dlg.LocalEsBlancas ? dlg.NombreLocal : dlg.NombreOponente;
                 string negras = dlg.LocalEsBlancas ? dlg.NombreOponente : dlg.NombreLocal;
                 Ajedrez_tablero f_ajedrez = new Ajedrez_tablero(blancas, negras);
+
+                if (dlg.ModoIA)
+                {
+                    // La IA juega con el color contrario al del jugador local
+                    string colorIA = dlg.LocalEsBlancas ? "black" : "white";
+                    f_ajedrez.ConfigurarIA(true, colorIA, dlg.NivelIA);
+                }
+
                 Tema.ApplyTheme(f_ajedrez);
                 f_ajedrez.Show();
                 this.Hide();

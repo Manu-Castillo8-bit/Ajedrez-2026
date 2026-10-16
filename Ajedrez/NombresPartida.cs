@@ -11,6 +11,8 @@ namespace Ajedrez
         public bool ModoSoplar { get; private set; }
         public bool LocalEsBlancas { get; private set; } = true;
         public string TipoJuego { get; private set; } = "damas";
+        public bool ModoIA { get; private set; }
+        public int NivelIA { get; private set; } = 5;
 
         public NombresPartida() : this("damas")
         {
@@ -27,15 +29,57 @@ namespace Ajedrez
             txtLocal.Text = string.IsNullOrWhiteSpace(Sesion.NombreUsuario) ? "Jugador" : Sesion.NombreUsuario;
             txtLocal.SelectAll();
 
+            cmbNivel.SelectedIndex = 1;
+
             // El modo de captura (soplar) solo aplica a las damas
             if (TipoJuego == "ajedrez")
             {
                 lblModo.Visible = false;
                 rbNormal.Visible = false;
                 rbSoplar.Visible = false;
-                btnIniciar.Location = new Point(150, 170);
-                btnCancelar.Location = new Point(255, 170);
-                ClientSize = new Size(384, 216);
+
+                gbModo.Visible = true;
+                gbModo.Location = new Point(24, 162);
+
+                btnIniciar.Location = new Point(150, 248);
+                btnCancelar.Location = new Point(255, 248);
+                ClientSize = new Size(384, 292);
+            }
+            else
+            {
+                gbModo.Visible = false;
+                rbLocal.Checked = true;
+            }
+
+            ActualizarNivel();
+        }
+
+        private void rbLocal_CheckedChanged(object sender, EventArgs e)
+        {
+            ActualizarNivel();
+        }
+
+        private void rbIA_CheckedChanged(object sender, EventArgs e)
+        {
+            ActualizarNivel();
+        }
+
+        private void ActualizarNivel()
+        {
+            bool contraIA = rbIA.Checked;
+            lblNivel.Enabled = contraIA;
+            cmbNivel.Enabled = contraIA;
+
+            if (contraIA)
+            {
+                txtOponente.Text = "Stockfish";
+                txtOponente.ReadOnly = true;
+            }
+            else
+            {
+                if (txtOponente.Text == "Stockfish")
+                    txtOponente.Text = "";
+                txtOponente.ReadOnly = false;
             }
         }
 
@@ -64,8 +108,26 @@ namespace Ajedrez
             NombreOponente = visitante;
             ModoSoplar = rbSoplar.Checked;
             LocalEsBlancas = rbBlancas.Checked;
+
+            if (TipoJuego == "ajedrez" && rbIA.Checked)
+            {
+                ModoIA = true;
+                NivelIA = NivelDesdeIndice(cmbNivel.SelectedIndex);
+            }
+
             DialogResult = DialogResult.OK;
             Close();
+        }
+
+        private static int NivelDesdeIndice(int indice)
+        {
+            switch (indice)
+            {
+                case 0: return 1;   // Fácil
+                case 2: return 12;  // Difícil
+                case 3: return 20;  // Experto
+                default: return 5;  // Media
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

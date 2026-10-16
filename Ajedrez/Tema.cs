@@ -312,6 +312,12 @@ namespace Ajedrez
                 {
                     panel.BackColor = ColorTranslator.FromHtml("#0f1f3a");
                 }
+                // COMBOBOX
+                else if (control is ComboBox comboBox)
+                {
+                    comboBox.BackColor = ColorTranslator.FromHtml("#1a2d4a");
+                    comboBox.ForeColor = Color.White;
+                }
 
                 // Si el control tiene hijos (como GroupBox, Panel, etc.), aplicar también a ellos
                 if (control.HasChildren)
@@ -489,6 +495,12 @@ namespace Ajedrez
                 else if (control is Panel panel)
                 {
                     panel.BackColor = SystemColors.Control;
+                }
+                // COMBOBOX
+                else if (control is ComboBox comboBox)
+                {
+                    comboBox.BackColor = SystemColors.Window;
+                    comboBox.ForeColor = SystemColors.WindowText;
                 }
 
                 // Si el control tiene hijos (como GroupBox, Panel, etc.), aplicar también a ellos
