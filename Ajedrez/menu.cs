@@ -256,9 +256,13 @@ namespace Ajedrez
 
             lbl_usuario.Text = nombreUsuario;
 
+            // Las victorias se calculan desde las partidas locales, igual que en las
+            // ventanas de Partidas y Perfil, para que los números coincidan siempre.
+            label5.Text = PartidaRepository.EstadisticasDe(nombreUsuario).Ganadas.ToString();
+
             try
             {
-                string url = $"{SupabaseConfig.SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url,elo,partidas_ganadas";
+                string url = $"{SupabaseConfig.SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}&select=imagen_url,elo";
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("apikey", SupabaseConfig.SupabaseKey);
@@ -275,9 +279,9 @@ namespace Ajedrez
                     {
                         DatosMenu d = lista[0];
 
-                        // Mostrar el ELO y las victorias del usuario en sus etiquetas
+                        // Mostrar el ELO del usuario en su etiqueta (las victorias ya
+                        // se calcularon arriba desde las partidas locales).
                         label4.Text = (d.elo ?? 0).ToString("0");
-                        label5.Text = (d.partidas_ganadas ?? 0).ToString();
 
                         string urlImagen = d.imagen_url;
                         if (string.IsNullOrWhiteSpace(urlImagen))
@@ -306,7 +310,6 @@ namespace Ajedrez
         {
             public string imagen_url { get; set; }
             public double? elo { get; set; }
-            public int? partidas_ganadas { get; set; }
         }
     }
     }

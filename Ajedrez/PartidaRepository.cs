@@ -156,6 +156,41 @@ namespace Ajedrez
             return resultado;
         }
 
+        /// <summary>Estadísticas de un usuario calculadas desde sus partidas locales.</summary>
+        public class Estadisticas
+        {
+            public int Ganadas { get; set; }
+            public int Perdidas { get; set; }
+            public int Empates { get; set; }
+            public int Total { get; set; }
+        }
+
+        /// <summary>
+        /// Calcula las estadísticas del usuario a partir de sus partidas finalizadas.
+        /// Es la misma fuente que usan las ventanas de Partidas y Perfil, para que
+        /// todas muestren siempre los mismos números (independientemente de la red).
+        /// </summary>
+        public static Estadisticas EstadisticasDe(string usuario)
+        {
+            var e = new Estadisticas();
+            if (string.IsNullOrWhiteSpace(usuario)) return e;
+
+            foreach (var p in ListarPartidas(null, usuario))
+            {
+                if (!string.Equals(p.estado, "finalizada", StringComparison.OrdinalIgnoreCase)) continue;
+
+                e.Total++;
+                if (string.IsNullOrWhiteSpace(p.ganador)
+                    || string.Equals(p.ganador, "empate", StringComparison.OrdinalIgnoreCase))
+                    e.Empates++;
+                else if (string.Equals(p.ganador, usuario, StringComparison.OrdinalIgnoreCase))
+                    e.Ganadas++;
+                else
+                    e.Perdidas++;
+            }
+            return e;
+        }
+
         /// <summary>Busca una partida en curso del usuario para poder continuarla.</summary>
         public static Partida BuscarPartidaEnCurso(string tipo, string usuario)
         {

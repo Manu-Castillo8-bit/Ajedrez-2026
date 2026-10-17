@@ -163,3 +163,13 @@ C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez\bin\Debug\SQL
 C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez\bin\Debug\SQLite-net.xml
 C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez\obj\Debug\Ajedrez.csproj.SuggestedBindingRedirects.cache
 C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez\obj\Debug\Ajedrez.exe.config
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build2\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build2\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build2\Ajedrez.exe.config
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build2\Ajedrez.exe
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build2\Ajedrez.pdb
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build3\runtimes\win-x64\native\e_sqlite3.dll
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build3\runtimes\win-x86\native\e_sqlite3.dll
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build3\Ajedrez.exe.config
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build3\Ajedrez.exe
+C:\Users\User\AppData\Local\Temp\opencode\Capuras\build3\Ajedrez.pdb
