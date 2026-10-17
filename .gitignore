@@ -15,3 +15,4 @@ Ajedrez/obj/**/Ajedrez.pdb
 # Motor de ajedrez Stockfish (se descarga automaticamente en tiempo de ejecucion)
 **/stockfish.exe
 Ajedrez/Stockfish/
+.vs/Ajedrez.slnx/FileContentIndex/*.vsidx
