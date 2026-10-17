@@ -152,7 +152,7 @@ namespace Ajedrez
                     {
                         label.ForeColor = ColorTranslator.FromHtml("#cfe0ff");
                         label.BackColor = ColorTranslator.FromHtml("#0f1f3a");
-                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Italic);
+                        label.Font = Control.DefaultFont;
                     }
                     else if (label.Name == "ir_registro")
                     {
@@ -381,7 +381,7 @@ namespace Ajedrez
                     {
                         label.ForeColor = ColorTranslator.FromHtml("#242426");
                         label.BackColor = ColorTranslator.FromHtml("#F0F6FF");
-                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Italic);
+                        label.Font = Control.DefaultFont;
                     }
                     else if (label.Name == "ir_registro")
                     {

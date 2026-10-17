@@ -159,7 +159,6 @@
             // consejo
             // 
             this.consejo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.consejo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.consejo.Location = new System.Drawing.Point(505, 356);
             this.consejo.Name = "consejo";
             this.consejo.Size = new System.Drawing.Size(290, 86);
