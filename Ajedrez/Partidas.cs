@@ -215,10 +215,11 @@ namespace Ajedrez
         {
             string usuario = Sesion.NombreUsuario;
 
+            // Solo se cuentan las partidas finalizadas (se descartan las que siguen en curso)
             int nVictorias = lista.Count(p => EsVictoria(p, usuario));
             int nDerrotas = lista.Count(p => EsDerrota(p, usuario));
-            int nEmpates = lista.Count(p => EsEmpate(p, usuario));
-            int nTotal = lista.Count;
+            int nEmpates = lista.Count(p => EsFinalizada(p) && EsEmpate(p, usuario));
+            int nTotal = lista.Count(p => EsFinalizada(p));
 
             // Winrate = victorias sobre las partidas decididas (ganadas + perdidas)
             int nDecididas = nVictorias + nDerrotas;

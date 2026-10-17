@@ -212,7 +212,7 @@
             // total
             // 
             this.total.AutoSize = true;
-            this.total.Location = new System.Drawing.Point(103, 193);
+            this.total.Location = new System.Drawing.Point(132, 193);
             this.total.Name = "total";
             this.total.Size = new System.Drawing.Size(35, 13);
             this.total.TabIndex = 3;
@@ -221,7 +221,7 @@
             // empates
             // 
             this.empates.AutoSize = true;
-            this.empates.Location = new System.Drawing.Point(103, 143);
+            this.empates.Location = new System.Drawing.Point(132, 143);
             this.empates.Name = "empates";
             this.empates.Size = new System.Drawing.Size(35, 13);
             this.empates.TabIndex = 2;
@@ -230,7 +230,7 @@
             // derrotas
             // 
             this.derrotas.AutoSize = true;
-            this.derrotas.Location = new System.Drawing.Point(103, 91);
+            this.derrotas.Location = new System.Drawing.Point(132, 91);
             this.derrotas.Name = "derrotas";
             this.derrotas.Size = new System.Drawing.Size(35, 13);
             this.derrotas.TabIndex = 1;
@@ -239,7 +239,7 @@
             // victorias_
             // 
             this.victorias_.AutoSize = true;
-            this.victorias_.Location = new System.Drawing.Point(103, 46);
+            this.victorias_.Location = new System.Drawing.Point(132, 46);
             this.victorias_.Name = "victorias_";
             this.victorias_.Size = new System.Drawing.Size(35, 13);
             this.victorias_.TabIndex = 0;
