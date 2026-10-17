@@ -21,7 +21,8 @@ namespace Ajedrez
         private static string[] _profileValueLabels = { "nombre", "elo", "correo", "victorias", "descripcion",
                                                         "elo_menu2", "victorias_menu2", "partidas_menu2", "derrotas_menu2",
                                                         "victorias_", "derrotas", "empates", "total", "lbl_usuario",
-                                                        "lbl_elo", "lbl_victorias", "puntosb", "puntosn" };
+                                                        "lbl_elo", "lbl_victorias", "puntosb", "puntosn", "victorias_",
+                                                        "derrotas_", "empates_", "partidas_", "ganadas", "perdidas" };
 
         // Método para cambiar el tema
         public static void SetTheme(bool isDark)
