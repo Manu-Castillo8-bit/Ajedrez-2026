@@ -316,9 +316,10 @@
             this.descripcion.AutoSize = false;
             this.descripcion.Location = new System.Drawing.Point(435, 229);
             this.descripcion.Name = "descripcion";
-            this.descripcion.Size = new System.Drawing.Size(150, 46);
+            this.descripcion.Size = new System.Drawing.Size(150, 55);
             this.descripcion.TabIndex = 36;
             this.descripcion.Text = "n";
+            this.descripcion.Font = GestorFuentes.ObtenerFuente(9f, System.Drawing.FontStyle.Regular);
             // 
             // editar_descripcion_btn
             // 
