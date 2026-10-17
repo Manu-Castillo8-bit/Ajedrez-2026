@@ -168,10 +168,11 @@ namespace Ajedrez
                         label.ForeColor = Color.White;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }
-                    else if (label.Name == "descripcion")
+                    else if (Array.Exists(_profileValueLabels, name => name == label.Name))
                     {
+                        // Labels de datos del perfil: un poco más claros y delgados
                         label.ForeColor = ColorTranslator.FromHtml("#b8ccf0");
-                        label.Font = GestorFuentes.ObtenerFuente(8f, FontStyle.Regular);
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular);
                     }
                     else
                     {
@@ -381,34 +382,16 @@ namespace Ajedrez
                         label.ForeColor = Color.Black;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
                     }
-                    else if (label.Name == "descripcion")
-                    {
-                        // Labels de datos del perfil: un poco más grises que los demás
-                        label.ForeColor = ColorTranslator.FromHtml("#707070");
-                        label.Font = GestorFuentes.ObtenerFuente(8f, FontStyle.Regular);
-                    }
-                    else if (label.Name == "descripcion")
-                    {
-                        // Labels de datos del perfil: un poco más grises que los demás
-                        label.ForeColor = ColorTranslator.FromHtml("#707070");
-                        label.Font = GestorFuentes.ObtenerFuente(8f, FontStyle.Regular);
-                    }
-                    else if (label.Name == "descripcion")
-                    {
-                        label.ForeColor = ColorTranslator.FromHtml("#b8ccf0");
-                        label.Font = GestorFuentes.ObtenerFuente(8f, FontStyle.Regular);
-                    }
                     else if (Array.Exists(_profileValueLabels, name => name == label.Name))
                     {
-                        // Labels de datos del perfil: un poco más claros y delgados
-                        label.ForeColor = ColorTranslator.FromHtml("#b8ccf0");
+                        // Labels de datos del perfil: un poco más grises que los demás
+                        label.ForeColor = ColorTranslator.FromHtml("#707070");
                         label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Regular);
                     }
-                
-                else
-                {
-                    label.ForeColor = Color.Black;
-                }
+                    else
+                    {
+                        label.ForeColor = Color.Black;
+                    }
                 }
             
 
