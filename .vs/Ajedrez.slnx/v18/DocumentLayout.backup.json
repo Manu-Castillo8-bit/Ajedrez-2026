@@ -3,7 +3,11 @@
   "WorkspaceRootPath": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\source\\repos\\manu-castillo8-bit\\ajedrez-2026\\ajedrez\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|c:\\users\\user\\source\\repos\\manu-castillo8-bit\\ajedrez-2026\\ajedrez\\administradores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\administradores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\ajedrez\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{3E5C1633-3BB3-4AC5-A6C5-643EF8CADE49}|Ajedrez\\Ajedrez.csproj|solutionrelative:ajedrez\\partidas.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -70,12 +74,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
@@ -86,35 +86,46 @@
             },
             {
               "$type": "Bookmark",
-              "Name": "ST:3:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Administradores.cs",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Administradores.cs",
+              "RelativeDocumentMoniker": "Ajedrez\\Administradores.cs",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Administradores.cs",
+              "RelativeToolTip": "Ajedrez\\Administradores.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-15T06:46:31.098Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Partidas.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Partidas.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Partidas.cs",
               "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Partidas.cs [Dise\u00F1o]",
               "RelativeToolTip": "Ajedrez\\Partidas.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-31T21:15:31.663Z",
-              "EditorCaption": " [Dise\u00F1o]"
+              "WhenOpened": "2026-08-31T21:15:31.663Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Resources.resx",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Properties\\Resources.resx",
               "RelativeDocumentMoniker": "Ajedrez\\Properties\\Resources.resx",
               "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Properties\\Resources.resx",
               "RelativeToolTip": "Ajedrez\\Properties\\Resources.resx",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
-              "WhenOpened": "2026-09-04T05:24:05.955Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-09-04T05:24:05.955Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Form1.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Form1.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Form1.cs",
@@ -125,7 +136,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Program.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Program.cs",
@@ -137,7 +148,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "SupabaseConfig.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\SupabaseConfig.cs",
               "RelativeDocumentMoniker": "Ajedrez\\SupabaseConfig.cs",
@@ -149,7 +160,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Perfil.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Perfil.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Perfil.cs",
@@ -160,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "menu.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs",
               "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
@@ -172,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Perfil.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Perfil.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Perfil.cs",
@@ -184,7 +195,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "menu.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs",
               "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
@@ -195,7 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "LOGIN.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\LOGIN.cs",
               "RelativeDocumentMoniker": "Ajedrez\\LOGIN.cs",
@@ -206,7 +217,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "LOGIN.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\LOGIN.cs",
               "RelativeDocumentMoniker": "Ajedrez\\LOGIN.cs",
@@ -218,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "Sesion.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Sesion.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Sesion.cs",
@@ -230,7 +241,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "Tema.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Tema.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Tema.cs",
@@ -242,7 +253,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "Movimientos.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Movimientos.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Movimientos.cs",
@@ -253,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "Ajedrez_tablero.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\Ajedrez_tablero.cs",
               "RelativeDocumentMoniker": "Ajedrez\\Ajedrez_tablero.cs",
