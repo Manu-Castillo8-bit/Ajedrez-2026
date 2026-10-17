@@ -148,6 +148,12 @@ namespace Ajedrez
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Italic);
 
                     }
+                    else if (label.Name == "consejo")
+                    {
+                        label.ForeColor = ColorTranslator.FromHtml("#cfe0ff");
+                        label.BackColor = ColorTranslator.FromHtml("#0f1f3a");
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Italic);
+                    }
                     else if (label.Name == "ir_registro")
                     {
                         label.ForeColor = Color.White;
@@ -370,6 +376,12 @@ namespace Ajedrez
                         label.ForeColor = ColorTranslator.FromHtml("#242426");
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Italic);
 
+                    }
+                    else if (label.Name == "consejo")
+                    {
+                        label.ForeColor = ColorTranslator.FromHtml("#242426");
+                        label.BackColor = ColorTranslator.FromHtml("#F0F6FF");
+                        label.Font = GestorFuentes.ObtenerFuente(9f, FontStyle.Italic);
                     }
                     else if (label.Name == "ir_registro")
                     {

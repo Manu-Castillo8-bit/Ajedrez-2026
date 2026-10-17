@@ -40,6 +40,7 @@
             this.ir_menu = new System.Windows.Forms.Button();
             this.puntosn = new System.Windows.Forms.Label();
             this.puntosb = new System.Windows.Forms.Label();
+            this.consejo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.puntos_n)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.puntos_b)).BeginInit();
             this.SuspendLayout();
@@ -155,11 +156,23 @@
             this.puntosb.TabIndex = 13;
             this.puntosb.Text = "PUNTOS BLANCAS:";
             // 
+            // consejo
+            // 
+            this.consejo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.consejo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.consejo.Location = new System.Drawing.Point(505, 356);
+            this.consejo.Name = "consejo";
+            this.consejo.Size = new System.Drawing.Size(290, 86);
+            this.consejo.TabIndex = 14;
+            this.consejo.Text = "Elige tu jugada. ¡Mucha suerte!";
+            this.consejo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Ajedrez_tablero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 517);
+            this.Controls.Add(this.consejo);
             this.Controls.Add(this.puntosb);
             this.Controls.Add(this.puntosn);
             this.Controls.Add(this.deshacer);
@@ -197,5 +210,6 @@
         private System.Windows.Forms.Button ir_menu;
         private System.Windows.Forms.Label puntosn;
         private System.Windows.Forms.Label puntosb;
+        private System.Windows.Forms.Label consejo;
     }
 }

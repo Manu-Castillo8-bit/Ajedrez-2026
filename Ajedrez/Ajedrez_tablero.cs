@@ -17,15 +17,39 @@ namespace Ajedrez
         private const int CELL_SIZE = 60;
         private PictureBox[,] board;
         private PictureBox selectedPiece = null;
-        private Point selectedPosition;
+        private Point selectedPosition = new Point(-1, -1);
         private string currentTurn = "white"; // "white" o "black"
         private int whiteCaptures = 0;
         private int blackCaptures = 0;
         private List<Point> validMoves = new List<Point>();
         private Stack<MoveHistory> moveHistory = new Stack<MoveHistory>();
         private bool canUndo = false;
-        private int consecutiveChecks = 0; // Contador global de jaques consecutivos/repetitivos
-        private const int MAX_CONSECUTIVE_CHECKS = 5; // Limite antes de declarar tablas
+
+        // ----- Reglas estándar del ajedrez -----
+        private Point? casillaAlPaso = null;          // objetivo de captura al paso (o null)
+        private int halfmoveClock = 0;                // medios movimientos sin peón ni captura
+        private int fullmoveNumber = 1;               // número de jugada (FEN)
+        private List<string> historialPosiciones = new List<string>(); // claves para 3 repeticiones
+        private List<string> notaciones = new List<string>();          // jugadas en notación SAN
+        private bool partidaFinalizada = false;       // congela el tablero tras mate o tablas
+        private string motivoFin = null;              // texto del resultado para el label
+        private string motivoGanadorFin = "empate";   // ganador usado al registrar el final
+        private Random rndFrases = new Random();
+
+        // Datos de la última jugada para el label de consejos
+        private bool ultimoFueCaptura = false;
+        private bool ultimoFueAlPaso = false;
+        private bool ultimoFueCoronacion = false;
+        private bool ultimoFueEnroqueCorto = false;
+        private bool ultimoFueEnroqueLargo = false;
+
+        // ----- Resaltado del tablero -----
+        private Point? casillaJaque = null;           // rey en jaque -> amarillo
+        private Point? casillaMate = null;            // rey en jaque mate -> rojo
+        private Point? casillaHover = null;           // casilla bajo el ratón
+
+        // Permite ejecutar partidas de prueba sin ventanas emergentes
+        private static bool silenciarDialogos = false;
 
         // ----- Persistencia en Supabase -----
         private const string TIPO_JUEGO = "ajedrez";
@@ -50,6 +74,7 @@ namespace Ajedrez
             InitializeComponent();
             InitializeBoard();
             SetupPieces();
+            historialPosiciones.Add(PosicionClave());
             Tema.ApplyTheme(this);
         }
 
@@ -87,6 +112,9 @@ namespace Ajedrez
                 AplicarEstado(estadoPendiente);
                 estadoPendiente = null;
             }
+
+            ActualizarResaltadoJaque();
+            MostrarConsejo(null);
 
             // Si la IA lleva las blancas, debe abrir la partida.
             if (modoIA && !juegoTerminado && currentTurn == colorIA)
@@ -190,6 +218,9 @@ namespace Ajedrez
             PictureBox clickedCell = sender as PictureBox;
             if (clickedCell == null) return;
 
+            // Tras el jaque mate o unas tablas el tablero queda congelado
+            if (partidaFinalizada) return;
+
             // Durante el turno de la IA (o mientras esta pensando) no se permiten jugadas humanas
             if (modoIA && (iaPensando || currentTurn == colorIA)) return;
 
@@ -226,23 +257,12 @@ namespace Ajedrez
 
         private void SelectPiece(PictureBox piece)
         {
-            // Limpiar selección anterior
-            ClearSelection();
-
             selectedPiece = piece;
             selectedPosition = GetCellPosition(piece);
 
-            // Calcular movimientos válidos
+            // Calcular movimientos válidos y repintar todo el tablero de una vez
             validMoves = GetValidMoves(selectedPosition);
-
-            // Resaltar movimientos
-            foreach (Point move in validMoves)
-            {
-                board[move.X, move.Y].BackColor = Color.LightGreen;
-            }
-
-            // Resaltar pieza seleccionada
-            piece.BackColor = Color.Yellow;
+            RefrescarColores();
         }
 
         private Point GetCellPosition(PictureBox cell)
@@ -270,33 +290,70 @@ namespace Ajedrez
 
             return null;
         }
+
         private void ClearSelection()
         {
-            if (selectedPiece != null)
-            {
-                // Restaurar color original
-                Point pos = GetCellPosition(selectedPiece);
-                if (pos.X != -1 && pos.Y != -1)
-                {
-                    selectedPiece.BackColor = (pos.X + pos.Y) % 2 == 0 ? Color.White : Color.Black;
-                }
-                selectedPiece = null;
-            }
-
-            // Limpiar movimientos válidos
-            foreach (Point move in validMoves)
-            {
-                Point pos = GetCellPosition(board[move.X, move.Y]);
-                if (pos.X != -1 && pos.Y != -1)
-                {
-                    board[move.X, move.Y].BackColor = (pos.X + pos.Y) % 2 == 0 ? Color.White : Color.Black;
-                }
-            }
+            selectedPiece = null;
+            selectedPosition = new Point(-1, -1);
             validMoves.Clear();
+            RefrescarColores();
+        }
+
+        private Color ColorBase(int row, int col)
+        {
+            return (row + col) % 2 == 0 ? Color.White : Color.Black;
+        }
+
+        /// <summary>
+        /// Repinta el tablero combinando selección, movimientos válidos, jaque (amarillo)
+        /// y jaque mate (rojo). Centralizar los colores evita que el hover, la selección
+        /// o el cambio de tema borren las marcas de peligro.
+        /// </summary>
+        private void RefrescarColores()
+        {
+            if (board == null) return;
+
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    Point p = new Point(r, c);
+                    Color color = ColorBase(r, c);
+
+                    // Destinos legales de la pieza seleccionada
+                    if (validMoves.Contains(p))
+                        color = Color.LightGreen;
+
+                    // Pieza seleccionada
+                    if (selectedPiece != null && selectedPosition == p)
+                        color = Color.Yellow;
+
+                    // Rey en jaque: amarillo
+                    if (casillaJaque.HasValue && casillaJaque.Value == p)
+                        color = Color.Yellow;
+
+                    // Hover sutil, solo sobre casillas base con pieza
+                    if (casillaHover.HasValue && casillaHover.Value == p
+                        && color == ColorBase(r, c) && board[r, c].Image != null)
+                    {
+                        color = (r + c) % 2 == 0
+                            ? Color.FromArgb(220, 220, 220)
+                            : Color.FromArgb(80, 80, 80);
+                    }
+
+                    // Jaque mate: el rojo tiene prioridad absoluta
+                    if (casillaMate.HasValue && casillaMate.Value == p)
+                        color = Color.Red;
+
+                    board[r, c].BackColor = color;
+                }
+            }
         }
 
         private void AplicarMovimiento(Point sourcePos, Point targetPos, string promocion)
         {
+            if (partidaFinalizada) return;
+
             PictureBox origen = board[sourcePos.X, sourcePos.Y];
             PictureBox destino = board[targetPos.X, targetPos.Y];
             PieceInfo sourceInfo = GetPieceInfoFromCell(origen);
@@ -310,6 +367,27 @@ namespace Ajedrez
                             && targetPos.X == sourcePos.X
                             && Math.Abs(targetPos.Y - sourcePos.Y) == 2;
 
+            // ¿Es una captura al paso? (peón llega a la casilla objetivo con destino vacío)
+            bool isEnPassant = sourceInfo.Type == "pawn"
+                               && casillaAlPaso.HasValue
+                               && targetPos == casillaAlPaso.Value
+                               && destino.Image == null;
+
+            Point epVictimPos = new Point(-1, -1);
+            PieceInfo epVictimInfo = null;
+            Image epVictimImage = null;
+            object epVictimTag = null;
+            if (isEnPassant)
+            {
+                int victimRow = targetPos.X + (sourceInfo.Color == "white" ? 1 : -1);
+                epVictimPos = new Point(victimRow, targetPos.Y);
+                epVictimImage = board[victimRow, targetPos.Y].Image;
+                epVictimTag = board[victimRow, targetPos.Y].Tag;
+                epVictimInfo = GetPieceInfoFromCell(board[victimRow, targetPos.Y]);
+                if (epVictimInfo == null || epVictimInfo.Type != "pawn" || epVictimInfo.Color == sourceInfo.Color)
+                    isEnPassant = false;
+            }
+
             // Guardar el estado actual para poder deshacer
             Image capturedImage = null;
             object capturedTag = null;
@@ -319,9 +397,19 @@ namespace Ajedrez
                 capturedTag = destino.Tag;
             }
 
+            bool capturo = destino.Image != null || isEnPassant;
+
             MoveHistory hist = new MoveHistory(sourcePos, targetPos, capturedImage, capturedTag, sourceInfo);
             hist.MovedImage = origen.Image;
             hist.IsCastle = isCastle;
+            hist.IsEnPassant = isEnPassant;
+            hist.EnPassantVictimPos = epVictimPos;
+            hist.EnPassantVictimImage = epVictimImage;
+            hist.EnPassantVictimTag = epVictimTag;
+            hist.AlPasoAnterior = casillaAlPaso;
+            hist.HalfmoveAnterior = halfmoveClock;
+            hist.FullmoveAnterior = fullmoveNumber;
+
             if (isCastle)
             {
                 hist.RookFrom = new Point(sourcePos.X, targetPos.Y > sourcePos.Y ? 7 : 0);
@@ -330,7 +418,7 @@ namespace Ajedrez
             }
             moveHistory.Push(hist);
 
-            // Capturar pieza si existe
+            // Capturar pieza si existe (o el peón al paso)
             if (destino.Image != null)
             {
                 PieceInfo targetInfo = GetPieceInfoFromCell(destino);
@@ -344,13 +432,28 @@ namespace Ajedrez
 
                 UpdateCaptureCounters();
             }
+            else if (isEnPassant && epVictimInfo != null)
+            {
+                if (epVictimInfo.Color == "white")
+                    blackCaptures++;
+                else
+                    whiteCaptures++;
+
+                UpdateCaptureCounters();
+            }
 
             // Promoción del peón que alcanza la última fila
             string tipoFinal = sourceInfo.Type;
+            bool coronacion = false;
             if (sourceInfo.Type == "pawn" && (targetPos.X == 0 || targetPos.X == BOARD_SIZE - 1))
             {
                 tipoFinal = string.IsNullOrWhiteSpace(promocion) ? "queen" : promocion;
+                coronacion = true;
             }
+
+            // Notación de la jugada (para el label y las aperturas)
+            string san = ConstruirSan(sourcePos, targetPos, sourceInfo, capturo,
+                                      coronacion ? tipoFinal : null, isCastle);
 
             // Mover la pieza (marcada como movida)
             destino.Image = tipoFinal == sourceInfo.Type
@@ -373,28 +476,116 @@ namespace Ajedrez
                 rookFrom.Tag = new Point(hist.RookFrom.X, hist.RookFrom.Y);
             }
 
+            // Retirar el peón capturado al paso
+            if (isEnPassant)
+            {
+                board[epVictimPos.X, epVictimPos.Y].Image = null;
+                board[epVictimPos.X, epVictimPos.Y].Tag = new Point(epVictimPos.X, epVictimPos.Y);
+            }
+
+            // Actualizar la casilla de captura al paso (solo tras un doble avance de peón)
+            if (sourceInfo.Type == "pawn" && targetPos.Y == sourcePos.Y
+                && Math.Abs(targetPos.X - sourcePos.X) == 2)
+                casillaAlPaso = new Point((sourcePos.X + targetPos.X) / 2, sourcePos.Y);
+            else
+                casillaAlPaso = null;
+
+            // Reloj de 50 movimientos y numeración FEN
+            if (sourceInfo.Type == "pawn" || capturo)
+                halfmoveClock = 0;
+            else
+                halfmoveClock++;
+
+            if (sourceInfo.Color == "black")
+                fullmoveNumber++;
+
             // Cambiar turno
             currentTurn = currentTurn == "white" ? "black" : "white";
 
             // Registrar la jugada
             numMovimientos++;
             ultimoMovimiento = Notacion(sourcePos, targetPos);
+            notaciones.Add(san);
+
+            // Datos para el label de consejos
+            ultimoFueCaptura = capturo;
+            ultimoFueAlPaso = isEnPassant;
+            ultimoFueCoronacion = coronacion;
+            ultimoFueEnroqueCorto = isCastle && targetPos.Y == 6;
+            ultimoFueEnroqueLargo = isCastle && targetPos.Y == 2;
 
             // Limpiar selección
             ClearSelection();
 
-            // Verificar jaque o jaque mate
-            CheckGameState();
+            // Registrar la posición para las tablas por repetición
+            historialPosiciones.Add(PosicionClave());
+
+            // Verificar jaque, jaque mate o tablas
+            bool termino = EvaluarFinDePartida();
+            if (termino)
+            {
+                FinalizarPartida();
+            }
+            else
+            {
+                MostrarConsejo(san);
+                if (casillaJaque.HasValue)
+                    Avisar("¡Jaque al rey de las " + ColorTexto(currentTurn) + "!",
+                           "Ajedrez", MessageBoxIcon.Warning);
+            }
 
             // Guardar el estado para poder continuar la partida (si no terminó)
             if (!juegoTerminado) GuardarPartida();
 
             // El movimiento reciente se puede deshacer (una sola vez hasta el siguiente movimiento)
-            canUndo = true;
+            canUndo = !partidaFinalizada;
 
             // Si ahora le toca a la IA, que responda
             if (modoIA && !juegoTerminado && currentTurn == colorIA)
                 IniciarJugadaIA();
+        }
+
+        private static string ColorTexto(string color)
+        {
+            return color == "white" ? "Blancas" : "Negras";
+        }
+
+        private static string LetraSan(string tipo)
+        {
+            switch (tipo)
+            {
+                case "king": return "R";
+                case "queen": return "D";
+                case "rook": return "T";
+                case "bishop": return "A";
+                case "knight": return "C";
+                default: return "";
+            }
+        }
+
+        private string ConstruirSan(Point from, Point to, PieceInfo pieza, bool captura,
+                                    string promocion, bool enroque)
+        {
+            if (enroque)
+                return to.Y == 6 ? "O-O" : "O-O-O";
+
+            if (pieza.Type == "pawn")
+            {
+                string s = captura
+                    ? ((char)('a' + from.Y)).ToString() + "x" + NombreCasilla(to)
+                    : NombreCasilla(to);
+                if (!string.IsNullOrEmpty(promocion))
+                    s += "=" + LetraSan(promocion);
+                return s;
+            }
+
+            return LetraSan(pieza.Type) + (captura ? "x" : "") + NombreCasilla(to);
+        }
+
+        private void Avisar(string texto, string titulo, MessageBoxIcon icono)
+        {
+            if (silenciarDialogos) return;
+            MessageBox.Show(texto, titulo, MessageBoxButtons.OK, icono);
         }
 
         private static Image ImagenDe(string color, string type)
@@ -405,6 +596,8 @@ namespace Ajedrez
         /// <summary>Pregunta al jugador por la pieza a la que corona el peón.</summary>
         private string PedirPromocion()
         {
+            if (silenciarDialogos) return "queen";
+
             using (Form dlg = new Form())
             {
                 dlg.Text = "Promoción";
@@ -525,6 +718,16 @@ namespace Ajedrez
                     if (targetInfo.Color != color)
                         moves.Add(new Point(newRow, col));
                 }
+            }
+
+            // Captura al paso: solo si el peón rival acaba de avanzar dos casillas
+            if (casillaAlPaso.HasValue
+                && casillaAlPaso.Value.X == newRow
+                && Math.Abs(casillaAlPaso.Value.Y - pos.Y) == 1
+                && IsInBounds(newRow, casillaAlPaso.Value.Y)
+                && board[casillaAlPaso.Value.X, casillaAlPaso.Value.Y].Image == null)
+            {
+                moves.Add(casillaAlPaso.Value);
             }
 
             return moves;
@@ -728,14 +931,8 @@ namespace Ajedrez
             PictureBox cell = sender as PictureBox;
             if (cell == null) return;
 
-            if (cell.Image != null && cell != selectedPiece)
-            {
-                // Efecto hover sutil
-                if (cell.BackColor == Color.White)
-                    cell.BackColor = Color.FromArgb(220, 220, 220);
-                else
-                    cell.BackColor = Color.FromArgb(80, 80, 80);
-            }
+            casillaHover = GetCellPosition(cell);
+            RefrescarColores();
         }
         
 
@@ -744,14 +941,8 @@ namespace Ajedrez
             PictureBox cell = sender as PictureBox;
             if (cell == null) return;
 
-            Point pos = GetCellPosition(cell);
-            if (pos.X == -1 && pos.Y == -1) return;
-
-            // Restaurar color original si no está seleccionada
-            if (cell != selectedPiece && !validMoves.Contains(pos))
-            {
-                cell.BackColor = (pos.X + pos.Y) % 2 == 0 ? Color.White : Color.Black;
-            }
+            casillaHover = null;
+            RefrescarColores();
         }
         
 
@@ -769,72 +960,223 @@ namespace Ajedrez
             return "empate";
         }
 
-        private void CheckGameState()
+        /// <summary>
+        /// Analiza la posición del bando al que le toca mover y decide si la partida
+        /// termina (jaque mate o tablas). No muestra ventanas ni reinicia el tablero.
+        /// </summary>
+        private bool EvaluarFinDePartida()
         {
-            // Buscar el rey del turno actual
-            string currentKing = currentTurn == "white" ? "rey_blanco" : "rey_negro";
-            Point kingPos = FindKing(currentKing);
+            casillaJaque = null;
+            casillaMate = null;
+            motivoFin = null;
+            motivoGanadorFin = "empate";
 
-            if (IsInCheck(kingPos))
+            Point rey = BuscarRey(currentTurn);
+            bool enJaque = rey.X != -1 && IsInCheck(rey);
+
+            if (enJaque && !HayMovimientosLegales(currentTurn))
             {
-                // Se registra la seguidilla de jaques consecutivos/repetitivos
-                consecutiveChecks++;
+                casillaMate = rey;
+                string ganadorColor = currentTurn == "white" ? "black" : "white";
+                string ganador = ganadorColor == "white" ? nombreBlancas : nombreNegras;
+                motivoGanadorFin = ganador;
+                motivoFin = "¡Jaque mate! Ganan las " + ColorTexto(ganadorColor)
+                            + " (" + ganador + ").\nEl rey queda marcado en rojo.";
+                return true;
+            }
 
-                // Condicional de tablas por jaques: si se supera el limite es empate
-                if (consecutiveChecks >= MAX_CONSECUTIVE_CHECKS)
-                {
-                    MessageBox.Show("¡Tablas! Empate por jaques consecutivos.",
-                                  "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RegistrarFinAjedrez("empate");
-                    ResetGame();
-                    return;
-                }
+            if (enJaque)
+            {
+                casillaJaque = rey;
+                return false;
+            }
 
-                MessageBox.Show($"¡Jaque al rey {currentTurn}!", "Ajedrez",
-                              MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            if (!HayMovimientosLegales(currentTurn))
+            {
+                motivoFin = "¡Tablas! Empate por ahogado: no hay movimientos legales.";
+                return true;
+            }
 
-                // Verificar jaque mate
-                if (IsCheckMate(kingPos))
-                {
-                    string winnerColor = currentTurn == "white" ? "black" : "white";
-                    string winner = winnerColor == "white" ? nombreBlancas : nombreNegras;
-                    MessageBox.Show($"¡Jaque mate! ¡Ganan las {(winnerColor == "white" ? "Blancas" : "Negras")}!",
-                                  "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RegistrarFinAjedrez(winner);
-                    ResetGame();
-                }
+            if (halfmoveClock >= 100)
+            {
+                motivoFin = "¡Tablas! Empate por la regla de los 50 movimientos.";
+                return true;
+            }
+
+            if (HayTresRepeticiones())
+            {
+                motivoFin = "¡Tablas! Empate por repetición de posición (3 veces).";
+                return true;
+            }
+
+            if (MaterialInsuficiente())
+            {
+                motivoFin = "¡Tablas! Empate por material insuficiente.";
+                return true;
+            }
+
+            return false;
+        }
+
+        private void FinalizarPartida()
+        {
+            partidaFinalizada = true;
+            RegistrarFinAjedrez(motivoGanadorFin);
+            RefrescarColores();
+            MostrarConsejo(null);
+
+            if (silenciarDialogos) return;
+
+            DialogResult r = MessageBox.Show(
+                motivoFin + "\n\n¿Quieres empezar una nueva partida?",
+                "Fin del juego", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            if (r == DialogResult.Yes) ResetGame();
+        }
+
+        private void ActualizarResaltadoJaque()
+        {
+            casillaJaque = null;
+            casillaMate = null;
+
+            if (!partidaFinalizada)
+            {
+                Point rey = BuscarRey(currentTurn);
+                if (rey.X != -1 && IsInCheck(rey))
+                    casillaJaque = rey;
+            }
+
+            RefrescarColores();
+        }
+
+        private void MostrarConsejo(string san)
+        {
+            if (consejo == null) return;
+
+            if (partidaFinalizada && !string.IsNullOrEmpty(motivoFin))
+            {
+                consejo.Text = motivoFin;
+                return;
+            }
+
+            var partes = new List<string>();
+
+            if (san != null)
+            {
+                partes.Add("Jugada: " + san);
+
+                string contexto = Consejos.Contexto(san, ultimoFueCaptura, ultimoFueEnroqueCorto,
+                                   ultimoFueEnroqueLargo, ultimoFueAlPaso, ultimoFueCoronacion);
+
+                if (casillaJaque.HasValue)
+                    contexto = Consejos.MensajeJaque;
+
+                if (contexto != null)
+                    partes.Add(contexto);
+                else
+                    partes.Add(rndFrases.Next(2) == 0
+                        ? Consejos.FraseMotivacional(rndFrases)
+                        : Consejos.ConsejoEstrategico(rndFrases));
+            }
+            else if (casillaJaque.HasValue)
+            {
+                partes.Add(Consejos.MensajeJaque);
             }
             else
             {
-                // Sin jaque: se corta la seguidilla
-                consecutiveChecks = 0;
-
-                // ¿El jugador al que le toca no tiene jugadas legales? Tablas por ahogado.
-                if (!HayMovimientosLegales(currentTurn))
-                {
-                    MessageBox.Show("¡Tablas! Empate por ahogado (sin movimientos legales).",
-                                  "Fin del juego", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    RegistrarFinAjedrez("empate");
-                    ResetGame();
-                }
+                partes.Add(rndFrases.Next(2) == 0
+                    ? Consejos.FraseMotivacional(rndFrases)
+                    : Consejos.ConsejoEstrategico(rndFrases));
             }
+
+            string apertura = Consejos.ReconocerApertura(notaciones);
+            if (apertura != null) partes.Insert(0, "Apertura: " + apertura);
+
+            consejo.Text = string.Join("\n", partes);
         }
 
-        private Point FindKing(string kingImageName)
+        private bool HayTresRepeticiones()
         {
-            for (int i = 0; i < BOARD_SIZE; i++)
+            if (historialPosiciones.Count == 0) return false;
+
+            string actual = historialPosiciones[historialPosiciones.Count - 1];
+            int cuenta = 0;
+            foreach (string clave in historialPosiciones)
+                if (clave == actual) cuenta++;
+
+            return cuenta >= 3;
+        }
+
+        private bool MaterialInsuficiente()
+        {
+            List<PieceInfo> piezas = new List<PieceInfo>();
+            for (int r = 0; r < BOARD_SIZE; r++)
             {
-                for (int j = 0; j < BOARD_SIZE; j++)
+                for (int c = 0; c < BOARD_SIZE; c++)
                 {
-                    if (board[i, j].Image != null)
-                    {
-                        PieceInfo info = GetPieceInfoFromCell(board[i, j]);
-                        if (info != null && info.Type == "king" && info.Color == currentTurn)
-                            return new Point(i, j);
-                    }
+                    PieceInfo info = GetPieceInfoFromCell(board[r, c]);
+                    if (info != null && info.Type != "king")
+                        piezas.Add(info);
                 }
             }
-            return new Point(-1, -1);
+
+            if (piezas.Count == 0) return true;
+
+            if (piezas.Count == 1
+                && (piezas[0].Type == "bishop" || piezas[0].Type == "knight"))
+                return true;
+
+            if (piezas.Count == 2
+                && piezas[0].Type == "bishop" && piezas[1].Type == "bishop"
+                && piezas[0].Color != piezas[1].Color)
+            {
+                int c0 = (piezas[0].Row + piezas[0].Col) % 2;
+                int c1 = (piezas[1].Row + piezas[1].Col) % 2;
+                if (c0 == c1) return true;
+            }
+
+            return false;
+        }
+
+        private string PosicionClave()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int r = 0; r < BOARD_SIZE; r++)
+            {
+                for (int c = 0; c < BOARD_SIZE; c++)
+                {
+                    PieceInfo info = GetPieceInfoFromCell(board[r, c]);
+                    sb.Append(info == null ? '.' : LetraFen(info));
+                }
+            }
+
+            sb.Append(' ').Append(currentTurn == "white" ? 'w' : 'b');
+            sb.Append(' ').Append(CalcularEnroques());
+
+            if (casillaAlPaso.HasValue && PuedeCapturarAlPaso())
+                sb.Append(' ').Append(NombreCasilla(casillaAlPaso.Value));
+
+            return sb.ToString();
+        }
+
+        private bool PuedeCapturarAlPaso()
+        {
+            if (!casillaAlPaso.HasValue) return false;
+
+            int r = casillaAlPaso.Value.X;
+            int c = casillaAlPaso.Value.Y;
+            int pawnRow = currentTurn == "white" ? r + 1 : r - 1;
+
+            foreach (int dc in new int[] { -1, 1 })
+            {
+                int cc = c + dc;
+                if (!IsInBounds(pawnRow, cc)) continue;
+
+                PieceInfo pi = GetPieceInfoFromCell(board[pawnRow, cc]);
+                if (pi != null && pi.Type == "pawn" && pi.Color == currentTurn)
+                    return true;
+            }
+
+            return false;
         }
 
         private bool IsInCheck(Point kingPos)
@@ -967,6 +1309,24 @@ namespace Ajedrez
             PieceInfo pieza = tagOrigen as PieceInfo;
             string tipo = pieza != null ? pieza.Type : "queen";
 
+            // Si es una captura al paso hay que quitar también el peón víctima
+            bool quitarVictima = pieza != null && pieza.Type == "pawn"
+                                 && casillaAlPaso.HasValue && to == casillaAlPaso.Value
+                                 && destino.Image == null;
+
+            Point victimaPos = new Point(-1, -1);
+            Image victimaImg = null;
+            object victimaTag = null;
+            if (quitarVictima)
+            {
+                int victimRow = to.X + (color == "white" ? 1 : -1);
+                victimaPos = new Point(victimRow, to.Y);
+                victimaImg = board[victimRow, to.Y].Image;
+                victimaTag = board[victimRow, to.Y].Tag;
+                board[victimRow, to.Y].Image = null;
+                board[victimRow, to.Y].Tag = new Point(victimRow, to.Y);
+            }
+
             // Simular
             destino.Image = origen.Image;
             destino.Tag = new PieceInfo(color, tipo, to.X, to.Y, true);
@@ -980,6 +1340,12 @@ namespace Ajedrez
             origen.Tag = tagOrigen;
             destino.Image = imgDestino;
             destino.Tag = tagDestino;
+
+            if (quitarVictima)
+            {
+                board[victimaPos.X, victimaPos.Y].Image = victimaImg;
+                board[victimaPos.X, victimaPos.Y].Tag = victimaTag;
+            }
 
             return enJaque;
         }
@@ -1000,36 +1366,6 @@ namespace Ajedrez
                 }
             }
             return false;
-        }
-
-        private bool IsCheckMate(Point kingPos)
-        {
-            // Verificar si el rey puede moverse
-            List<Point> kingMoves = GetValidMoves(kingPos);
-            foreach (Point move in kingMoves)
-            {
-                // Simular el movimiento
-                PieceInfo kingInfo = (PieceInfo)board[kingPos.X, kingPos.Y].Tag;
-                Image tempImage = board[move.X, move.Y].Image;
-                object tempTag = board[move.X, move.Y].Tag;
-
-                board[move.X, move.Y].Image = board[kingPos.X, kingPos.Y].Image;
-                board[move.X, move.Y].Tag = new PieceInfo(kingInfo.Color, kingInfo.Type, move.X, move.Y);
-                board[kingPos.X, kingPos.Y].Image = null;
-
-                bool stillInCheck = IsInCheck(move);
-
-                // Deshacer movimiento
-                board[kingPos.X, kingPos.Y].Image = board[move.X, move.Y].Image;
-                board[kingPos.X, kingPos.Y].Tag = kingInfo;
-                board[move.X, move.Y].Image = tempImage;
-                board[move.X, move.Y].Tag = tempTag;
-
-                if (!stillInCheck)
-                    return false;
-            }
-
-            return true;
         }
 
         private void ResetGame()
@@ -1055,8 +1391,19 @@ namespace Ajedrez
             // Reiniciar turno
             currentTurn = "white";
 
-            // Reiniciar contador de jaques consecutivos
-            consecutiveChecks = 0;
+            // Reiniciar reglas estándar
+            casillaAlPaso = null;
+            halfmoveClock = 0;
+            fullmoveNumber = 1;
+            historialPosiciones.Clear();
+            historialPosiciones.Add(PosicionClave());
+            notaciones.Clear();
+            partidaFinalizada = false;
+            motivoFin = null;
+            motivoGanadorFin = "empate";
+            casillaJaque = null;
+            casillaMate = null;
+            casillaHover = null;
 
             // Reiniciar datos de persistencia (nueva partida)
             idPartida = -1;
@@ -1073,6 +1420,9 @@ namespace Ajedrez
 
             // Deshabilitar deshacer
             canUndo = false;
+
+            // Refrescar el label de consejos
+            MostrarConsejo(null);
         }
 
         // ----- Persistencia en Supabase -----
@@ -1126,6 +1476,11 @@ namespace Ajedrez
                 ["ia"] = modoIA,
                 ["cia"] = colorIA,
                 ["nivel"] = nivelIA,
+                ["ep"] = casillaAlPaso.HasValue ? NombreCasilla(casillaAlPaso.Value) : null,
+                ["hm"] = halfmoveClock,
+                ["fm"] = fullmoveNumber,
+                ["rep"] = new JArray(historialPosiciones),
+                ["not"] = new JArray(notaciones),
                 ["cells"] = cells
             };
             return o.ToString(Formatting.None);
@@ -1143,6 +1498,20 @@ namespace Ajedrez
                 if (o["ia"] != null) modoIA = (bool)o["ia"];
                 if (o["cia"] != null) colorIA = (string)o["cia"];
                 if (o["nivel"] != null) nivelIA = (int)o["nivel"];
+                if (o["hm"] != null) halfmoveClock = (int)o["hm"];
+                if (o["fm"] != null) fullmoveNumber = (int)o["fm"];
+
+                casillaAlPaso = null;
+                if (o["ep"] != null && o["ep"].Type != JTokenType.Null)
+                {
+                    string ep = (string)o["ep"];
+                    if (!string.IsNullOrEmpty(ep) && ep.Length >= 2)
+                    {
+                        int col = ep[0] - 'a';
+                        int row = 8 - (ep[1] - '0');
+                        if (IsInBounds(row, col)) casillaAlPaso = new Point(row, col);
+                    }
+                }
 
                 JArray cells = (JArray)o["cells"];
                 for (int r = 0; r < BOARD_SIZE; r++)
@@ -1166,6 +1535,27 @@ namespace Ajedrez
                         }
                     }
                 }
+
+                historialPosiciones.Clear();
+                JArray rep = o["rep"] as JArray;
+                if (rep != null)
+                {
+                    foreach (JToken t in rep)
+                        historialPosiciones.Add((string)t);
+                }
+                if (historialPosiciones.Count == 0)
+                    historialPosiciones.Add(PosicionClave());
+
+                notaciones.Clear();
+                JArray not = o["not"] as JArray;
+                if (not != null)
+                {
+                    foreach (JToken t in not)
+                        notaciones.Add((string)t);
+                }
+
+                partidaFinalizada = false;
+                motivoFin = null;
 
                 UpdateCaptureCounters();
                 juegoTerminado = false;
@@ -1321,6 +1711,16 @@ namespace Ajedrez
             PieceInfo info = GetPieceInfoFromCell(board[from.X, from.Y]);
             if (info == null || info.Color != colorIA) return;
 
+            // El movimiento del motor debe ser legal en nuestra posición
+            if (!GetValidMoves(from).Contains(to))
+            {
+                modoIA = false;
+                Avisar("La IA propuso un movimiento no válido y se ha desactivado.\n" +
+                       "Puedes continuar jugando los dos bandos.",
+                       "Ajedrez", MessageBoxIcon.Warning);
+                return;
+            }
+
             string promocion = null;
             if (best.Length >= 5)
             {
@@ -1372,7 +1772,9 @@ namespace Ajedrez
 
             string turno = currentTurn == "white" ? "w" : "b";
             string enroques = CalcularEnroques();
-            return sb.ToString() + " " + turno + " " + enroques + " - 0 1";
+            string ep = casillaAlPaso.HasValue ? NombreCasilla(casillaAlPaso.Value) : "-";
+            return sb.ToString() + " " + turno + " " + enroques + " " + ep
+                   + " " + halfmoveClock + " " + fullmoveNumber;
         }
 
         private static char LetraFen(PieceInfo info)
@@ -1407,14 +1809,8 @@ namespace Ajedrez
 
             if (!IsUnmovedPiece(row, 4, color, "king")) return false;
 
-            if (flancoRey)
-            {
-                if (!IsUnmovedPiece(row, 7, color, "rook")) return false;
-                return board[row, 5].Image == null && board[row, 6].Image == null;
-            }
-
-            if (!IsUnmovedPiece(row, 0, color, "rook")) return false;
-            return board[row, 1].Image == null && board[row, 2].Image == null && board[row, 3].Image == null;
+            int rookCol = flancoRey ? 7 : 0;
+            return IsUnmovedPiece(row, rookCol, color, "rook");
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -1454,6 +1850,7 @@ namespace Ajedrez
             
             Tema.SetTheme(false);      // Cambia a tema claro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
+            RefrescarColores();        // Mantiene las marcas de jaque/mate sobre el tablero
         }
 
         private void m_oscuro_Click(object sender, EventArgs e)
@@ -1462,6 +1859,7 @@ namespace Ajedrez
            
             Tema.SetTheme(true);       // Cambia a tema oscuro
             Tema.ApplyTheme(this);     // Aplica el tema al formulario actual
+            RefrescarColores();        // Mantiene las marcas de jaque/mate sobre el tablero
 
         }
 
@@ -1514,24 +1912,31 @@ namespace Ajedrez
 
         private void deshacer_Click(object sender, EventArgs e)
         {
+            if (partidaFinalizada)
+            {
+                Avisar("La partida ya ha terminado y el tablero está congelado.", "Ajedrez",
+                       MessageBoxIcon.Information);
+                return;
+            }
+
             if (moveHistory.Count == 0)
             {
-                MessageBox.Show("No hay movimientos para deshacer.", "Ajedrez",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Avisar("No hay movimientos para deshacer.", "Ajedrez",
+                       MessageBoxIcon.Information);
                 return;
             }
 
             if (!canUndo)
             {
-                MessageBox.Show("Solo puedes deshacer el último movimiento, antes de que juegue el rival.", "Ajedrez",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Avisar("Solo puedes deshacer el último movimiento, antes de que juegue el rival.", "Ajedrez",
+                       MessageBoxIcon.Information);
                 return;
             }
 
             if (iaPensando)
             {
-                MessageBox.Show("Espera a que la IA termine de pensar.", "Ajedrez",
-                              MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Avisar("Espera a que la IA termine de pensar.", "Ajedrez",
+                       MessageBoxIcon.Information);
                 return;
             }
 
@@ -1546,6 +1951,14 @@ namespace Ajedrez
             }
 
             ultimoMovimiento = "Deshacer";
+            ultimoFueCaptura = false;
+            ultimoFueAlPaso = false;
+            ultimoFueCoronacion = false;
+            ultimoFueEnroqueCorto = false;
+            ultimoFueEnroqueLargo = false;
+
+            ActualizarResaltadoJaque();
+            MostrarConsejo(null);
             GuardarPartida();
 
             // Ya no se puede deshacer hasta que se vuelva a mover una pieza
@@ -1573,7 +1986,24 @@ namespace Ajedrez
                 board[move.RookTo.X, move.RookTo.Y].Tag = new Point(move.RookTo.X, move.RookTo.Y);
             }
 
-            // Ajustar contadores de capturas si se deshace una captura
+            // Si fue una captura al paso, devolver el peón capturado
+            if (move.IsEnPassant)
+            {
+                board[move.EnPassantVictimPos.X, move.EnPassantVictimPos.Y].Image = move.EnPassantVictimImage;
+                board[move.EnPassantVictimPos.X, move.EnPassantVictimPos.Y].Tag = move.EnPassantVictimTag;
+
+                PieceInfo capInfo = move.EnPassantVictimTag as PieceInfo;
+                if (capInfo != null)
+                {
+                    if (capInfo.Color == "white")
+                        blackCaptures--;
+                    else
+                        whiteCaptures--;
+                    UpdateCaptureCounters();
+                }
+            }
+
+            // Ajustar contadores de capturas si se deshace una captura normal
             if (move.CapturedImage != null)
             {
                 PieceInfo capInfo = move.CapturedTag as PieceInfo;
@@ -1587,12 +2017,18 @@ namespace Ajedrez
                 }
             }
 
+            // Restaurar el estado de las reglas estándar
+            casillaAlPaso = move.AlPasoAnterior;
+            halfmoveClock = move.HalfmoveAnterior;
+            fullmoveNumber = move.FullmoveAnterior;
+
+            if (historialPosiciones.Count > 0)
+                historialPosiciones.RemoveAt(historialPosiciones.Count - 1);
+            if (notaciones.Count > 0)
+                notaciones.RemoveAt(notaciones.Count - 1);
+
             // Cambiar el turno de vuelta
             currentTurn = move.MovedPiece.Color;
-
-            // Al deshacer un movimiento se descuenta el jaque que hubiera generado
-            if (consecutiveChecks > 0)
-                consecutiveChecks--;
 
             if (numMovimientos > 0) numMovimientos--;
         }
@@ -1610,6 +2046,13 @@ namespace Ajedrez
             public Point RookFrom { get; set; }
             public Point RookTo { get; set; }
             public PieceInfo RookInfo { get; set; }
+            public bool IsEnPassant { get; set; }
+            public Point EnPassantVictimPos { get; set; }
+            public Image EnPassantVictimImage { get; set; }
+            public object EnPassantVictimTag { get; set; }
+            public Point? AlPasoAnterior { get; set; }
+            public int HalfmoveAnterior { get; set; }
+            public int FullmoveAnterior { get; set; }
 
             public MoveHistory(Point from, Point to, Image capturedImage, object capturedTag, PieceInfo movedPiece)
             {
