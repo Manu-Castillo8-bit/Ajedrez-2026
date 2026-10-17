@@ -430,6 +430,136 @@ namespace Ajedrez
             return string.IsNullOrEmpty(correo) ? "Sin correo" : correo;
         }
 
+        // ---------------- Descripción del perfil (máx. 50 caracteres) ----------------
+
+        private const int MaxDescripcion = 50;
+        private const string SinDescripcion = "(sin descripción)";
+
+        private static string MostrarDescripcion(string texto)
+        {
+            return string.IsNullOrWhiteSpace(texto) ? SinDescripcion : texto;
+        }
+
+        private async void editar_descripcion_btn_Click(object sender, EventArgs e)
+        {
+            string usuario = Sesion.NombreUsuario;
+            if (string.IsNullOrWhiteSpace(usuario))
+            {
+                MessageBox.Show("Inicia sesión para editar tu descripción.", "Atención",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string actual = descripcion.Text;
+            if (actual == SinDescripcion) actual = "";
+
+            string nuevo = PedirDescripcion(actual);
+            if (nuevo == null) return; // el usuario canceló
+
+            try
+            {
+                string urlTabla = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(usuario)}";
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
+                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
+                    client.DefaultRequestHeaders.Add("Prefer", "return=minimal");
+
+                    var datosActualizar = new
+                    {
+                        descripcion = string.IsNullOrWhiteSpace(nuevo) ? null : nuevo
+                    };
+                    string jsonBody = JsonConvert.SerializeObject(datosActualizar);
+                    StringContent contentJson = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+
+                    HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), urlTabla)
+                    {
+                        Content = contentJson
+                    };
+
+                    HttpResponseMessage response = await client.SendAsync(request);
+
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        string err = await response.Content.ReadAsStringAsync();
+                        throw new Exception($"Error DB ({response.StatusCode}): {err}");
+                    }
+                }
+
+                descripcion.Text = MostrarDescripcion(nuevo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("No se pudo guardar la descripción: " + ex.Message, "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Pequeño diálogo modal con un TextBox limitado a MaxDescripcion caracteres.
+        // Devuelve el texto introducido o null si el usuario cancela.
+        private string PedirDescripcion(string actual)
+        {
+            using (Form dlg = new Form())
+            {
+                dlg.Text = "Descripción";
+                dlg.FormBorderStyle = FormBorderStyle.FixedDialog;
+                dlg.StartPosition = FormStartPosition.CenterParent;
+                dlg.MinimizeBox = false;
+                dlg.MaximizeBox = false;
+                dlg.ShowInTaskbar = false;
+                dlg.ClientSize = new Size(340, 156);
+
+                Label etiqueta = new Label();
+                etiqueta.Name = "etiqueta_descripcion";
+                etiqueta.Text = "Escribe una descripción corta para tu perfil (máximo " + MaxDescripcion + " caracteres):";
+                etiqueta.AutoSize = false;
+                etiqueta.Location = new Point(12, 12);
+                etiqueta.Size = new Size(316, 40);
+
+                TextBox texto = new TextBox();
+                texto.Name = "texto_descripcion";
+                texto.MaxLength = MaxDescripcion;
+                texto.Location = new Point(12, 58);
+                texto.Size = new Size(316, 20);
+                texto.Text = actual ?? "";
+
+                Label contador = new Label();
+                contador.Name = "contador_descripcion";
+                contador.AutoSize = true;
+                contador.Location = new Point(12, 82);
+                contador.Text = texto.Text.Length + "/" + MaxDescripcion;
+
+                texto.TextChanged += (s, ev) => { contador.Text = texto.Text.Length + "/" + MaxDescripcion; };
+
+                Button guardar = new Button();
+                guardar.Name = "bt_guardar_desc";
+                guardar.Text = "GUARDAR";
+                guardar.DialogResult = DialogResult.OK;
+                guardar.Location = new Point(172, 114);
+                guardar.Size = new Size(75, 28);
+
+                Button cancelar = new Button();
+                cancelar.Name = "bt_cancelar_desc";
+                cancelar.Text = "CANCELAR";
+                cancelar.DialogResult = DialogResult.Cancel;
+                cancelar.Location = new Point(253, 114);
+                cancelar.Size = new Size(75, 28);
+
+                dlg.Controls.Add(etiqueta);
+                dlg.Controls.Add(texto);
+                dlg.Controls.Add(contador);
+                dlg.Controls.Add(guardar);
+                dlg.Controls.Add(cancelar);
+                dlg.AcceptButton = guardar;
+                dlg.CancelButton = cancelar;
+
+                Tema.ApplyTheme(dlg);
+
+                return dlg.ShowDialog(this) == DialogResult.OK ? texto.Text.Trim() : null;
+            }
+        }
+
         private static string GetMime(string extension)
         {
             switch (extension.ToLowerInvariant())
@@ -454,10 +584,14 @@ namespace Ajedrez
                 return;
             }
 
+            // Las estadísticas (victorias/derrotas/partidas) salen de la base
+            // local, así que se muestran aunque falle la conexión.
+            MostrarEstadisticasPartidas(nombreUsuario);
+
             try
             {
                 string urlConsulta = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}"
-                                   + "&select=imagen_url,email,elo,partidas_jugadas,partidas_ganadas,partidas_perdidas";
+                                   + "&select=imagen_url,email,elo,partidas_jugadas,partidas_ganadas,partidas_perdidas,descripcion";
 
                 using (HttpClient client = new HttpClient())
                 {
@@ -481,9 +615,11 @@ namespace Ajedrez
                             Sesion.NombreUsuario = nombreUsuario;
                             nombre.Text = nombreUsuario;
                             correo.Text = CorreoMostrar(email);
+                            descripcion.Text = MostrarDescripcion(d.descripcion);
 
                             // Rellenar el ELO y las estadísticas en sus etiquetas
-                            MostrarEstadisticas(d);
+                            MostrarElo(d);
+                            MostrarEstadisticasPartidas(nombreUsuario);
 
                             string urlImagen = d.imagen_url;
 
@@ -516,21 +652,48 @@ namespace Ajedrez
             pictureBox_perfil.Image = null;
         }
 
-        // Vuelca el ELO y las estadísticas del usuario en las etiquetas del perfil
-        private void MostrarEstadisticas(DatosPerfil d)
+        // Rellena el ELO en las etiquetas del perfil
+        private void MostrarElo(DatosPerfil d)
         {
             double eloValor = d.elo ?? 0;
-            int jugadas = d.partidas_jugadas ?? 0;
-            int ganadas = d.partidas_ganadas ?? 0;
-            int perdidas = d.partidas_perdidas ?? 0;
-
             elo.Text = eloValor.ToString("0");
-            victorias.Text = ganadas.ToString();
-
             elo_menu2.Text = eloValor.ToString("0");
+        }
+
+        // Rellena victorias, derrotas y partidas con las partidas reales jugadas
+        // con esta cuenta (base local), igual que la ventana de Partidas.
+        // Solo se cuentan las partidas finalizadas.
+        private void MostrarEstadisticasPartidas(string usuario)
+        {
+            List<PartidaRepository.Partida> partidas = PartidaRepository.ListarPartidas(null, usuario);
+            int jugadas = partidas.Count(EsFinalizada);
+            int ganadas = partidas.Count(p => EsVictoria(p, usuario));
+            int perdidas = partidas.Count(p => EsDerrota(p, usuario));
+
+            victorias.Text = ganadas.ToString();
             victorias_menu2.Text = ganadas.ToString();
             partidas_menu2.Text = jugadas.ToString();
             derrotas_menu2.Text = perdidas.ToString();
+        }
+
+        private static bool EsFinalizada(PartidaRepository.Partida p)
+        {
+            return string.Equals(p.estado, "finalizada", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool EsVictoria(PartidaRepository.Partida p, string usuario)
+        {
+            return EsFinalizada(p)
+                   && !string.IsNullOrWhiteSpace(p.ganador)
+                   && string.Equals(p.ganador, usuario, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool EsDerrota(PartidaRepository.Partida p, string usuario)
+        {
+            return EsFinalizada(p)
+                   && !string.IsNullOrWhiteSpace(p.ganador)
+                   && !string.Equals(p.ganador, "empate", StringComparison.OrdinalIgnoreCase)
+                   && !string.Equals(p.ganador, usuario, StringComparison.OrdinalIgnoreCase);
         }
 
         // Datos del usuario que llegan de Supabase para el perfil
@@ -542,6 +705,7 @@ namespace Ajedrez
             public int? partidas_jugadas { get; set; }
             public int? partidas_ganadas { get; set; }
             public int? partidas_perdidas { get; set; }
+            public string descripcion { get; set; }
         }
     }
 }

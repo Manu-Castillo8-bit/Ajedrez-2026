@@ -50,6 +50,7 @@
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.editar_btn = new System.Windows.Forms.Button();
+            this.editar_descripcion_btn = new System.Windows.Forms.Button();
             this.descripcion = new System.Windows.Forms.Label();
             this.victorias = new System.Windows.Forms.Label();
             this.correo = new System.Windows.Forms.Label();
@@ -312,12 +313,25 @@
             // 
             // descripcion
             // 
-            this.descripcion.AutoSize = true;
-            this.descripcion.Location = new System.Drawing.Point(435, 233);
+            this.descripcion.AutoSize = false;
+            this.descripcion.Location = new System.Drawing.Point(435, 229);
             this.descripcion.Name = "descripcion";
-            this.descripcion.Size = new System.Drawing.Size(13, 13);
+            this.descripcion.Size = new System.Drawing.Size(150, 46);
             this.descripcion.TabIndex = 36;
             this.descripcion.Text = "n";
+            // 
+            // editar_descripcion_btn
+            // 
+            this.editar_descripcion_btn.BackColor = System.Drawing.Color.Transparent;
+            this.editar_descripcion_btn.BackgroundImage = global::Ajedrez.Properties.Resources.lapiz;
+            this.editar_descripcion_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.editar_descripcion_btn.Location = new System.Drawing.Point(590, 231);
+            this.editar_descripcion_btn.Margin = new System.Windows.Forms.Padding(0);
+            this.editar_descripcion_btn.Name = "editar_descripcion_btn";
+            this.editar_descripcion_btn.Size = new System.Drawing.Size(26, 26);
+            this.editar_descripcion_btn.TabIndex = 42;
+            this.editar_descripcion_btn.UseVisualStyleBackColor = false;
+            this.editar_descripcion_btn.Click += new System.EventHandler(this.editar_descripcion_btn_Click);
             // 
             // victorias
             // 
@@ -448,6 +462,7 @@
             this.Controls.Add(this.correo_txt);
             this.Controls.Add(this.nombre_txt);
             this.Controls.Add(this.editar_btn);
+            this.Controls.Add(this.editar_descripcion_btn);
             this.Controls.Add(this.descripcion);
             this.Controls.Add(this.victorias);
             this.Controls.Add(this.correo);
@@ -496,6 +511,7 @@
         private System.Windows.Forms.PictureBox picture_victorias;
         private System.Windows.Forms.PictureBox picture_elo;
         private System.Windows.Forms.Button editar_btn;
+        private System.Windows.Forms.Button editar_descripcion_btn;
         private System.Windows.Forms.Button guardar_btn;
         private System.Windows.Forms.Label descripcion;
         private System.Windows.Forms.Label victorias;
