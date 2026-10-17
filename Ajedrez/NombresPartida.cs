@@ -41,8 +41,8 @@ namespace Ajedrez
                 gbModo.Visible = true;
                 gbModo.Location = new Point(24, 162);
 
-                btnIniciar.Location = new Point(150, 248);
-                btnCancelar.Location = new Point(255, 248);
+                btnIniciar.Location = new Point(125, 248);
+                btnCancelar.Location = new Point(235, 248);
                 ClientSize = new Size(384, 292);
             }
             else

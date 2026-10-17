@@ -80,20 +80,22 @@
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
+            this.label5.AutoSize = false;
+            this.label5.AutoEllipsis = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(446, 16);
+            this.label5.Location = new System.Drawing.Point(409, 16);
             this.label5.Name = "lbl_victorias";
-            this.label5.Size = new System.Drawing.Size(30, 16);
+            this.label5.Size = new System.Drawing.Size(60, 14);
             this.label5.TabIndex = 21;
             this.label5.Text = "0";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // lblVictoriasTitulo
             // 
             this.lblVictoriasTitulo.AutoSize = true;
             this.lblVictoriasTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblVictoriasTitulo.Location = new System.Drawing.Point(370, 16);
+            this.lblVictoriasTitulo.Location = new System.Drawing.Point(289, 16);
             this.lblVictoriasTitulo.Name = "lblVictoriasTitulo";
             this.lblVictoriasTitulo.Size = new System.Drawing.Size(62, 16);
             this.lblVictoriasTitulo.TabIndex = 23;
@@ -101,20 +103,22 @@
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
+            this.label4.AutoSize = false;
+            this.label4.AutoEllipsis = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(278, 16);
+            this.label4.Location = new System.Drawing.Point(219, 16);
             this.label4.Name = "lbl_elo";
-            this.label4.Size = new System.Drawing.Size(30, 16);
+            this.label4.Size = new System.Drawing.Size(60, 14);
             this.label4.TabIndex = 20;
             this.label4.Text = "0";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // lblEloTitulo
             // 
             this.lblEloTitulo.AutoSize = true;
             this.lblEloTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEloTitulo.Location = new System.Drawing.Point(234, 16);
+            this.lblEloTitulo.Location = new System.Drawing.Point(160, 16);
             this.lblEloTitulo.Name = "lblEloTitulo";
             this.lblEloTitulo.Size = new System.Drawing.Size(36, 16);
             this.lblEloTitulo.TabIndex = 24;
@@ -122,13 +126,15 @@
             // 
             // lbl_usuario
             // 
-            this.lbl_usuario.AutoSize = true;
+            this.lbl_usuario.AutoSize = false;
+            this.lbl_usuario.AutoEllipsis = true;
             this.lbl_usuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbl_usuario.Location = new System.Drawing.Point(28, 48);
+            this.lbl_usuario.Location = new System.Drawing.Point(28, 46);
             this.lbl_usuario.Name = "lbl_usuario";
-            this.lbl_usuario.Size = new System.Drawing.Size(14, 18);
+            this.lbl_usuario.Size = new System.Drawing.Size(480, 20);
             this.lbl_usuario.TabIndex = 22;
             this.lbl_usuario.Text = "-";
+            this.lbl_usuario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
@@ -181,9 +187,9 @@
             // 
             this.ir_login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
             this.ir_login.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_login.Location = new System.Drawing.Point(51, 372);
+            this.ir_login.Location = new System.Drawing.Point(27, 372);
             this.ir_login.Name = "ir_login";
-            this.ir_login.Size = new System.Drawing.Size(94, 33);
+            this.ir_login.Size = new System.Drawing.Size(115, 33);
             this.ir_login.TabIndex = 13;
             this.ir_login.Text = "LOGIN";
             this.ir_login.UseVisualStyleBackColor = false;
@@ -191,9 +197,9 @@
             // 
             // ir_admin
             // 
-            this.ir_admin.Location = new System.Drawing.Point(51, 320);
+            this.ir_admin.Location = new System.Drawing.Point(27, 320);
             this.ir_admin.Name = "ir_admin";
-            this.ir_admin.Size = new System.Drawing.Size(94, 33);
+            this.ir_admin.Size = new System.Drawing.Size(115, 33);
             this.ir_admin.TabIndex = 14;
             this.ir_admin.Text = "ADMIN";
             this.ir_admin.UseVisualStyleBackColor = true;
@@ -202,9 +208,9 @@
             // 
             // ir_creditos
             // 
-            this.ir_creditos.Location = new System.Drawing.Point(51, 116);
+            this.ir_creditos.Location = new System.Drawing.Point(27, 116);
             this.ir_creditos.Name = "ir_creditos";
-            this.ir_creditos.Size = new System.Drawing.Size(94, 33);
+            this.ir_creditos.Size = new System.Drawing.Size(115, 33);
             this.ir_creditos.TabIndex = 15;
             this.ir_creditos.Text = "CRÉDITOS";
             this.ir_creditos.UseVisualStyleBackColor = true;

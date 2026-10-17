@@ -140,19 +140,21 @@
             // 
             // puntosn
             // 
-            this.puntosn.AutoSize = true;
-            this.puntosn.Location = new System.Drawing.Point(603, 282);
+            this.puntosn.AutoSize = false;
+            this.puntosn.AutoEllipsis = true;
+            this.puntosn.Location = new System.Drawing.Point(505, 282);
             this.puntosn.Name = "puntosn";
-            this.puntosn.Size = new System.Drawing.Size(103, 13);
+            this.puntosn.Size = new System.Drawing.Size(290, 16);
             this.puntosn.TabIndex = 12;
             this.puntosn.Text = "PUNTOS NEGRAS:";
             // 
             // puntosb
             // 
-            this.puntosb.AutoSize = true;
-            this.puntosb.Location = new System.Drawing.Point(603, 150);
+            this.puntosb.AutoSize = false;
+            this.puntosb.AutoEllipsis = true;
+            this.puntosb.Location = new System.Drawing.Point(505, 150);
             this.puntosb.Name = "puntosb";
-            this.puntosb.Size = new System.Drawing.Size(107, 13);
+            this.puntosb.Size = new System.Drawing.Size(290, 16);
             this.puntosb.TabIndex = 13;
             this.puntosb.Text = "PUNTOS BLANCAS:";
             // 

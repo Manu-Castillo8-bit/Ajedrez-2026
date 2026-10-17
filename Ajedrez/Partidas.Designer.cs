@@ -400,7 +400,7 @@
             // 
             this.actualizar.Location = new System.Drawing.Point(668, 12);
             this.actualizar.Name = "actualizar";
-            this.actualizar.Size = new System.Drawing.Size(117, 41);
+            this.actualizar.Size = new System.Drawing.Size(145, 41);
             this.actualizar.TabIndex = 31;
             this.actualizar.Text = "ACTUALIZAR";
             this.actualizar.UseVisualStyleBackColor = true;

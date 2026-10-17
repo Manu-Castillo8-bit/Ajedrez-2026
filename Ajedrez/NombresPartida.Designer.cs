@@ -55,9 +55,9 @@ namespace Ajedrez
             // 
             // txtLocal
             // 
-            this.txtLocal.Location = new System.Drawing.Point(150, 27);
+            this.txtLocal.Location = new System.Drawing.Point(180, 27);
             this.txtLocal.Name = "txtLocal";
-            this.txtLocal.Size = new System.Drawing.Size(200, 20);
+            this.txtLocal.Size = new System.Drawing.Size(170, 20);
             this.txtLocal.TabIndex = 1;
             // 
             // lblOponente
@@ -71,9 +71,9 @@ namespace Ajedrez
             // 
             // txtOponente
             // 
-            this.txtOponente.Location = new System.Drawing.Point(150, 67);
+            this.txtOponente.Location = new System.Drawing.Point(180, 67);
             this.txtOponente.Name = "txtOponente";
-            this.txtOponente.Size = new System.Drawing.Size(200, 20);
+            this.txtOponente.Size = new System.Drawing.Size(170, 20);
             this.txtOponente.TabIndex = 3;
             // 
             // gbFichas
@@ -122,7 +122,7 @@ namespace Ajedrez
             // 
             this.rbNormal.AutoSize = true;
             this.rbNormal.Checked = true;
-            this.rbNormal.Location = new System.Drawing.Point(150, 168);
+            this.rbNormal.Location = new System.Drawing.Point(150, 190);
             this.rbNormal.Name = "rbNormal";
             this.rbNormal.Size = new System.Drawing.Size(163, 17);
             this.rbNormal.TabIndex = 6;
@@ -133,7 +133,7 @@ namespace Ajedrez
             // rbSoplar
             // 
             this.rbSoplar.AutoSize = true;
-            this.rbSoplar.Location = new System.Drawing.Point(150, 190);
+            this.rbSoplar.Location = new System.Drawing.Point(150, 212);
             this.rbSoplar.Name = "rbSoplar";
             this.rbSoplar.Size = new System.Drawing.Size(157, 17);
             this.rbSoplar.TabIndex = 7;
@@ -202,9 +202,9 @@ namespace Ajedrez
             // 
             // btnIniciar
             // 
-            this.btnIniciar.Location = new System.Drawing.Point(150, 222);
+            this.btnIniciar.Location = new System.Drawing.Point(125, 248);
             this.btnIniciar.Name = "btnIniciar";
-            this.btnIniciar.Size = new System.Drawing.Size(95, 30);
+            this.btnIniciar.Size = new System.Drawing.Size(100, 30);
             this.btnIniciar.TabIndex = 8;
             this.btnIniciar.Text = "Iniciar";
             this.btnIniciar.UseVisualStyleBackColor = true;
@@ -212,9 +212,9 @@ namespace Ajedrez
             // 
             // btnCancelar
             // 
-            this.btnCancelar.Location = new System.Drawing.Point(255, 222);
+            this.btnCancelar.Location = new System.Drawing.Point(235, 248);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(95, 30);
+            this.btnCancelar.Size = new System.Drawing.Size(115, 30);
             this.btnCancelar.TabIndex = 9;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = true;
@@ -226,7 +226,7 @@ namespace Ajedrez
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancelar;
-            this.ClientSize = new System.Drawing.Size(384, 268);
+            this.ClientSize = new System.Drawing.Size(384, 292);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnIniciar);
             this.Controls.Add(this.gbModo);

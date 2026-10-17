@@ -111,26 +111,27 @@ namespace Ajedrez
             // btnUsuariosRefrescar
             // 
             ConfigurarBoton(this.btnUsuariosRefrescar, "Refrescar", new System.Drawing.Point(10, 450));
+            this.btnUsuariosRefrescar.Size = new System.Drawing.Size(130, 32);
             this.btnUsuariosRefrescar.Click += new System.EventHandler(this.btnUsuariosRefrescar_Click);
             // 
             // btnUsuariosCrear
             // 
-            ConfigurarBoton(this.btnUsuariosCrear, "Crear", new System.Drawing.Point(130, 450));
+            ConfigurarBoton(this.btnUsuariosCrear, "Crear", new System.Drawing.Point(150, 450));
             this.btnUsuariosCrear.Click += new System.EventHandler(this.btnUsuariosCrear_Click);
             // 
             // btnUsuariosEditar
             // 
-            ConfigurarBoton(this.btnUsuariosEditar, "Editar", new System.Drawing.Point(250, 450));
+            ConfigurarBoton(this.btnUsuariosEditar, "Editar", new System.Drawing.Point(270, 450));
             this.btnUsuariosEditar.Click += new System.EventHandler(this.btnUsuariosEditar_Click);
             // 
             // btnUsuariosEliminar
             // 
-            ConfigurarBoton(this.btnUsuariosEliminar, "Eliminar", new System.Drawing.Point(370, 450));
+            ConfigurarBoton(this.btnUsuariosEliminar, "Eliminar", new System.Drawing.Point(390, 450));
             this.btnUsuariosEliminar.Click += new System.EventHandler(this.btnUsuariosEliminar_Click);
             // 
             // btnUsuariosReset
             // 
-            ConfigurarBoton(this.btnUsuariosReset, "Resetear contraseña", new System.Drawing.Point(490, 450));
+            ConfigurarBoton(this.btnUsuariosReset, "Resetear contraseña", new System.Drawing.Point(520, 450));
             this.btnUsuariosReset.Size = new System.Drawing.Size(170, 32);
             this.btnUsuariosReset.Click += new System.EventHandler(this.btnUsuariosReset_Click);
             // 
@@ -152,11 +153,12 @@ namespace Ajedrez
             // btnPartidasRefrescar
             // 
             ConfigurarBoton(this.btnPartidasRefrescar, "Refrescar", new System.Drawing.Point(10, 450));
+            this.btnPartidasRefrescar.Size = new System.Drawing.Size(130, 32);
             this.btnPartidasRefrescar.Click += new System.EventHandler(this.btnPartidasRefrescar_Click);
             // 
             // btnPartidasEliminar
             // 
-            ConfigurarBoton(this.btnPartidasEliminar, "Eliminar", new System.Drawing.Point(130, 450));
+            ConfigurarBoton(this.btnPartidasEliminar, "Eliminar", new System.Drawing.Point(150, 450));
             this.btnPartidasEliminar.Click += new System.EventHandler(this.btnPartidasEliminar_Click);
             // 
             // tabMovimientos
@@ -177,11 +179,12 @@ namespace Ajedrez
             // btnMovimientosRefrescar
             // 
             ConfigurarBoton(this.btnMovimientosRefrescar, "Refrescar", new System.Drawing.Point(10, 450));
+            this.btnMovimientosRefrescar.Size = new System.Drawing.Size(130, 32);
             this.btnMovimientosRefrescar.Click += new System.EventHandler(this.btnMovimientosRefrescar_Click);
             // 
             // btnMovimientosEliminar
             // 
-            ConfigurarBoton(this.btnMovimientosEliminar, "Eliminar", new System.Drawing.Point(130, 450));
+            ConfigurarBoton(this.btnMovimientosEliminar, "Eliminar", new System.Drawing.Point(150, 450));
             this.btnMovimientosEliminar.Click += new System.EventHandler(this.btnMovimientosEliminar_Click);
             // 
             // AdminPanel
