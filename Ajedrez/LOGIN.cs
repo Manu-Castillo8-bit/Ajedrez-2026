@@ -48,6 +48,16 @@ namespace Ajedrez
           
         }
 
+        /// <summary>Rellena el campo de usuario (tras un registro) y enfoca la contraseña.</summary>
+        public void PrecargarUsuario(string usuario)
+        {
+            if (string.IsNullOrWhiteSpace(usuario)) return;
+
+            nombre.Text = usuario;
+            nombre.SelectionStart = nombre.Text.Length;
+            contraseña.Focus();
+        }
+
         private void nombre_TextChanged(object sender, EventArgs e)
         {
             //NO SIRVE

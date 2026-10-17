@@ -152,14 +152,24 @@ namespace Ajedrez
 
                         if (filasAfectadas > 0)
                         {
+                            string usuarioRegistrado = nombre.Text.Trim();
+
                             // Guardar la credencial para poder iniciar sesión sin conexión luego.
-                            BaseDatosLocal.GuardarCredencial(nombre.Text.Trim(),
+                            BaseDatosLocal.GuardarCredencial(usuarioRegistrado,
                                 BaseDatosLocal.HashContrasena(contraseña.Text));
 
-                            MessageBox.Show("¡Usuario registrado exitosamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            nombre.Clear();
-                            contraseña.Clear();
-                            nombre.Focus();
+                            MessageBox.Show(
+                                "¡Usuario registrado exitosamente!\n\n" +
+                                "Ahora inicia sesión con tus credenciales.",
+                                "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Llevar al login con el usuario ya escrito, para que no
+                            // se intente registrar dos veces por confusión.
+                            LOGIN f_login = new LOGIN();
+                            f_login.PrecargarUsuario(usuarioRegistrado);
+                            f_login.Show();
+                            this.Hide();
+                            return;
                         }
                         else
                         {

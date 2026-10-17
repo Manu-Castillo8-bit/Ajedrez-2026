@@ -206,6 +206,12 @@
     <Compile Include="Sincronizador.cs" />
     <Compile Include="SQLiteNativo.cs" />
     <Compile Include="StockfishEngine.cs" />
+    <Compile Include="Creditos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Creditos.Designer.cs">
+      <DependentUpon>Creditos.cs</DependentUpon>
+    </Compile>
     <Compile Include="Administradores.cs" />
     <Compile Include="UsuarioEditor.cs">
       <SubType>Form</SubType>

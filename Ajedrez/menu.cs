@@ -178,6 +178,14 @@ namespace Ajedrez
             this.Hide();
         }
 
+        private void ir_creditos_Click(object sender, EventArgs e)
+        {
+            using (Creditos f_creditos = new Creditos())
+            {
+                f_creditos.ShowDialog(this);
+            }
+        }
+
         private void label3_Click(object sender, EventArgs e)
         {
           //NO SIRVE
@@ -241,8 +249,8 @@ namespace Ajedrez
             {
                 lbl_usuario.Text = "Invitado";
                 pic_usuario.Image = null;
-                label4.Text = "ELO";
-                label5.Text = "Victorias";
+                label4.Text = "0";
+                label5.Text = "0";
                 return;
             }
 
@@ -268,8 +276,8 @@ namespace Ajedrez
                         DatosMenu d = lista[0];
 
                         // Mostrar el ELO y las victorias del usuario en sus etiquetas
-                        label4.Text = "ELO: " + (d.elo ?? 0).ToString("0");
-                        label5.Text = "Victorias: " + (d.partidas_ganadas ?? 0);
+                        label4.Text = (d.elo ?? 0).ToString("0");
+                        label5.Text = (d.partidas_ganadas ?? 0).ToString();
 
                         string urlImagen = d.imagen_url;
                         if (string.IsNullOrWhiteSpace(urlImagen))

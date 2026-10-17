@@ -32,7 +32,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.lblVictoriasTitulo = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.lblEloTitulo = new System.Windows.Forms.Label();
             this.lbl_usuario = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pic_usuario = new System.Windows.Forms.PictureBox();
@@ -40,6 +42,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.ir_login = new System.Windows.Forms.Button();
             this.ir_admin = new System.Windows.Forms.Button();
+            this.ir_creditos = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.ir_partidas = new System.Windows.Forms.Button();
@@ -63,7 +66,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.lblVictoriasTitulo);
             this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.lblEloTitulo);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.lbl_usuario);
             this.groupBox2.Controls.Add(this.label3);
@@ -77,23 +82,43 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(393, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(59, 16);
+            this.label5.Location = new System.Drawing.Point(446, 16);
+            this.label5.Name = "lbl_victorias";
+            this.label5.Size = new System.Drawing.Size(30, 16);
             this.label5.TabIndex = 21;
-            this.label5.Text = "Victorias";
+            this.label5.Text = "0";
             this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
+            // lblVictoriasTitulo
+            // 
+            this.lblVictoriasTitulo.AutoSize = true;
+            this.lblVictoriasTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVictoriasTitulo.Location = new System.Drawing.Point(370, 16);
+            this.lblVictoriasTitulo.Name = "lblVictoriasTitulo";
+            this.lblVictoriasTitulo.Size = new System.Drawing.Size(62, 16);
+            this.lblVictoriasTitulo.TabIndex = 23;
+            this.lblVictoriasTitulo.Text = "Victorias:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(234, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(33, 16);
+            this.label4.Location = new System.Drawing.Point(278, 16);
+            this.label4.Name = "lbl_elo";
+            this.label4.Size = new System.Drawing.Size(30, 16);
             this.label4.TabIndex = 20;
-            this.label4.Text = "ELO";
+            this.label4.Text = "0";
             this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // lblEloTitulo
+            // 
+            this.lblEloTitulo.AutoSize = true;
+            this.lblEloTitulo.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEloTitulo.Location = new System.Drawing.Point(234, 16);
+            this.lblEloTitulo.Name = "lblEloTitulo";
+            this.lblEloTitulo.Size = new System.Drawing.Size(36, 16);
+            this.lblEloTitulo.TabIndex = 24;
+            this.lblEloTitulo.Text = "ELO:";
             // 
             // lbl_usuario
             // 
@@ -132,6 +157,7 @@
             this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.ir_admin);
+            this.groupBox1.Controls.Add(this.ir_creditos);
             this.groupBox1.Controls.Add(this.ir_login);
             this.groupBox1.Controls.Add(this.m_claro);
             this.groupBox1.Controls.Add(this.m_oscuro);
@@ -173,6 +199,16 @@
             this.ir_admin.UseVisualStyleBackColor = true;
             this.ir_admin.Visible = false;
             this.ir_admin.Click += new System.EventHandler(this.ir_admin_Click);
+            // 
+            // ir_creditos
+            // 
+            this.ir_creditos.Location = new System.Drawing.Point(51, 116);
+            this.ir_creditos.Name = "ir_creditos";
+            this.ir_creditos.Size = new System.Drawing.Size(94, 33);
+            this.ir_creditos.TabIndex = 15;
+            this.ir_creditos.Text = "CRÉDITOS";
+            this.ir_creditos.UseVisualStyleBackColor = true;
+            this.ir_creditos.Click += new System.EventHandler(this.ir_creditos_Click);
             // 
             // m_claro
             // 
@@ -296,6 +332,7 @@
         private System.Windows.Forms.Button ir_partidas;
         private System.Windows.Forms.Button ir_login;
         private System.Windows.Forms.Button ir_admin;
+        private System.Windows.Forms.Button ir_creditos;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button m_claro;
@@ -304,7 +341,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblVictoriasTitulo;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label lblEloTitulo;
         private System.Windows.Forms.Label lbl_usuario;
         private System.Windows.Forms.PictureBox pic_usuario;
     }
