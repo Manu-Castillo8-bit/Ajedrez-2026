@@ -31,18 +31,18 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(menu));
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.lblVictoriasTitulo = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.lblEloTitulo = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.lbl_usuario = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.pic_usuario = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.ir_login = new System.Windows.Forms.Button();
             this.ir_admin = new System.Windows.Forms.Button();
             this.ir_creditos = new System.Windows.Forms.Button();
+            this.ir_login = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.ir_partidas = new System.Windows.Forms.Button();
@@ -78,19 +78,6 @@
             this.groupBox2.TabIndex = 18;
             this.groupBox2.TabStop = false;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = false;
-            this.label5.AutoEllipsis = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(409, 16);
-            this.label5.Name = "lbl_victorias";
-            this.label5.Size = new System.Drawing.Size(60, 14);
-            this.label5.TabIndex = 21;
-            this.label5.Text = "0";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
             // lblVictoriasTitulo
             // 
             this.lblVictoriasTitulo.AutoSize = true;
@@ -101,18 +88,17 @@
             this.lblVictoriasTitulo.TabIndex = 23;
             this.lblVictoriasTitulo.Text = "Victorias:";
             // 
-            // label4
+            // label5
             // 
-            this.label4.AutoSize = false;
-            this.label4.AutoEllipsis = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(219, 16);
-            this.label4.Name = "lbl_elo";
-            this.label4.Size = new System.Drawing.Size(60, 14);
-            this.label4.TabIndex = 20;
-            this.label4.Text = "0";
-            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            this.label5.AutoEllipsis = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(289, 46);
+            this.label5.Name = "lbl_victorias";
+            this.label5.Size = new System.Drawing.Size(60, 14);
+            this.label5.TabIndex = 21;
+            this.label5.Text = "0";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // lblEloTitulo
             // 
@@ -124,9 +110,20 @@
             this.lblEloTitulo.TabIndex = 24;
             this.lblEloTitulo.Text = "ELO:";
             // 
+            // label4
+            // 
+            this.label4.AutoEllipsis = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(160, 46);
+            this.label4.Name = "lbl_elo";
+            this.label4.Size = new System.Drawing.Size(60, 14);
+            this.label4.TabIndex = 20;
+            this.label4.Text = "0";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
             // lbl_usuario
             // 
-            this.lbl_usuario.AutoSize = false;
             this.lbl_usuario.AutoEllipsis = true;
             this.lbl_usuario.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbl_usuario.Location = new System.Drawing.Point(28, 46);
@@ -183,18 +180,6 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "TEMA";
             // 
-            // ir_login
-            // 
-            this.ir_login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
-            this.ir_login.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ir_login.Location = new System.Drawing.Point(27, 372);
-            this.ir_login.Name = "ir_login";
-            this.ir_login.Size = new System.Drawing.Size(115, 33);
-            this.ir_login.TabIndex = 13;
-            this.ir_login.Text = "LOGIN";
-            this.ir_login.UseVisualStyleBackColor = false;
-            this.ir_login.Click += new System.EventHandler(this.ir_login_Click);
-            // 
             // ir_admin
             // 
             this.ir_admin.Location = new System.Drawing.Point(27, 320);
@@ -212,9 +197,21 @@
             this.ir_creditos.Name = "ir_creditos";
             this.ir_creditos.Size = new System.Drawing.Size(115, 33);
             this.ir_creditos.TabIndex = 15;
-            this.ir_creditos.Text = "CRÉDITOS";
+            this.ir_creditos.Text = "CREDITOS";
             this.ir_creditos.UseVisualStyleBackColor = true;
             this.ir_creditos.Click += new System.EventHandler(this.ir_creditos_Click);
+            // 
+            // ir_login
+            // 
+            this.ir_login.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(228)))), ((int)(((byte)(240)))));
+            this.ir_login.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ir_login.Location = new System.Drawing.Point(27, 372);
+            this.ir_login.Name = "ir_login";
+            this.ir_login.Size = new System.Drawing.Size(115, 33);
+            this.ir_login.TabIndex = 13;
+            this.ir_login.Text = "LOGIN";
+            this.ir_login.UseVisualStyleBackColor = false;
+            this.ir_login.Click += new System.EventHandler(this.ir_login_Click);
             // 
             // m_claro
             // 
@@ -313,8 +310,10 @@
             this.Controls.Add(this.ir_perfil);
             this.Controls.Add(this.ir_damas);
             this.Controls.Add(this.ajedrez);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
             this.Name = "menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MENU";

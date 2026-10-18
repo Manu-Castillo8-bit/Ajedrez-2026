@@ -68,6 +68,14 @@ namespace Ajedrez
         // Método para aplicar el tema a cualquier formulario
         public static void ApplyTheme(Form form)
         {
+            // Ventana uniforme: redimensionable, sin maximizar, con minimizar y cerrar.
+            form.MaximizeBox = false;
+            form.MinimizeBox = true;
+            if (form.FormBorderStyle == FormBorderStyle.FixedToolWindow)
+            {
+                form.FormBorderStyle = FormBorderStyle.Sizable;
+            }
+
             if (IsDarkMode)
             {
                 ApplyDarkTheme(form);
@@ -163,6 +171,11 @@ namespace Ajedrez
                     {
                         label.ForeColor = Color.White;
                         label.Font=new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (label.Name == "aviso_mayusculas")
+                    {
+                        label.ForeColor = ColorTranslator.FromHtml("#9ab8e8");
+                        label.Font = new Font("Microsoft Sans Serif", 8f, FontStyle.Regular);
                     }
                     else if (label.Name == "label3" || label.Name == "label4" || label.Name == "label5" || label.Name=="label")
                     {
@@ -370,6 +383,11 @@ namespace Ajedrez
                     {
                         label.ForeColor = Color.Black;
                         label.Font = new Font("Microsoft Sans Serif", 8.25f, FontStyle.Regular);
+                    }
+                    else if (label.Name == "aviso_mayusculas")
+                    {
+                        label.ForeColor = ColorTranslator.FromHtml("#5a6a85");
+                        label.Font = new Font("Microsoft Sans Serif", 8f, FontStyle.Regular);
                     }
                     else if (label.Name == "mensaje")
                     {

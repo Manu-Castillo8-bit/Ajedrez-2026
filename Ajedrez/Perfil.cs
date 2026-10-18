@@ -18,6 +18,8 @@ namespace Ajedrez
     public partial class Perfil : Form
     {
         private string rutaImagenSeleccionada = "";
+        private bool editandoPerfil = false;
+        private ToolTip _tipFoto;
 
         private static string SupabaseUrl => SupabaseConfig.SupabaseUrl;
         private static string SupabaseKey => SupabaseConfig.SupabaseKey;
@@ -30,6 +32,11 @@ namespace Ajedrez
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             Tema.ApplyTheme(this);
+
+            _tipFoto = new ToolTip();
+            _tipFoto.SetToolTip(pictureBox_perfil, "Haz clic en la foto para cambiarla");
+            _tipFoto.SetToolTip(editar_btn, "Subir o cambiar la foto de perfil");
+            _tipFoto.SetToolTip(editar_correo_btn, "Editar nombre y correo");
         }
 
         private void ir_menu_Click(object sender, EventArgs e)
@@ -62,28 +69,53 @@ namespace Ajedrez
             await CargarPerfilUsuario(Sesion.NombreUsuario);
         }
 
-        // 1. Botón Seleccionar / Editar Imagen (también muestra campos de nombre y correo)
+        // 1. Lápiz junto a la foto: permite subir/cambiar la imagen de perfil.
         private void editar_btn_Click(object sender, EventArgs e)
         {
-            // Guardar el estado original por si el usuario cancela
+            SeleccionarFoto();
+        }
+
+        // 1c. Clic en la foto de perfil: también permite elegir una nueva imagen.
+        private void pictureBox_perfil_Click(object sender, EventArgs e)
+        {
+            SeleccionarFoto();
+        }
+
+        // 1d. Lápiz junto al correo: permite editar el nombre y el correo.
+        private void editar_correo_btn_Click(object sender, EventArgs e)
+        {
             guardarImagenOriginal();
+            editandoPerfil = true;
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
-            openFileDialog.Title = "Seleccionar imagen";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                rutaImagenSeleccionada = openFileDialog.FileName;
-                pictureBox_perfil.Image = Image.FromFile(rutaImagenSeleccionada);
-                pictureBox_perfil.SizeMode = PictureBoxSizeMode.Zoom;
-            }
-
-            // Mostrar campos para editar nombre y correo
             nombre_txt.Text = Sesion.NombreUsuario;
             correo_txt.Text = Sesion.CorreoUsuario;
             nombre_txt.Visible = true;
             correo_txt.Visible = true;
+            cancelar_btn.Visible = true;
+        }
+
+        // Abre el diálogo para elegir una foto y la deja lista para guardar.
+        private void SeleccionarFoto()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Archivos de imagen|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
+            openFileDialog.Title = "Seleccionar imagen";
+
+            if (openFileDialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            if (imagenOriginal == null)
+                guardarImagenOriginal();
+
+            editandoPerfil = true;
+            rutaImagenSeleccionada = openFileDialog.FileName;
+            pictureBox_perfil.Image = Image.FromFile(rutaImagenSeleccionada);
+            pictureBox_perfil.SizeMode = PictureBoxSizeMode.Zoom;
+
+            // Conservar los datos actuales para no sobrescribirlos al guardar.
+            nombre_txt.Text = Sesion.NombreUsuario;
+            correo_txt.Text = Sesion.CorreoUsuario;
+
             cancelar_btn.Visible = true;
         }
 
@@ -104,6 +136,7 @@ namespace Ajedrez
             nombre_txt.Visible = false;
             correo_txt.Visible = false;
             cancelar_btn.Visible = false;
+            editandoPerfil = false;
         }
 
         private Image imagenOriginal = null;
@@ -122,91 +155,99 @@ namespace Ajedrez
             }
         }
 
-        // 2. Botón Guardar Imagen en Supabase
+        // 2. Botón Guardar: guarda nombre, correo y (si se eligió) la foto.
         private async void guardar_btn_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(rutaImagenSeleccionada))
+            if (!editandoPerfil)
             {
-                MessageBox.Show("Por favor selecciona una imagen primero.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Pulsa el lápiz para editar tu nombre o correo.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
+            string nombreUsuario = Sesion.NombreUsuario;
+            if (string.IsNullOrEmpty(nombreUsuario))
+            {
+                MessageBox.Show("No hay una sesión iniciada. Vuelve a iniciar sesión.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Nombre y correo editables (se muestran con editar_btn)
+            string nuevoNombre = (nombre_txt.Text ?? "").Trim();
+            string nuevoCorreo = (correo_txt.Text ?? "").Trim();
+            if (string.IsNullOrEmpty(nuevoNombre))
+                nuevoNombre = nombreUsuario;
+            if (!string.IsNullOrEmpty(nuevoCorreo) && !EsCorreoValido(nuevoCorreo))
+            {
+                MessageBox.Show("El correo electrónico no tiene un formato válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // La foto solo se sube si el usuario seleccionó una nueva.
+            bool cambiarImagen = !string.IsNullOrEmpty(rutaImagenSeleccionada);
+
             try
             {
-                string nombreUsuario = Sesion.NombreUsuario;
-                if (string.IsNullOrEmpty(nombreUsuario))
-                {
-                    MessageBox.Show("No hay una sesión iniciada. Vuelve a iniciar sesión.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                string urlImagen = null; // null = conservar la foto actual
 
-                // Nombre y correo editables (se muestran con editar_btn)
-                string nuevoNombre = nombre_txt.Text.Trim();
-                string nuevoCorreo = correo_txt.Text.Trim();
-                if (string.IsNullOrEmpty(nuevoNombre))
-                    nuevoNombre = nombreUsuario;
-                if (!string.IsNullOrEmpty(nuevoCorreo) && !EsCorreoValido(nuevoCorreo))
+                if (cambiarImagen)
                 {
-                    MessageBox.Show("El correo electrónico no tiene un formato válido.", "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+                    string extension = Path.GetExtension(rutaImagenSeleccionada);
+                    if (string.IsNullOrEmpty(extension))
+                        extension = ".jpg";
+                    string nombreArchivo = $"avatar_{nuevoNombre}{extension}";
 
-                string extension = Path.GetExtension(rutaImagenSeleccionada);
-                if (string.IsNullOrEmpty(extension))
-                    extension = ".jpg";
-                string nombreArchivo = $"avatar_{nuevoNombre}{extension}";
-
-                // Eliminar la foto anterior (si es distinta) para no acumular archivos en Storage
-                string archivoAnterior = ExtraerNombreArchivo(await ObtenerImagenUrlUsuario(nombreUsuario));
-                if (!string.IsNullOrEmpty(archivoAnterior) &&
-                    !string.Equals(archivoAnterior, nombreArchivo, StringComparison.OrdinalIgnoreCase))
-                {
-                    try
+                    // Eliminar la foto anterior (si es distinta) para no acumular archivos en Storage
+                    string archivoAnterior = ExtraerNombreArchivo(await ObtenerImagenUrlUsuario(nombreUsuario));
+                    if (!string.IsNullOrEmpty(archivoAnterior) &&
+                        !string.Equals(archivoAnterior, nombreArchivo, StringComparison.OrdinalIgnoreCase))
                     {
-                        await EliminarArchivoStorage(archivoAnterior);
-                    }
-                    catch
-                    {
-                        // Si no se puede borrar la anterior, continuar con el guardado de la nueva
-                    }
-                }
-
-                // A. Subir/sobrescribir imagen a Supabase Storage (bucket "perfiles")
-                byte[] bytesImagen = File.ReadAllBytes(rutaImagenSeleccionada);
-                string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles/{nombreArchivo}";
-
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
-                    client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
-                    client.DefaultRequestHeaders.Add("x-upsert", "true");
-
-                    ByteArrayContent content = new ByteArrayContent(bytesImagen);
-                    // Usar el tipo MIME correcto según la extensión
-                    content.Headers.ContentType = new MediaTypeHeaderValue(GetMime(extension));
-
-                    HttpResponseMessage responseStorage = await client.PostAsync(urlStorage, content);
-
-                    // Si el archivo ya existe, intentar con PUT (upsert de reemplazo)
-                    if (!responseStorage.IsSuccessStatusCode)
-                    {
-                        HttpRequestMessage requestPut = new HttpRequestMessage(new HttpMethod("PUT"), urlStorage)
+                        try
                         {
-                            Content = content
-                        };
-                        requestPut.Headers.Add("x-upsert", "true");
-                        responseStorage = await client.SendAsync(requestPut);
+                            await EliminarArchivoStorage(archivoAnterior);
+                        }
+                        catch
+                        {
+                            // Si no se puede borrar la anterior, continuar con el guardado de la nueva
+                        }
                     }
 
-                    if (!responseStorage.IsSuccessStatusCode)
+                    // A. Subir/sobrescribir imagen a Supabase Storage (bucket "perfiles")
+                    byte[] bytesImagen = File.ReadAllBytes(rutaImagenSeleccionada);
+                    string urlStorage = $"{SupabaseUrl}/storage/v1/object/perfiles/{nombreArchivo}";
+
+                    using (HttpClient client = new HttpClient())
                     {
-                        string err = await responseStorage.Content.ReadAsStringAsync();
-                        throw new Exception($"Error Storage ({responseStorage.StatusCode}): {err}");
-                    }
-                }
+                        client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
+                        client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
+                        client.DefaultRequestHeaders.Add("x-upsert", "true");
 
-                // B. URL Pública de la imagen
-                string urlPublica = $"{SupabaseUrl}/storage/v1/object/public/perfiles/{nombreArchivo}";
+                        ByteArrayContent content = new ByteArrayContent(bytesImagen);
+                        // Usar el tipo MIME correcto según la extensión
+                        content.Headers.ContentType = new MediaTypeHeaderValue(GetMime(extension));
+
+                        HttpResponseMessage responseStorage = await client.PostAsync(urlStorage, content);
+
+                        // Si el archivo ya existe, intentar con PUT (upsert de reemplazo)
+                        if (!responseStorage.IsSuccessStatusCode)
+                        {
+                            HttpRequestMessage requestPut = new HttpRequestMessage(new HttpMethod("PUT"), urlStorage)
+                            {
+                                Content = content
+                            };
+                            requestPut.Headers.Add("x-upsert", "true");
+                            responseStorage = await client.SendAsync(requestPut);
+                        }
+
+                        if (!responseStorage.IsSuccessStatusCode)
+                        {
+                            string err = await responseStorage.Content.ReadAsStringAsync();
+                            throw new Exception($"Error Storage ({responseStorage.StatusCode}): {err}");
+                        }
+                    }
+
+                    // B. URL Pública de la imagen
+                    urlImagen = $"{SupabaseUrl}/storage/v1/object/public/perfiles/{nombreArchivo}";
+                }
 
                 // C. Actualizar datos en la tabla 'usuarios'
                 string urlTabla = $"{SupabaseUrl}/rest/v1/usuarios?nombre_usuario=eq.{Uri.EscapeDataString(nombreUsuario)}";
@@ -217,12 +258,14 @@ namespace Ajedrez
                     client.DefaultRequestHeaders.Add("Authorization", $"Bearer {SupabaseKey}");
                     client.DefaultRequestHeaders.Add("Prefer", "return=minimal");
 
-                    var datosActualizar = new
+                    var datosActualizar = new Dictionary<string, object>
                     {
-                        imagen_url = urlPublica,
-                        email = string.IsNullOrEmpty(nuevoCorreo) ? null : nuevoCorreo,
-                        nombre_usuario = nuevoNombre
+                        { "email", string.IsNullOrEmpty(nuevoCorreo) ? null : nuevoCorreo },
+                        { "nombre_usuario", nuevoNombre }
                     };
+                    if (urlImagen != null)
+                        datosActualizar["imagen_url"] = urlImagen;
+
                     string jsonBody = JsonConvert.SerializeObject(datosActualizar);
                     StringContent contentJson = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
@@ -241,7 +284,8 @@ namespace Ajedrez
                 }
 
                 // Guardar también en la sesión para mostrarla de inmediato
-                Sesion.ImagenUrl = urlPublica;
+                if (urlImagen != null)
+                    Sesion.ImagenUrl = urlImagen;
                 Sesion.NombreUsuario = nuevoNombre;
                 Sesion.CorreoUsuario = string.IsNullOrEmpty(nuevoCorreo) ? "" : nuevoCorreo;
 
@@ -250,6 +294,8 @@ namespace Ajedrez
                 correo.Text = CorreoMostrar(nuevoCorreo);
 
                 // Ocultar campos de edición
+                rutaImagenSeleccionada = "";
+                editandoPerfil = false;
                 nombre_txt.Visible = false;
                 correo_txt.Visible = false;
                 cancelar_btn.Visible = false;
@@ -261,12 +307,12 @@ namespace Ajedrez
 
                 MessageBox.Show("¡Perfil guardado correctamente!", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Recargar imagen desde el servidor
+                // Recargar datos/imagen desde el servidor
                 await CargarPerfilUsuario(nuevoNombre);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al guardar la imagen: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error al guardar el perfil: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

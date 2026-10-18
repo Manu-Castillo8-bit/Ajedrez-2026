@@ -16,9 +16,23 @@ namespace Ajedrez
     /// </summary>
     public static class PartidaRepository
     {
-        private const double K_FACTOR = 32.0;          // Factor K estándar
-        private const double ELO_POR_DEFECTO = 1200.0; // ELO de un invitado sin cuenta
+        private const double ELO_POR_DEFECTO = 800.0;  // ELO inicial estilo chess.com/lichess
         private const int ELO_MINIMO = 100;
+        private const int PARTIDAS_PARA_K_MEDIO = 30;  // FIDE: 30 partidas para K=20
+        private const double UMBRAL_K_BAJO = 2400.0;   // FIDE: rating >= 2400 usa K=10
+
+        /// <summary>
+        /// Factor K según reglas FIDE oficiales:
+        /// - K=40 para jugadores nuevos (menos de 30 partidas) → crecimiento rápido
+        /// - K=20 para jugadores establecidos (30+ partidas, rating &lt; 2400)
+        /// - K=10 para maestros (rating ≥ 2400) → movimiento mínimo
+        /// </summary>
+        private static double ObtenerKFactor(int partidasJugadas, double elo)
+        {
+            if (partidasJugadas < PARTIDAS_PARA_K_MEDIO) return 40.0;
+            if (elo >= UMBRAL_K_BAJO) return 10.0;
+            return 20.0;
+        }
 
         private static readonly Dictionary<string, int> _idUsuarioCache = new Dictionary<string, int>();
 
@@ -334,8 +348,9 @@ namespace Ajedrez
 
         private static void ActualizarUsuario(UsuarioLocal u, double propio, double rival, double s)
         {
+            double k = ObtenerKFactor(u.PartidasJugadas, propio);
             double esperado = 1.0 / (1.0 + Math.Pow(10.0, (rival - propio) / 400.0));
-            int nuevoElo = (int)Math.Round(propio + K_FACTOR * (s - esperado));
+            int nuevoElo = (int)Math.Round(propio + k * (s - esperado));
             if (nuevoElo < ELO_MINIMO) nuevoElo = ELO_MINIMO;
 
             u.Elo = nuevoElo;

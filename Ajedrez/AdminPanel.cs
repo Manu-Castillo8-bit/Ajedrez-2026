@@ -17,6 +17,8 @@ namespace Ajedrez
         private List<UsuarioCompleto> _usuarios = new List<UsuarioCompleto>();
         private List<PartidaRepository.Partida> _partidas = new List<PartidaRepository.Partida>();
         private List<PartidaRepository.Movimiento> _movimientos = new List<PartidaRepository.Movimiento>();
+        private bool _cargado;
+        private bool _filtrosPartidasListos;
 
         public AdminPanel()
         {
@@ -74,9 +76,10 @@ namespace Ajedrez
 
             Tema.ApplyTheme(this);
 
-            await CargarUsuariosAsync();
             await CargarPartidasAsync();
+            await CargarUsuariosAsync();
             await CargarMovimientosAsync();
+            _cargado = true;
         }
 
         private async Task CargarUsuariosAsync()
@@ -84,18 +87,34 @@ namespace Ajedrez
             btnUsuariosRefrescar.Enabled = false;
             var lista = await Task.Run(() => Nube.ListarUsuarios());
             _usuarios = lista ?? new List<UsuarioCompleto>();
-            dgvUsuarios.DataSource = _usuarios.Select(u => new FilaUsuario
+            dgvUsuarios.DataSource = _usuarios.Select(u =>
             {
-                Id = u.id_usuario,
-                Nombre = u.nombre_usuario,
-                Email = u.email,
-                Contrasena = u.contrasena,
-                ELO = u.elo,
-                Jugadas = u.partidas_jugadas,
-                Ganadas = u.partidas_ganadas,
-                Empatadas = u.partidas_empatadas,
-                Perdidas = u.partidas_perdidas,
-                Activo = u.activo
+                int jugadas, ganadas, empatadas, perdidas;
+                if (_partidas != null && _partidas.Count > 0)
+                {
+                    CalcularEstadisticas(u.nombre_usuario, _partidas,
+                        out jugadas, out ganadas, out empatadas, out perdidas);
+                }
+                else
+                {
+                    jugadas = u.partidas_jugadas;
+                    ganadas = u.partidas_ganadas;
+                    empatadas = u.partidas_empatadas;
+                    perdidas = u.partidas_perdidas;
+                }
+                return new FilaUsuario
+                {
+                    Id = u.id_usuario,
+                    Nombre = u.nombre_usuario,
+                    Email = u.email,
+                    Contrasena = u.contrasena,
+                    ELO = u.elo,
+                    Jugadas = jugadas,
+                    Ganadas = ganadas,
+                    Empatadas = empatadas,
+                    Perdidas = perdidas,
+                    Activo = u.activo
+                };
             }).ToList();
             btnUsuariosRefrescar.Enabled = true;
         }
@@ -105,17 +124,8 @@ namespace Ajedrez
             btnPartidasRefrescar.Enabled = false;
             var lista = await Task.Run(() => Nube.ListarTodasPartidas());
             _partidas = lista ?? new List<PartidaRepository.Partida>();
-            dgvPartidas.DataSource = _partidas.Select(p => new FilaPartida
-            {
-                Id = p.id_partida,
-                Blancas = p.jugador_blancas,
-                Negras = p.jugador_negras,
-                Ganador = p.ganador,
-                Estado = p.estado,
-                Tipo = p.tipo_juego,
-                Inicio = p.fecha_inicio.HasValue ? p.fecha_inicio.Value.ToString("dd/MM/yyyy HH:mm") : "",
-                Fin = p.fecha_fin.HasValue ? p.fecha_fin.Value.ToString("dd/MM/yyyy HH:mm") : ""
-            }).ToList();
+            InicializarFiltrosPartidas();
+            AplicarFiltroPartidas();
             btnPartidasRefrescar.Enabled = true;
         }
 
@@ -139,6 +149,7 @@ namespace Ajedrez
 
         private async void btnUsuariosRefrescar_Click(object sender, EventArgs e)
         {
+            await CargarPartidasAsync();
             await CargarUsuariosAsync();
         }
 
@@ -244,7 +255,224 @@ namespace Ajedrez
             if (!ok) { Aviso("No se pudo eliminar la partida (¿sin conexión?)."); return; }
 
             await CargarPartidasAsync();
+            await CargarUsuariosAsync();
             await CargarMovimientosAsync();
+        }
+
+        // ── Filtros y estadísticas de partidas ──
+
+        private void InicializarFiltrosPartidas()
+        {
+            if (!_filtrosPartidasListos)
+            {
+                cmbPartidasResultado.Items.Clear();
+                cmbPartidasResultado.Items.AddRange(new object[]
+                {
+                    "Todos", "Ganan blancas", "Ganan negras", "Empate", "En curso"
+                });
+                cmbPartidasResultado.SelectedIndex = 0;
+                dtpPartidasDesde.Checked = false;
+                dtpPartidasHasta.Checked = false;
+                _filtrosPartidasListos = true;
+            }
+
+            string actual = cmbPartidasTipo.SelectedItem as string;
+            var tipos = _partidas
+                .Select(p => p.tipo_juego)
+                .Where(t => !string.IsNullOrWhiteSpace(t))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(t => t)
+                .ToList();
+
+            cmbPartidasTipo.Items.Clear();
+            cmbPartidasTipo.Items.Add("Todos");
+            foreach (string t in tipos) cmbPartidasTipo.Items.Add(t);
+            int idx = actual != null ? cmbPartidasTipo.Items.IndexOf(actual) : -1;
+            cmbPartidasTipo.SelectedIndex = idx >= 0 ? idx : 0;
+        }
+
+        private void FiltroPartidas_Changed(object sender, EventArgs e)
+        {
+            AplicarFiltroPartidas();
+        }
+
+        private void btnPartidasLimpiar_Click(object sender, EventArgs e)
+        {
+            txtPartidasJugador.Text = string.Empty;
+            if (cmbPartidasResultado.Items.Count > 0) cmbPartidasResultado.SelectedIndex = 0;
+            if (cmbPartidasTipo.Items.Count > 0) cmbPartidasTipo.SelectedIndex = 0;
+            dtpPartidasDesde.Checked = false;
+            dtpPartidasHasta.Checked = false;
+            AplicarFiltroPartidas();
+        }
+
+        private void AplicarFiltroPartidas()
+        {
+            if (dgvPartidas == null || cmbPartidasResultado == null) return;
+
+            IEnumerable<PartidaRepository.Partida> q = _partidas;
+
+            string jugador = txtPartidasJugador != null
+                ? (txtPartidasJugador.Text ?? string.Empty).Trim() : string.Empty;
+            if (jugador.Length > 0)
+                q = q.Where(p => Contiene(p.jugador_blancas, jugador)
+                              || Contiene(p.jugador_negras, jugador));
+
+            string resultado = cmbPartidasResultado.SelectedItem as string;
+            if (!string.IsNullOrEmpty(resultado) && resultado != "Todos")
+                q = q.Where(p => CoincideResultado(p, resultado));
+
+            string tipo = cmbPartidasTipo != null ? cmbPartidasTipo.SelectedItem as string : null;
+            if (!string.IsNullOrEmpty(tipo) && tipo != "Todos")
+                q = q.Where(p => NombreIgual(p.tipo_juego, tipo));
+
+            if (dtpPartidasDesde != null && dtpPartidasDesde.Checked)
+            {
+                DateTime desde = dtpPartidasDesde.Value.Date;
+                q = q.Where(p =>
+                {
+                    DateTime? f = FechaReferencia(p);
+                    return f.HasValue && f.Value.Date >= desde;
+                });
+            }
+            if (dtpPartidasHasta != null && dtpPartidasHasta.Checked)
+            {
+                DateTime hasta = dtpPartidasHasta.Value.Date;
+                q = q.Where(p =>
+                {
+                    DateTime? f = FechaReferencia(p);
+                    return f.HasValue && f.Value.Date <= hasta;
+                });
+            }
+
+            var lista = q.ToList();
+
+            dgvPartidas.DataSource = lista.Select(p => new FilaPartida
+            {
+                Id = p.id_partida,
+                Blancas = p.jugador_blancas,
+                Negras = p.jugador_negras,
+                Ganador = p.ganador,
+                Estado = p.estado,
+                Tipo = p.tipo_juego,
+                Inicio = p.fecha_inicio.HasValue ? p.fecha_inicio.Value.ToString("dd/MM/yyyy HH:mm") : "",
+                Fin = p.fecha_fin.HasValue ? p.fecha_fin.Value.ToString("dd/MM/yyyy HH:mm") : ""
+            }).ToList();
+
+            MostrarStatsPartidas(lista, jugador);
+        }
+
+        private void MostrarStatsPartidas(List<PartidaRepository.Partida> lista, string jugador)
+        {
+            if (lblPartidasStats == null) return;
+
+            int total = lista.Count;
+            int finalizadas = lista.Count(EsFinalizada);
+            int gananBlancas = lista.Count(p => EsFinalizada(p) && NombreIgual(p.ganador, p.jugador_blancas));
+            int gananNegras = lista.Count(p => EsFinalizada(p) && NombreIgual(p.ganador, p.jugador_negras));
+            int empates = lista.Count(p => EsFinalizada(p) && EsEmpateGanador(p));
+            int enCurso = total - finalizadas;
+
+            string linea1 = string.Format(
+                "TOTAL: {0}   ·   Blancas ganan: {1}   ·   Negras ganan: {2}   ·   Empates: {3}   ·   En curso: {4}",
+                total, gananBlancas, gananNegras, empates, enCurso);
+
+            string linea2;
+            if (jugador.Length > 0)
+            {
+                int ganadas = lista.Count(p => EsVictoria(p, jugador));
+                int perdidas = lista.Count(p => EsDerrota(p, jugador));
+                int empatadas = lista.Count(p => EsFinalizada(p)
+                                                 && !EsVictoria(p, jugador)
+                                                 && !EsDerrota(p, jugador));
+                linea2 = string.Format(
+                    "{0}  →  Ganadas: {1}   ·   Empatadas: {2}   ·   Perdidas: {3}   (finalizadas: {4})",
+                    jugador, ganadas, empatadas, perdidas, ganadas + empatadas + perdidas);
+            }
+            else
+            {
+                linea2 = "Escribe un jugador arriba para ver sus GANADAS / EMPATADAS / PERDIDAS.";
+            }
+
+            lblPartidasStats.Text = linea1 + Environment.NewLine + linea2;
+        }
+
+        private static bool EsFinalizada(PartidaRepository.Partida p)
+        {
+            return string.Equals(p.estado, "finalizada", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool EsEmpateGanador(PartidaRepository.Partida p)
+        {
+            return string.Equals(p.ganador, "empate", StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool EsVictoria(PartidaRepository.Partida p, string usuario)
+        {
+            return EsFinalizada(p)
+                   && !string.IsNullOrWhiteSpace(p.ganador)
+                   && string.Equals(p.ganador, usuario, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool EsDerrota(PartidaRepository.Partida p, string usuario)
+        {
+            return EsFinalizada(p)
+                   && !string.IsNullOrWhiteSpace(p.ganador)
+                   && !EsEmpateGanador(p)
+                   && !string.Equals(p.ganador, usuario, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool CoincideResultado(PartidaRepository.Partida p, string resultado)
+        {
+            bool finalizada = EsFinalizada(p);
+            switch (resultado)
+            {
+                case "Ganan blancas": return finalizada && NombreIgual(p.ganador, p.jugador_blancas);
+                case "Ganan negras": return finalizada && NombreIgual(p.ganador, p.jugador_negras);
+                case "Empate": return finalizada && EsEmpateGanador(p);
+                case "En curso": return !finalizada;
+                default: return true;
+            }
+        }
+
+        private static DateTime? FechaReferencia(PartidaRepository.Partida p)
+        {
+            return p.fecha_inicio ?? p.fecha_fin;
+        }
+
+        private static bool NombreIgual(string a, string b)
+        {
+            return !string.IsNullOrWhiteSpace(a)
+                   && string.Equals(a.Trim(), b, StringComparison.OrdinalIgnoreCase);
+        }
+
+        private static bool Contiene(string texto, string busqueda)
+        {
+            return !string.IsNullOrWhiteSpace(texto)
+                   && texto.IndexOf(busqueda, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
+        private static void CalcularEstadisticas(string nombre, List<PartidaRepository.Partida> partidas,
+            out int jugadas, out int ganadas, out int empatadas, out int perdidas)
+        {
+            jugadas = ganadas = empatadas = perdidas = 0;
+            if (string.IsNullOrWhiteSpace(nombre) || partidas == null) return;
+
+            foreach (PartidaRepository.Partida p in partidas)
+            {
+                if (!Participa(p, nombre)) continue;
+                if (!EsFinalizada(p)) continue;
+
+                jugadas++;
+                if (EsVictoria(p, nombre)) ganadas++;
+                else if (EsDerrota(p, nombre)) perdidas++;
+                else empatadas++;
+            }
+        }
+
+        private static bool Participa(PartidaRepository.Partida p, string nombre)
+        {
+            return NombreIgual(p.jugador_blancas, nombre) || NombreIgual(p.jugador_negras, nombre);
         }
 
         // ── Movimientos ──
@@ -276,6 +504,40 @@ namespace Ajedrez
             Tema.ApplyTheme(f_menu);
             f_menu.Show();
             this.Hide();
+        }
+
+        private async void btnSincronizar_Click(object sender, EventArgs e)
+        {
+            btnSincronizar.Enabled = false;
+            try
+            {
+                await Task.Run(() => Sincronizador.Sincronizar(Sesion.NombreUsuario));
+                await CargarPartidasAsync();
+                await CargarUsuariosAsync();
+                await CargarMovimientosAsync();
+                MessageBox.Show("Datos sincronizados con la nube.", "Sincronizado",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch
+            {
+                Aviso("No se pudo sincronizar (¿sin conexión?).");
+            }
+            finally
+            {
+                btnSincronizar.Enabled = true;
+            }
+        }
+
+        private async void tabs_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!_cargado) return;
+            if (tabs.SelectedTab == tabPartidas) await CargarPartidasAsync();
+            else if (tabs.SelectedTab == tabUsuarios)
+            {
+                await CargarPartidasAsync();
+                await CargarUsuariosAsync();
+            }
+            else if (tabs.SelectedTab == tabMovimientos) await CargarMovimientosAsync();
         }
 
         private static int? IdSeleccionado(DataGridView g)

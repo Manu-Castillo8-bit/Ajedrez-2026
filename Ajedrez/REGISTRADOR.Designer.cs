@@ -31,6 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(REGISTRADOR));
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.aviso_mayusculas = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.ir_login = new System.Windows.Forms.Label();
             this.ingresar = new System.Windows.Forms.Button();
@@ -77,6 +78,16 @@
             this.label3.Size = new System.Drawing.Size(96, 13);
             this.label3.TabIndex = 16;
             this.label3.Text = "Nombre de usuario";
+            // 
+            // aviso_mayusculas
+            // 
+            this.aviso_mayusculas.AutoSize = true;
+            this.aviso_mayusculas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aviso_mayusculas.Location = new System.Drawing.Point(72, 207);
+            this.aviso_mayusculas.Name = "aviso_mayusculas";
+            this.aviso_mayusculas.Size = new System.Drawing.Size(230, 13);
+            this.aviso_mayusculas.TabIndex = 18;
+            this.aviso_mayusculas.Text = "Sensible a mayúsculas, precaución al ingresar";
             // 
             // groupBox1
             // 
@@ -282,6 +293,7 @@
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.aviso_mayusculas);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.g_usuario);
@@ -289,6 +301,8 @@
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
             this.Name = "REGISTRADOR";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "REGISTRADOR";
@@ -310,6 +324,7 @@
         #endregion
 
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label aviso_mayusculas;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label2;

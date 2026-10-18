@@ -44,13 +44,14 @@
             this.label3 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ir_menu = new System.Windows.Forms.Button();
+            this.eliminar_foto_btn = new System.Windows.Forms.Button();
             this.guardar_btn = new System.Windows.Forms.Button();
             this.cancelar_btn = new System.Windows.Forms.Button();
-            this.eliminar_foto_btn = new System.Windows.Forms.Button();
             this.m_claro = new System.Windows.Forms.Button();
             this.m_oscuro = new System.Windows.Forms.Button();
             this.editar_btn = new System.Windows.Forms.Button();
             this.editar_descripcion_btn = new System.Windows.Forms.Button();
+            this.editar_correo_btn = new System.Windows.Forms.Button();
             this.descripcion = new System.Windows.Forms.Label();
             this.victorias = new System.Windows.Forms.Label();
             this.correo = new System.Windows.Forms.Label();
@@ -236,14 +237,27 @@
             this.ir_menu.UseVisualStyleBackColor = true;
             this.ir_menu.Click += new System.EventHandler(this.ir_menu_Click);
             // 
+            // eliminar_foto_btn
+            // 
+            this.eliminar_foto_btn.BackColor = System.Drawing.Color.Transparent;
+            this.eliminar_foto_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.eliminar_foto_btn.ForeColor = System.Drawing.Color.Firebrick;
+            this.eliminar_foto_btn.Location = new System.Drawing.Point(9, 275);
+            this.eliminar_foto_btn.Name = "eliminar_foto_btn";
+            this.eliminar_foto_btn.Size = new System.Drawing.Size(150, 51);
+            this.eliminar_foto_btn.TabIndex = 41;
+            this.eliminar_foto_btn.Text = "ELIMINAR FOTO";
+            this.eliminar_foto_btn.UseVisualStyleBackColor = false;
+            this.eliminar_foto_btn.Click += new System.EventHandler(this.eliminar_foto_btn_Click);
+            // 
             // guardar_btn
             // 
             this.guardar_btn.BackColor = System.Drawing.Color.Transparent;
             this.guardar_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guardar_btn.ForeColor = System.Drawing.Color.DarkGreen;
-            this.guardar_btn.Location = new System.Drawing.Point(9, 197);
+            this.guardar_btn.Location = new System.Drawing.Point(9, 219);
             this.guardar_btn.Name = "guardar_btn";
-            this.guardar_btn.Size = new System.Drawing.Size(150, 33);
+            this.guardar_btn.Size = new System.Drawing.Size(150, 52);
             this.guardar_btn.TabIndex = 38;
             this.guardar_btn.Text = "GUARDAR";
             this.guardar_btn.UseVisualStyleBackColor = false;
@@ -254,7 +268,7 @@
             this.cancelar_btn.BackColor = System.Drawing.Color.Transparent;
             this.cancelar_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cancelar_btn.ForeColor = System.Drawing.Color.Firebrick;
-            this.cancelar_btn.Location = new System.Drawing.Point(9, 236);
+            this.cancelar_btn.Location = new System.Drawing.Point(9, 94);
             this.cancelar_btn.Name = "cancelar_btn";
             this.cancelar_btn.Size = new System.Drawing.Size(150, 31);
             this.cancelar_btn.TabIndex = 40;
@@ -262,19 +276,6 @@
             this.cancelar_btn.UseVisualStyleBackColor = false;
             this.cancelar_btn.Visible = false;
             this.cancelar_btn.Click += new System.EventHandler(this.cancelar_btn_Click);
-            // 
-            // eliminar_foto_btn
-            // 
-            this.eliminar_foto_btn.BackColor = System.Drawing.Color.Transparent;
-            this.eliminar_foto_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eliminar_foto_btn.ForeColor = System.Drawing.Color.Firebrick;
-            this.eliminar_foto_btn.Location = new System.Drawing.Point(9, 275);
-            this.eliminar_foto_btn.Name = "eliminar_foto_btn";
-            this.eliminar_foto_btn.Size = new System.Drawing.Size(150, 33);
-            this.eliminar_foto_btn.TabIndex = 41;
-            this.eliminar_foto_btn.Text = "ELIMINAR FOTO";
-            this.eliminar_foto_btn.UseVisualStyleBackColor = false;
-            this.eliminar_foto_btn.Click += new System.EventHandler(this.eliminar_foto_btn_Click);
             // 
             // m_claro
             // 
@@ -311,16 +312,6 @@
             this.editar_btn.UseVisualStyleBackColor = false;
             this.editar_btn.Click += new System.EventHandler(this.editar_btn_Click);
             // 
-            // descripcion
-            // 
-            this.descripcion.AutoSize = false;
-            this.descripcion.Location = new System.Drawing.Point(435, 229);
-            this.descripcion.Name = "descripcion";
-            this.descripcion.Size = new System.Drawing.Size(150, 55);
-            this.descripcion.TabIndex = 36;
-            this.descripcion.Text = "n";
-            this.descripcion.Font = GestorFuentes.ObtenerFuente(9f, System.Drawing.FontStyle.Regular);
-            // 
             // editar_descripcion_btn
             // 
             this.editar_descripcion_btn.BackColor = System.Drawing.Color.Transparent;
@@ -334,6 +325,28 @@
             this.editar_descripcion_btn.UseVisualStyleBackColor = false;
             this.editar_descripcion_btn.Click += new System.EventHandler(this.editar_descripcion_btn_Click);
             // 
+            // editar_correo_btn
+            // 
+            this.editar_correo_btn.BackColor = System.Drawing.Color.Transparent;
+            this.editar_correo_btn.BackgroundImage = global::Ajedrez.Properties.Resources.lapiz;
+            this.editar_correo_btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.editar_correo_btn.Location = new System.Drawing.Point(590, 100);
+            this.editar_correo_btn.Margin = new System.Windows.Forms.Padding(0);
+            this.editar_correo_btn.Name = "editar_correo_btn";
+            this.editar_correo_btn.Size = new System.Drawing.Size(26, 26);
+            this.editar_correo_btn.TabIndex = 43;
+            this.editar_correo_btn.UseVisualStyleBackColor = false;
+            this.editar_correo_btn.Click += new System.EventHandler(this.editar_correo_btn_Click);
+            // 
+            // descripcion
+            // 
+            this.descripcion.Font = new System.Drawing.Font("04b", 9F);
+            this.descripcion.Location = new System.Drawing.Point(435, 229);
+            this.descripcion.Name = "descripcion";
+            this.descripcion.Size = new System.Drawing.Size(150, 55);
+            this.descripcion.TabIndex = 36;
+            this.descripcion.Text = "n";
+            // 
             // victorias
             // 
             this.victorias.AutoSize = true;
@@ -345,10 +358,9 @@
             // 
             // correo
             // 
-            this.correo.AutoSize = true;
-            this.correo.Location = new System.Drawing.Point(435, 120);
+            this.correo.Location = new System.Drawing.Point(435, 104);
             this.correo.Name = "correo";
-            this.correo.Size = new System.Drawing.Size(13, 13);
+            this.correo.Size = new System.Drawing.Size(150, 40);
             this.correo.TabIndex = 34;
             this.correo.Text = "n";
             // 
@@ -364,7 +376,7 @@
             // nombre
             // 
             this.nombre.AutoSize = true;
-            this.nombre.Location = new System.Drawing.Point(435, 81);
+            this.nombre.Location = new System.Drawing.Point(435, 65);
             this.nombre.Name = "nombre";
             this.nombre.Size = new System.Drawing.Size(13, 13);
             this.nombre.TabIndex = 32;
@@ -394,7 +406,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(264, 120);
+            this.label8.Location = new System.Drawing.Point(264, 104);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(56, 13);
             this.label8.TabIndex = 29;
@@ -415,7 +427,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(264, 81);
+            this.label6.Location = new System.Drawing.Point(264, 65);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 27;
@@ -423,17 +435,19 @@
             // 
             // pictureBox_perfil
             // 
+            this.pictureBox_perfil.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox_perfil.Location = new System.Drawing.Point(39, 71);
             this.pictureBox_perfil.Name = "pictureBox_perfil";
             this.pictureBox_perfil.Size = new System.Drawing.Size(198, 195);
             this.pictureBox_perfil.TabIndex = 26;
             this.pictureBox_perfil.TabStop = false;
+            this.pictureBox_perfil.Click += new System.EventHandler(this.pictureBox_perfil_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(278, 24);
+            this.label1.Location = new System.Drawing.Point(278, 8);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(85, 25);
             this.label1.TabIndex = 25;
@@ -441,7 +455,7 @@
             // 
             // nombre_txt
             // 
-            this.nombre_txt.Location = new System.Drawing.Point(344, 74);
+            this.nombre_txt.Location = new System.Drawing.Point(344, 58);
             this.nombre_txt.Name = "nombre_txt";
             this.nombre_txt.Size = new System.Drawing.Size(215, 20);
             this.nombre_txt.TabIndex = 38;
@@ -449,7 +463,7 @@
             // 
             // correo_txt
             // 
-            this.correo_txt.Location = new System.Drawing.Point(344, 113);
+            this.correo_txt.Location = new System.Drawing.Point(344, 97);
             this.correo_txt.Name = "correo_txt";
             this.correo_txt.Size = new System.Drawing.Size(215, 20);
             this.correo_txt.TabIndex = 39;
@@ -464,6 +478,7 @@
             this.Controls.Add(this.nombre_txt);
             this.Controls.Add(this.editar_btn);
             this.Controls.Add(this.editar_descripcion_btn);
+            this.Controls.Add(this.editar_correo_btn);
             this.Controls.Add(this.descripcion);
             this.Controls.Add(this.victorias);
             this.Controls.Add(this.correo);
@@ -479,6 +494,8 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
             this.Name = "Perfil";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PERFIL";
@@ -513,6 +530,7 @@
         private System.Windows.Forms.PictureBox picture_elo;
         private System.Windows.Forms.Button editar_btn;
         private System.Windows.Forms.Button editar_descripcion_btn;
+        private System.Windows.Forms.Button editar_correo_btn;
         private System.Windows.Forms.Button guardar_btn;
         private System.Windows.Forms.Label descripcion;
         private System.Windows.Forms.Label victorias;

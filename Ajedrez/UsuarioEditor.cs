@@ -19,7 +19,7 @@ namespace Ajedrez
             InitializeComponent();
 
             _esNuevo = (existente == null);
-            Usuario = existente ?? new UsuarioCompleto { activo = true, elo = 1200 };
+            Usuario = existente ?? new UsuarioCompleto { activo = true, elo = 800 };
             this.Text = _esNuevo ? "Nuevo usuario" : "Editar usuario";
 
             Cargar();

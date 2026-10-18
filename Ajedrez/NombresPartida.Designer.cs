@@ -23,6 +23,7 @@ namespace Ajedrez
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NombresPartida));
             this.lblLocal = new System.Windows.Forms.Label();
             this.txtLocal = new System.Windows.Forms.TextBox();
             this.lblOponente = new System.Windows.Forms.Label();
@@ -49,9 +50,9 @@ namespace Ajedrez
             this.lblLocal.AutoSize = true;
             this.lblLocal.Location = new System.Drawing.Point(24, 30);
             this.lblLocal.Name = "lblLocal";
-            this.lblLocal.Size = new System.Drawing.Size(78, 13);
+            this.lblLocal.Size = new System.Drawing.Size(66, 13);
             this.lblLocal.TabIndex = 0;
-            this.lblLocal.Text = "Jugador (tú):";
+            this.lblLocal.Text = "Jugador (tu):";
             // 
             // txtLocal
             // 
@@ -65,7 +66,7 @@ namespace Ajedrez
             this.lblOponente.AutoSize = true;
             this.lblOponente.Location = new System.Drawing.Point(24, 70);
             this.lblOponente.Name = "lblOponente";
-            this.lblOponente.Size = new System.Drawing.Size(63, 13);
+            this.lblOponente.Size = new System.Drawing.Size(57, 13);
             this.lblOponente.TabIndex = 2;
             this.lblOponente.Text = "Oponente:";
             // 
@@ -87,34 +88,34 @@ namespace Ajedrez
             this.gbFichas.TabStop = false;
             this.gbFichas.Text = "Mis fichas:";
             // 
+            // rbNegras
+            // 
+            this.rbNegras.AutoSize = true;
+            this.rbNegras.Location = new System.Drawing.Point(160, 22);
+            this.rbNegras.Name = "rbNegras";
+            this.rbNegras.Size = new System.Drawing.Size(59, 17);
+            this.rbNegras.TabIndex = 1;
+            this.rbNegras.Text = "Negras";
+            this.rbNegras.UseVisualStyleBackColor = true;
+            // 
             // rbBlancas
             // 
             this.rbBlancas.AutoSize = true;
             this.rbBlancas.Checked = true;
             this.rbBlancas.Location = new System.Drawing.Point(18, 22);
             this.rbBlancas.Name = "rbBlancas";
-            this.rbBlancas.Size = new System.Drawing.Size(66, 17);
+            this.rbBlancas.Size = new System.Drawing.Size(63, 17);
             this.rbBlancas.TabIndex = 0;
             this.rbBlancas.TabStop = true;
             this.rbBlancas.Text = "Blancas";
             this.rbBlancas.UseVisualStyleBackColor = true;
-            // 
-            // rbNegras
-            // 
-            this.rbNegras.AutoSize = true;
-            this.rbNegras.Location = new System.Drawing.Point(160, 22);
-            this.rbNegras.Name = "rbNegras";
-            this.rbNegras.Size = new System.Drawing.Size(61, 17);
-            this.rbNegras.TabIndex = 1;
-            this.rbNegras.Text = "Negras";
-            this.rbNegras.UseVisualStyleBackColor = true;
             // 
             // lblModo
             // 
             this.lblModo.AutoSize = true;
             this.lblModo.Location = new System.Drawing.Point(24, 170);
             this.lblModo.Name = "lblModo";
-            this.lblModo.Size = new System.Drawing.Size(98, 13);
+            this.lblModo.Size = new System.Drawing.Size(92, 13);
             this.lblModo.TabIndex = 5;
             this.lblModo.Text = "Regla de captura:";
             // 
@@ -124,7 +125,7 @@ namespace Ajedrez
             this.rbNormal.Checked = true;
             this.rbNormal.Location = new System.Drawing.Point(150, 190);
             this.rbNormal.Name = "rbNormal";
-            this.rbNormal.Size = new System.Drawing.Size(163, 17);
+            this.rbNormal.Size = new System.Drawing.Size(154, 17);
             this.rbNormal.TabIndex = 6;
             this.rbNormal.TabStop = true;
             this.rbNormal.Text = "Normal (captura obligatoria)";
@@ -135,7 +136,7 @@ namespace Ajedrez
             this.rbSoplar.AutoSize = true;
             this.rbSoplar.Location = new System.Drawing.Point(150, 212);
             this.rbSoplar.Name = "rbSoplar";
-            this.rbSoplar.Size = new System.Drawing.Size(157, 17);
+            this.rbSoplar.Size = new System.Drawing.Size(147, 17);
             this.rbSoplar.TabIndex = 7;
             this.rbSoplar.Text = "Soplar piezas si no comes";
             this.rbSoplar.UseVisualStyleBackColor = true;
@@ -153,36 +154,12 @@ namespace Ajedrez
             this.gbModo.TabStop = false;
             this.gbModo.Text = "Modo de juego:";
             // 
-            // rbLocal
-            // 
-            this.rbLocal.AutoSize = true;
-            this.rbLocal.Checked = true;
-            this.rbLocal.Location = new System.Drawing.Point(18, 20);
-            this.rbLocal.Name = "rbLocal";
-            this.rbLocal.Size = new System.Drawing.Size(166, 17);
-            this.rbLocal.TabIndex = 0;
-            this.rbLocal.TabStop = true;
-            this.rbLocal.Text = "Dos jugadores (local)";
-            this.rbLocal.UseVisualStyleBackColor = true;
-            this.rbLocal.CheckedChanged += new System.EventHandler(this.rbLocal_CheckedChanged);
-            // 
-            // rbIA
-            // 
-            this.rbIA.AutoSize = true;
-            this.rbIA.Location = new System.Drawing.Point(18, 44);
-            this.rbIA.Name = "rbIA";
-            this.rbIA.Size = new System.Drawing.Size(150, 17);
-            this.rbIA.TabIndex = 1;
-            this.rbIA.Text = "Jugar contra la IA";
-            this.rbIA.UseVisualStyleBackColor = true;
-            this.rbIA.CheckedChanged += new System.EventHandler(this.rbIA_CheckedChanged);
-            // 
             // lblNivel
             // 
             this.lblNivel.AutoSize = true;
             this.lblNivel.Location = new System.Drawing.Point(190, 22);
             this.lblNivel.Name = "lblNivel";
-            this.lblNivel.Size = new System.Drawing.Size(58, 13);
+            this.lblNivel.Size = new System.Drawing.Size(54, 13);
             this.lblNivel.TabIndex = 2;
             this.lblNivel.Text = "Dificultad:";
             // 
@@ -200,6 +177,30 @@ namespace Ajedrez
             this.cmbNivel.Size = new System.Drawing.Size(120, 21);
             this.cmbNivel.TabIndex = 3;
             // 
+            // rbIA
+            // 
+            this.rbIA.AutoSize = true;
+            this.rbIA.Location = new System.Drawing.Point(18, 44);
+            this.rbIA.Name = "rbIA";
+            this.rbIA.Size = new System.Drawing.Size(108, 17);
+            this.rbIA.TabIndex = 1;
+            this.rbIA.Text = "Jugar contra la IA";
+            this.rbIA.UseVisualStyleBackColor = true;
+            this.rbIA.CheckedChanged += new System.EventHandler(this.rbIA_CheckedChanged);
+            // 
+            // rbLocal
+            // 
+            this.rbLocal.AutoSize = true;
+            this.rbLocal.Checked = true;
+            this.rbLocal.Location = new System.Drawing.Point(18, 20);
+            this.rbLocal.Name = "rbLocal";
+            this.rbLocal.Size = new System.Drawing.Size(124, 17);
+            this.rbLocal.TabIndex = 0;
+            this.rbLocal.TabStop = true;
+            this.rbLocal.Text = "Dos jugadores (local)";
+            this.rbLocal.UseVisualStyleBackColor = true;
+            this.rbLocal.CheckedChanged += new System.EventHandler(this.rbLocal_CheckedChanged);
+            // 
             // btnIniciar
             // 
             this.btnIniciar.Location = new System.Drawing.Point(125, 248);
@@ -212,6 +213,7 @@ namespace Ajedrez
             // 
             // btnCancelar
             // 
+            this.btnCancelar.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancelar.Location = new System.Drawing.Point(235, 248);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(115, 30);
@@ -239,8 +241,8 @@ namespace Ajedrez
             this.Controls.Add(this.txtLocal);
             this.Controls.Add(this.lblLocal);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = false;
             this.Name = "NombresPartida";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NUEVA PARTIDA - DAMAS";
@@ -250,6 +252,7 @@ namespace Ajedrez
             this.gbModo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion

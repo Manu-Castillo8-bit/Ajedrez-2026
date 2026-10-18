@@ -14,7 +14,9 @@ namespace Ajedrez
             // por eso las volvemos a fijar después).
             Tema.ApplyTheme(this);
 
-            lblTitulo.Font = new Font("Microsoft Sans Serif", 16f, FontStyle.Bold);
+            // El título usa la fuente 04b fija (después del tema, para que no
+            // cambie). El mensaje de agradecimiento usa la fuente por defecto.
+            lblTitulo.Font = GestorFuentes.ObtenerFuente(15.75f, FontStyle.Bold);
             lblCuerpo.Font = new Font("Microsoft Sans Serif", 12f, FontStyle.Regular);
         }
 

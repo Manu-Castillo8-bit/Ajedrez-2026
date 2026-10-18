@@ -276,7 +276,7 @@ namespace Ajedrez
             {
                 var body = new JObject
                 {
-                    ["elo"] = u.Elo,
+                    ["elo"] = (int)Math.Round(u.Elo),
                     ["partidas_jugadas"] = u.PartidasJugadas,
                     ["partidas_ganadas"] = u.PartidasGanadas,
                     ["partidas_empatadas"] = u.PartidasEmpatadas,
@@ -317,7 +317,7 @@ namespace Ajedrez
                 var body = new JObject { ["nombre_usuario"] = u.nombre_usuario };
                 if (!string.IsNullOrWhiteSpace(u.contrasena)) body["contrasena"] = u.contrasena;
                 if (!string.IsNullOrWhiteSpace(u.email)) body["email"] = u.email;
-                body["elo"] = u.elo;
+                body["elo"] = (int)Math.Round(u.elo);
                 body["partidas_jugadas"] = u.partidas_jugadas;
                 body["partidas_ganadas"] = u.partidas_ganadas;
                 body["partidas_empatadas"] = u.partidas_empatadas;
@@ -338,7 +338,7 @@ namespace Ajedrez
                 var body = new JObject
                 {
                     ["nombre_usuario"] = u.nombre_usuario,
-                    ["elo"] = u.elo,
+                    ["elo"] = (int)Math.Round(u.elo),
                     ["partidas_jugadas"] = u.partidas_jugadas,
                     ["partidas_ganadas"] = u.partidas_ganadas,
                     ["partidas_empatadas"] = u.partidas_empatadas,

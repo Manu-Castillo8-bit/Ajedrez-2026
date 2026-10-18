@@ -67,6 +67,9 @@ namespace Ajedrez
         private int nivelIA = 5;
         private StockfishEngine motor = null;
         private bool iaPensando = false;
+        // Tiempo mínimo que tarda la IA en mover, para que la ficha no salte de
+        // golpe y dé tiempo a leer los consejos/recomendaciones.
+        private const int RETARDO_MINIMO_IA_MS = 1500;
 
         public Ajedrez_tablero()
         {
@@ -1677,8 +1680,18 @@ namespace Ajedrez
             {
                 string best = null;
                 Exception err = null;
+                System.Diagnostics.Stopwatch crono = System.Diagnostics.Stopwatch.StartNew();
                 try { best = motor.MejorMovimiento(fen, tiempo); }
                 catch (Exception ex) { err = ex; }
+
+                // Espera mínima para que la IA no mueva de forma instantánea.
+                // El tiempo de cálculo del motor cuenta dentro de este retardo.
+                int restante = RETARDO_MINIMO_IA_MS - (int)crono.ElapsedMilliseconds;
+                if (restante > 0)
+                {
+                    try { System.Threading.Thread.Sleep(restante); }
+                    catch { }
+                }
 
                 try
                 {

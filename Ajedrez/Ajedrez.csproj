@@ -249,8 +249,14 @@
     <Compile Include="Sesion.cs" />
     <Compile Include="SupabaseConfig.cs" />
     <Compile Include="Tema.cs" />
+    <EmbeddedResource Include="AdminPanel.resx">
+      <DependentUpon>AdminPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Ajedrez_tablero.resx">
       <DependentUpon>Ajedrez_tablero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Creditos.resx">
+      <DependentUpon>Creditos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Movimientos.resx">
       <DependentUpon>Movimientos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NombresPartida.resx">
+      <DependentUpon>NombresPartida.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Partidas.resx">
       <DependentUpon>Partidas.cs</DependentUpon>
@@ -279,6 +288,9 @@
       <DependentUpon>REGISTRADOR.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="fuente_04b.TTF" />
+    <EmbeddedResource Include="UsuarioEditor.resx">
+      <DependentUpon>UsuarioEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

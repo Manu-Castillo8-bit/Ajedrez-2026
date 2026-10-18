@@ -41,6 +41,7 @@
             this.m_oscuro = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.aviso_mayusculas = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.pictureBox7 = new System.Windows.Forms.PictureBox();
             this.pictureBox6 = new System.Windows.Forms.PictureBox();
@@ -184,6 +185,16 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Contrasena";
             // 
+            // aviso_mayusculas
+            // 
+            this.aviso_mayusculas.AutoSize = true;
+            this.aviso_mayusculas.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.aviso_mayusculas.Location = new System.Drawing.Point(72, 207);
+            this.aviso_mayusculas.Name = "aviso_mayusculas";
+            this.aviso_mayusculas.Size = new System.Drawing.Size(224, 13);
+            this.aviso_mayusculas.TabIndex = 18;
+            this.aviso_mayusculas.Text = "Sensible a mayúsculas, precaución al ingresar";
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
@@ -280,13 +291,17 @@
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label4);
+            this.Controls.Add(this.aviso_mayusculas);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.ingresar_);
             this.Controls.Add(this.contraseña);
             this.Controls.Add(this.nombre);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
+            this.MinimizeBox = true;
             this.Name = "LOGIN";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LOGIN";
@@ -317,6 +332,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label aviso_mayusculas;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
