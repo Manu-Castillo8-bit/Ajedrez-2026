@@ -53,6 +53,9 @@ namespace Ajedrez_ASPX
         {
             Page.Title = "PARTIDAS";
 
+            // El historial es de la cuenta: sin sesión iniciada se va al login
+            if (!Acceso.ExigirSesion(this)) return;
+
             CargarPartidas();
 
             // El panel de movimientos se conserva entre peticiones (ViewState).

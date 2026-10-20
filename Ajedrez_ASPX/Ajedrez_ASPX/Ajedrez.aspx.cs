@@ -15,6 +15,10 @@ namespace Ajedrez_ASPX
     /// </summary>
     public partial class Ajedrez : System.Web.UI.Page
     {
+        /// <summary>Espera (ms) entre la jugada del usuario y la respuesta de la IA,
+        /// para que el usuario pueda ver su jugada en el tablero (como en el escritorio).</summary>
+        private const int RETARDO_MINIMO_IA_MS = 1500;
+
         private AjedrezGame juego;
         private LinkButton[,] celdas;
 
@@ -26,8 +30,18 @@ namespace Ajedrez_ASPX
             get { return Juego != null && Juego.ModoIA && Juego.ColorIA == "white"; }
         }
 
+        /// <summary>Indica que la IA aún no ha respondido: el TimerIA la jugará en unos ms.</summary>
+        private bool IAPendiente
+        {
+            get { return ViewState["IAPendiente"] is bool && (bool)ViewState["IAPendiente"]; }
+            set { ViewState["IAPendiente"] = value; }
+        }
+
         protected void Page_Init(object sender, EventArgs e)
         {
+            // Sin sesión iniciada no se puede jugar ni guardar partidas
+            if (!Acceso.ExigirSesion(this)) return;
+
             juego = Session["EstadoAjedrez"] as AjedrezGame;
             if (juego == null)
             {
@@ -67,6 +81,7 @@ namespace Ajedrez_ASPX
             }
 
             CrearTablero();
+            TimerIA.Interval = RETARDO_MINIMO_IA_MS;
         }
 
         protected void Page_Load(object sender, EventArgs e)
@@ -78,9 +93,9 @@ namespace Ajedrez_ASPX
             {
                 MostrarConsejo(null);
 
-                // Si la IA lleva las blancas, debe abrir la partida
+                // Si la IA lleva las blancas, debe abrir la partida (con el mismo retardo)
                 if (Juego.ModoIA && !Juego.PartidaFinalizada && Juego.TurnoActual == Juego.ColorIA)
-                    JugarIA();
+                    ArmarRespuestaIA();
             }
         }
 
@@ -361,9 +376,38 @@ namespace Ajedrez_ASPX
                 GuardarPartida();
             }
 
-            // Si ahora le toca a la IA, que responda
+            // Si ahora le toca a la IA, que responda pasados unos segundos
             if (g.ModoIA && !g.PartidaFinalizada && g.TurnoActual == g.ColorIA)
-                JugarIA();
+                ArmarRespuestaIA();
+        }
+
+        /// <summary>
+        /// Programa la respuesta de la IA pasados RETARDO_MINIMO_IA_MS. El retardo
+        /// ocurre en el navegador (Timer del UpdatePanel), no bloqueando el postback,
+        /// para que el usuario pueda ver su jugada antes de que la IA mueva.
+        /// </summary>
+        private void ArmarRespuestaIA()
+        {
+            IAPendiente = true;
+            TimerIA.Enabled = true;
+        }
+
+        /// <summary>El retardo terminó: la IA calcula y aplica su jugada.</summary>
+        protected void TimerIA_Tick(object sender, EventArgs e)
+        {
+            TimerIA.Enabled = false;
+
+            if (Juego == null) return;
+
+            // Ya no hay nada que esperar: al repintar, el reloj se apaga solo
+            if (!IAPendiente || !Juego.ModoIA || Juego.PartidaFinalizada || Juego.TurnoActual != Juego.ColorIA)
+            {
+                IAPendiente = false;
+                return;
+            }
+
+            IAPendiente = false;
+            JugarIA();
         }
 
         /// <summary>Busca o descarga el motor y devuelve su ruta (o null si no hay motor).</summary>
@@ -526,8 +570,13 @@ namespace Ajedrez_ASPX
             LimpiarSeleccion();
             pnlPromocion.Visible = false;
 
-            // En modo IA se deshacen las dos últimas jugadas (la respuesta de la IA y la tuya)
-            int plies = g.ModoIA ? 2 : 1;
+            // Si la IA aún no ha respondido se cancela su jugada y solo se deshace
+            // la tuya; si ya jugó, se deshacen las dos últimas (IA + tuya)
+            bool iaPendiente = IAPendiente;
+            IAPendiente = false;
+            TimerIA.Enabled = false;
+
+            int plies = (g.ModoIA && g.HistorialMovimientos.Count >= 2 && !iaPendiente) ? 2 : 1;
             while (plies > 0 && g.HistorialMovimientos.Count > 0)
             {
                 g.DeshacerUnMovimiento();

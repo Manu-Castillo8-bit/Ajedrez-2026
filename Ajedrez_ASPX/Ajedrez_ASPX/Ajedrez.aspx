@@ -9,6 +9,9 @@
 
     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
         <ContentTemplate>
+            <!-- Retardo antes de que la IA responda, para que el usuario vea su jugada -->
+            <asp:Timer ID="TimerIA" runat="server" Enabled="false" OnTick="TimerIA_Tick" />
+
             <div class="pagina-juego">
                 <div class="zona-tablero">
                     <table id="tablero" runat="server" class="tablero"></table>

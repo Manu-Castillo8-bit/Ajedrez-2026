@@ -16,6 +16,9 @@ namespace Ajedrez_ASPX
         private const int MaxDescripcion = 50;
         private const string SinDescripcion = "(sin descripción)";
 
+        /// <summary>Tamaño máximo permitido para la foto de perfil (5 MB).</summary>
+        private const int MaxBytesFoto = 5 * 1024 * 1024;
+
         private static string SupabaseUrl { get { return SupabaseConfig.SupabaseUrl; } }
         private static string SupabaseKey { get { return SupabaseConfig.SupabaseKey; } }
 
@@ -36,6 +39,9 @@ namespace Ajedrez_ASPX
         protected void Page_Load(object sender, EventArgs e)
         {
             Page.Title = "PERFIL";
+
+            // El perfil es de la cuenta: sin sesión iniciada se va al login
+            if (!Acceso.ExigirSesion(this)) return;
 
             // Activa el protocolo de seguridad obligatorio para HTTPS en .NET 4.7.2
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -205,6 +211,14 @@ namespace Ajedrez_ASPX
                     if (!EsExtensionValida(extension))
                     {
                         lblMensaje.Text = "Formato de imagen no válido. Usa archivos jpg, jpeg, png, bmp o gif.";
+                        return;
+                    }
+
+                    // Validar el tamaño antes de leer el archivo: una imagen demasiado
+                    // grande corta la petición y detiene la depuración sin control.
+                    if (fuFoto.PostedFile != null && fuFoto.PostedFile.ContentLength > MaxBytesFoto)
+                    {
+                        lblMensaje.Text = "La imagen supera el tamaño máximo permitido (5 MB).";
                         return;
                     }
 
@@ -473,25 +487,33 @@ namespace Ajedrez_ASPX
 
             using (HttpClient client = new HttpClient())
             {
+                client.Timeout = TimeSpan.FromSeconds(60);
                 client.DefaultRequestHeaders.Add("apikey", SupabaseKey);
                 client.DefaultRequestHeaders.Add("Authorization", "Bearer " + SupabaseKey);
                 client.DefaultRequestHeaders.Add("x-upsert", "true");
 
-                ByteArrayContent content = new ByteArrayContent(bytesImagen);
-                // Usar el tipo MIME correcto según la extensión
-                content.Headers.ContentType = new MediaTypeHeaderValue(mime);
-
-                HttpResponseMessage responseStorage = client.PostAsync(urlStorage, content).GetAwaiter().GetResult();
+                // El mismo contenido no puede reutilizarse en dos peticiones, así
+                // que el PUT de reserva crea su propio ByteArrayContent.
+                HttpResponseMessage responseStorage;
+                using (ByteArrayContent content = new ByteArrayContent(bytesImagen))
+                {
+                    content.Headers.ContentType = new MediaTypeHeaderValue(mime);
+                    responseStorage = client.PostAsync(urlStorage, content).GetAwaiter().GetResult();
+                }
 
                 // Si el archivo ya existe, intentar con PUT (upsert de reemplazo)
                 if (!responseStorage.IsSuccessStatusCode)
                 {
-                    HttpRequestMessage requestPut = new HttpRequestMessage(new HttpMethod("PUT"), urlStorage)
+                    using (ByteArrayContent contentPut = new ByteArrayContent(bytesImagen))
                     {
-                        Content = content
-                    };
-                    requestPut.Headers.Add("x-upsert", "true");
-                    responseStorage = client.SendAsync(requestPut).GetAwaiter().GetResult();
+                        contentPut.Headers.ContentType = new MediaTypeHeaderValue(mime);
+                        HttpRequestMessage requestPut = new HttpRequestMessage(new HttpMethod("PUT"), urlStorage)
+                        {
+                            Content = contentPut
+                        };
+                        requestPut.Headers.Add("x-upsert", "true");
+                        responseStorage = client.SendAsync(requestPut).GetAwaiter().GetResult();
+                    }
                 }
 
                 if (!responseStorage.IsSuccessStatusCode)

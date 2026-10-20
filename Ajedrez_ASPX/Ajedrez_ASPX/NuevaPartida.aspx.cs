@@ -21,6 +21,9 @@ namespace Ajedrez_ASPX
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Configurar una partida requiere sesión iniciada
+            if (!Acceso.ExigirSesion(this)) return;
+
             if (!IsPostBack)
             {
                 string q = Request.QueryString["tipo"];

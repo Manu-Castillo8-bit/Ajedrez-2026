@@ -52,8 +52,13 @@ namespace Ajedrez_ASPX
                     ClientScript.RegisterStartupScript(GetType(), "registrado",
                         "alert('¡Usuario registrado exitosamente!\\n\\nAhora inicia sesión con tus credenciales.');",
                         true);
-                    // Llevar al login con el usuario ya escrito (como el escritorio).
-                    Response.Redirect("Default.aspx?usuario=" + Uri.EscapeDataString(usuario));
+                    // Llevar al login con el usuario ya escrito (como el escritorio),
+                    // conservando el destino al que se quería llegar.
+                    string destino = Request.QueryString["returnUrl"];
+                    string url = "Default.aspx?usuario=" + Uri.EscapeDataString(usuario);
+                    if (!string.IsNullOrWhiteSpace(destino))
+                        url += "&returnUrl=" + Server.UrlEncode(destino);
+                    Response.Redirect(url);
                 }
                 else
                 {

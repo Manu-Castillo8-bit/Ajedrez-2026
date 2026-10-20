@@ -50,7 +50,13 @@ namespace Ajedrez_ASPX
                 {
                     Sesion.NombreUsuario = u.nombre_usuario;
                     Sesion.ImagenUrl = string.Empty;
-                    Response.Redirect("Menu.aspx");
+
+                    // Volver a la página que exigía sesión (si viene indicada)
+                    string destino = Request.QueryString["returnUrl"];
+                    if (!string.IsNullOrWhiteSpace(destino) && EsDestinoSeguro(destino))
+                        Response.Redirect(destino);
+                    else
+                        Response.Redirect("Menu.aspx");
                     return;
                 }
 
@@ -72,7 +78,23 @@ namespace Ajedrez_ASPX
 
         protected void btnRegistrarse_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Registro.aspx");
+            string destino = Request.QueryString["returnUrl"];
+            if (!string.IsNullOrWhiteSpace(destino) && EsDestinoSeguro(destino))
+                Response.Redirect("Registro.aspx?returnUrl=" + Server.UrlEncode(destino));
+            else
+                Response.Redirect("Registro.aspx");
+        }
+
+        /// <summary>
+        /// Solo se aceptan destinos locales (rutas relativas sin esquema ni "//"),
+        /// para evitar redirecciones abiertas hacia sitios externos.
+        /// </summary>
+        private static bool EsDestinoSeguro(string destino)
+        {
+            if (string.IsNullOrWhiteSpace(destino)) return false;
+            if (destino.StartsWith("//") || destino.StartsWith("\\")) return false;
+            if (destino.IndexOf("://") >= 0) return false;
+            return destino.EndsWith(".aspx", System.StringComparison.OrdinalIgnoreCase);
         }
     }
 }

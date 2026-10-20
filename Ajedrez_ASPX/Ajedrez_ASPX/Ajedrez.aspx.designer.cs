@@ -8,6 +8,8 @@ namespace Ajedrez_ASPX
 
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
 
+        protected global::System.Web.UI.Timer TimerIA;
+
         protected global::System.Web.UI.HtmlControls.HtmlTable tablero;
 
         protected global::System.Web.UI.WebControls.Panel pnlPromocion;

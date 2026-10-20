@@ -26,6 +26,9 @@ namespace Ajedrez_ASPX
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Sin sesión iniciada no se puede jugar ni guardar partidas
+            if (!Acceso.ExigirSesion(this)) return;
+
             if (!IsPostBack)
             {
                 if (!Inicializar()) return;

@@ -42,6 +42,9 @@
     flex: 1 1 260px;
     min-width: 240px;
     max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     background: var(--panel-2);
     border: 1px solid var(--borde);
     border-radius: 10px;
@@ -151,7 +154,7 @@
     display: block;
     font-weight: bold;
     color: var(--text);
-    margin: 6px 0 4px 0;
+    margin: 2px 0 0 0;
 }
 
 .fila-puntos {
@@ -160,7 +163,6 @@
     gap: 8px;
     flex-wrap: wrap;
     min-height: 32px;
-    margin-bottom: 10px;
 }
 
 .tira-piezas {
@@ -177,9 +179,24 @@
     margin-left: 6px;
 }
 
+/* El consejo es un Label (span); hay que convertirlo en bloque para que su
+   fondo/borde no se solapen con los elementos de arriba y de abajo. */
 .etiqueta-consejo {
+    display: block;
     font-size: 13px;
-    line-height: 1.4;
+    line-height: 1.45;
+    margin: 6px 0 2px 0;
+    min-height: 60px;
+    overflow-wrap: break-word;
+}
+
+/* Dentro del panel lateral el espaciado lo aporta el gap del flex */
+.panel-lateral .espacio-arriba {
+    margin-top: 4px;
+}
+
+.panel-lateral .mensaje {
+    margin-top: 2px;
 }
 
 .panel-promocion {
