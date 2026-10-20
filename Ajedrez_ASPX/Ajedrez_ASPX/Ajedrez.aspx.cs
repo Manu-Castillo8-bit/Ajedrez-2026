@@ -395,19 +395,26 @@ namespace Ajedrez_ASPX
         /// <summary>El retardo terminó: la IA calcula y aplica su jugada.</summary>
         protected void TimerIA_Tick(object sender, EventArgs e)
         {
-            TimerIA.Enabled = false;
-
-            if (Juego == null) return;
-
-            // Ya no hay nada que esperar: al repintar, el reloj se apaga solo
-            if (!IAPendiente || !Juego.ModoIA || Juego.PartidaFinalizada || Juego.TurnoActual != Juego.ColorIA)
+            try
             {
-                IAPendiente = false;
-                return;
-            }
+                TimerIA.Enabled = false;
 
-            IAPendiente = false;
-            JugarIA();
+                if (Juego == null) return;
+
+                // Ya no hay nada que esperar: al repintar, el reloj se apaga solo
+                if (!IAPendiente || !Juego.ModoIA || Juego.PartidaFinalizada || Juego.TurnoActual != Juego.ColorIA)
+                {
+                    IAPendiente = false;
+                    return;
+                }
+
+                IAPendiente = false;
+                JugarIA();
+            }
+            catch
+            {
+                try { IAPendiente = false; TimerIA.Enabled = false; } catch { }
+            }
         }
 
         /// <summary>Busca o descarga el motor y devuelve su ruta (o null si no hay motor).</summary>
@@ -426,14 +433,17 @@ namespace Ajedrez_ASPX
         /// <summary>Calcula y aplica la jugada de la IA de forma síncrona (como en el escritorio).</summary>
         private void JugarIA()
         {
-            var g = Juego;
-            string exe = AsegurarMotor();
-            if (exe == null)
+            try
             {
-                // Sin motor: se desactiva la IA y el juego continúa en modo local
-                g.ModoIA = false;
-                return;
-            }
+                var g = Juego;
+                if (g == null) return;
+                string exe = AsegurarMotor();
+                if (exe == null)
+                {
+                    // Sin motor: se desactiva la IA y el juego continǧa en modo local
+                    g.ModoIA = false;
+                    return;
+                }
 
             string best = null;
             try
@@ -452,12 +462,20 @@ namespace Ajedrez_ASPX
                 return;
             }
 
-            ProcesarRespuestaIA(best);
+                ProcesarRespuestaIA(best);
+            }
+            catch
+            {
+                // Evitar crash si IA falla
+            }
         }
 
         private void ProcesarRespuestaIA(string best)
         {
-            var g = Juego;
+            try
+            {
+                var g = Juego;
+                if (g == null) return;
             if (string.IsNullOrWhiteSpace(best) || best == "(none)") return;
             if (best.Length < 4) return;
 
@@ -488,7 +506,12 @@ namespace Ajedrez_ASPX
                 }
             }
 
+            if (from.X < 0 || from.Y < 0 || to.X < 0 || to.Y < 0) return;
             AplicarYMover(from, to, promocion);
+            }
+            catch
+            {
+            }
         }
 
         // ----- Consejos -----
@@ -576,12 +599,16 @@ namespace Ajedrez_ASPX
             IAPendiente = false;
             TimerIA.Enabled = false;
 
-            int plies = (g.ModoIA && g.HistorialMovimientos.Count >= 2 && !iaPendiente) ? 2 : 1;
-            while (plies > 0 && g.HistorialMovimientos.Count > 0)
+            int plies = (g.ModoIA && g.HistorialMovimientos != null && g.HistorialMovimientos.Count >= 2 && !iaPendiente) ? 2 : 1;
+            try
             {
-                g.DeshacerUnMovimiento();
-                plies--;
+                while (plies > 0 && g.HistorialMovimientos != null && g.HistorialMovimientos.Count > 0)
+                {
+                    g.DeshacerUnMovimiento();
+                    plies--;
+                }
             }
+            catch { }
 
             g.UltimoMovimiento = "Deshacer";
             g.UltimoFueCaptura = false;

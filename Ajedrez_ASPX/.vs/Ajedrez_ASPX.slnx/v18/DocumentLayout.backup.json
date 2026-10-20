@@ -1,7 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez_ASPX\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{EDB09E30-25F0-4462-9FCC-5255E76D216C}|Ajedrez_ASPX\\Ajedrez_ASPX.csproj|c:\\users\\user\\source\\repos\\manu-castillo8-bit\\ajedrez-2026\\ajedrez_aspx\\ajedrez_aspx\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{EDB09E30-25F0-4462-9FCC-5255E76D216C}|Ajedrez_ASPX\\Ajedrez_ASPX.csproj|solutionrelative:ajedrez_aspx\\menu.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
@@ -9,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": -1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -22,6 +27,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Menu.aspx",
+              "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez_ASPX\\Ajedrez_ASPX\\Menu.aspx",
+              "RelativeDocumentMoniker": "Ajedrez_ASPX\\Menu.aspx",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez_ASPX\\Ajedrez_ASPX\\Menu.aspx",
+              "RelativeToolTip": "Ajedrez_ASPX\\Menu.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2026-10-20T06:52:58.144Z",
+              "EditorCaption": ""
             }
           ]
         }

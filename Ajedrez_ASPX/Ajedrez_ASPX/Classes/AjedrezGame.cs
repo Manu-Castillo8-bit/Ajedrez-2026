@@ -142,9 +142,20 @@ namespace Ajedrez_ASPX
 
         public static Point PuntoDeCasilla(string casilla)
         {
-            int col = casilla[0] - 'a';
-            int row = 8 - (casilla[1] - '0');
-            return new Point(row, col);
+            try
+            {
+                if (string.IsNullOrWhiteSpace(casilla) || casilla.Length < 2) return new Point(-1, -1);
+                char c = casilla[0];
+                char r = casilla[1];
+                if (c < 'a' || c > 'h' || r < '1' || r > '8') return new Point(-1, -1);
+                int col = c - 'a';
+                int row = 8 - (r - '0');
+                return new Point(row, col);
+            }
+            catch
+            {
+                return new Point(-1, -1);
+            }
         }
 
         private string Notacion(Point from, Point to)
@@ -961,7 +972,12 @@ namespace Ajedrez_ASPX
 
         public void DeshacerUnMovimiento()
         {
-            MovHistorial move = HistorialMovimientos.Pop();
+            try
+            {
+                if (HistorialMovimientos == null || HistorialMovimientos.Count == 0)
+                    return;
+
+                MovHistorial move = HistorialMovimientos.Pop();
 
             // Mover la pieza de vuelta a su casilla de origen
             Casillas[move.Origen.X, move.Origen.Y] = move.PiezaMovida;
@@ -1021,6 +1037,12 @@ namespace Ajedrez_ASPX
             TurnoActual = move.PiezaMovida.Color;
 
             if (NumMovimientos > 0) NumMovimientos--;
+            }
+            catch
+            {
+                // Evitar crash por estado inconsistente tras apagado/corrupción
+                return;
+            }
         }
 
         private static void QuitarCaptura(List<string> lista)
@@ -1231,6 +1253,7 @@ namespace Ajedrez_ASPX
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(json)) return;
                 JObject o = JObject.Parse(json);
                 TurnoActual = o["turn"] != null ? (string)o["turn"] : "white";
                 BlancasCapturaron = o["wc"] != null ? (int)o["wc"] : 0;
@@ -1261,7 +1284,8 @@ namespace Ajedrez_ASPX
                     }
                 }
 
-                JArray cells = (JArray)o["cells"];
+                JArray cells = o["cells"] as JArray;
+                if (cells == null) return;
                 for (int r = 0; r < BOARD_SIZE; r++)
                 {
                     for (int c = 0; c < BOARD_SIZE; c++)
@@ -1319,6 +1343,7 @@ namespace Ajedrez_ASPX
                 MotivoFin = null;
                 JaqueF = -1; JaqueC = -1;
                 MateF = -1; MateC = -1;
+                if (HistorialMovimientos == null) HistorialMovimientos = new Stack<MovHistorial>();
                 HistorialMovimientos.Clear();
                 PuedeDeshacer = false;
             }

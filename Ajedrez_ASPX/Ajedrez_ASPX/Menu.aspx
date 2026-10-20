@@ -15,7 +15,7 @@
                 </div>
             </div>
 
-            <asp:Button ID="btnAjedrez" runat="server" Text="AJEDRÉS" CssClass="btn btn-menu btn-cian btn-nav"
+            <asp:Button ID="btnAjedrez" runat="server" Text="AJEDREZ" CssClass="btn btn-menu btn-cian btn-nav"
                 OnClick="btnAjedrez_Click" />
             <asp:Button ID="btnDamas" runat="server" Text="DAMAS" CssClass="btn btn-menu btn-azul btn-nav btn-nav-par"
                 OnClick="btnDamas_Click" />
