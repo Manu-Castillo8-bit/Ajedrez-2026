@@ -1,0 +1,12 @@
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Ajedrez_ASPX.dll.config
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Ajedrez_ASPX.dll
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Ajedrez_ASPX.pdb
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Newtonsoft.Json.dll
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\check_b\Newtonsoft.Json.xml
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\obj\check_b\Ajedrez_ASPX.csproj.AssemblyReference.cache
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\obj\check_b\Ajedrez_ASPX.csproj.CoreCompileInputs.cache
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\obj\check_b\Ajedrez_.3473E884.Up2Date
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\obj\check_b\Ajedrez_ASPX.dll
+C:\Users\User\source\repos\Manu-Castillo8-bit\Ajedrez-2026\Ajedrez_ASPX\Ajedrez_ASPX\obj\check_b\Ajedrez_ASPX.pdb

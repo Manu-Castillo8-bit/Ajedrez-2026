@@ -1,0 +1,23 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="Ajedrez_ASPX.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="es" runat="server" id="htmlRaiz">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title runat="server" id="tituloPagina">Ajedrez 2026</title>
+    <link href="Content/site.css" rel="stylesheet" />
+    <asp:ContentPlaceHolder ID="EncabezadoExtra" runat="server" />
+</head>
+<body runat="server" id="cuerpo">
+    <form id="formPrincipal" runat="server" enctype="multipart/form-data">
+        <div class="barra-tema">
+            <asp:Button ID="btnTemaClaro" runat="server" Text="Claro" CssClass="btn btn-claro btn-tema"
+                OnClick="btnTemaClaro_Click" CausesValidation="false" />
+            <asp:Button ID="btnTemaOscuro" runat="server" Text="Oscuro" CssClass="btn btn-azul btn-tema"
+                OnClick="btnTemaOscuro_Click" CausesValidation="false" />
+        </div>
+        <asp:ContentPlaceHolder ID="Contenido" runat="server" />
+    </form>
+</body>
+</html>

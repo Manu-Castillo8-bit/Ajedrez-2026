@@ -1,0 +1,78 @@
+/* Estilos específicos del panel administrativo */
+.fila-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+    margin-bottom: 14px;
+}
+
+.filtro-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 150px;
+}
+
+.filtro-grupo label {
+    font-size: 13px;
+    color: var(--text);
+}
+
+.filtro-grupo .campo {
+    margin-bottom: 0;
+}
+
+.stats-panel {
+    background: var(--panel-2);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    color: var(--text);
+}
+
+.tema-oscuro .stats-panel {
+    background: var(--panel);
+}
+
+.botones-admin {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.grid-admin {
+    margin-bottom: 10px;
+}
+
+.modal-grupo {
+    margin-bottom: 10px;
+}
+
+.modal-grupo .campo {
+    margin-bottom: 4px;
+}
+
+.modal-botones {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+@media (max-width: 720px) {
+    .filtro-grupo {
+        min-width: 120px;
+        flex: 1 1 120px;
+    }
+
+    .modal-botones {
+        flex-direction: column-reverse;
+    }
+
+    .modal-botones .btn {
+        width: 100%;
+    }
+}

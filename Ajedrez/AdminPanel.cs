@@ -176,6 +176,19 @@ namespace Ajedrez
             UsuarioCompleto original = _usuarios.FirstOrDefault(u => u.id_usuario == id.Value);
             if (original == null) return;
 
+            // Estadísticas reales calculadas de las partidas (las mismas que
+            // muestra la tabla); los valores guardados en la nube pueden estar
+            // desactualizados.
+            int jugadas = original.partidas_jugadas;
+            int ganadas = original.partidas_ganadas;
+            int empatadas = original.partidas_empatadas;
+            int perdidas = original.partidas_perdidas;
+            if (_partidas != null && _partidas.Count > 0)
+            {
+                CalcularEstadisticas(original.nombre_usuario, _partidas,
+                    out jugadas, out ganadas, out empatadas, out perdidas);
+            }
+
             // Copia para no dejar cambios a medias si el usuario cancela.
             UsuarioCompleto copia = new UsuarioCompleto
             {
@@ -185,10 +198,10 @@ namespace Ajedrez
                 contrasena = original.contrasena,
                 fecha_registro = original.fecha_registro,
                 elo = original.elo,
-                partidas_jugadas = original.partidas_jugadas,
-                partidas_ganadas = original.partidas_ganadas,
-                partidas_empatadas = original.partidas_empatadas,
-                partidas_perdidas = original.partidas_perdidas,
+                partidas_jugadas = jugadas,
+                partidas_ganadas = ganadas,
+                partidas_empatadas = empatadas,
+                partidas_perdidas = perdidas,
                 activo = original.activo,
                 imagen_url = original.imagen_url
             };

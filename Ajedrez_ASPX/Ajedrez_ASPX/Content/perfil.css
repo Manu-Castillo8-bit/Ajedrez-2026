@@ -1,0 +1,77 @@
+/* ============================================================
+   PERFIL — estilos de la página de perfil (Ajedrez 2026)
+   ============================================================ */
+
+.perfil-zona {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.perfil-foto {
+    width: 230px;
+}
+
+.foto-grande {
+    display: block;
+    width: 198px;
+    height: 195px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--panel);
+    object-fit: cover;
+    margin-bottom: 12px;
+}
+
+.foto-vacia {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--text-sec);
+    font-size: 13px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.perfil-datos {
+    flex: 1;
+    min-width: 280px;
+}
+
+.fila-dato {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.fila-dato .clave {
+    font-weight: bold;
+    min-width: 120px;
+    color: var(--text);
+}
+
+.fila-dato .valor {
+    color: var(--text-dato);
+}
+
+.campo-inline {
+    width: auto;
+    max-width: 260px;
+    margin-bottom: 0;
+}
+
+.btn-mini {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.contador-desc {
+    font-size: 12px;
+    color: var(--text-sec);
+    margin-bottom: 6px;
+}

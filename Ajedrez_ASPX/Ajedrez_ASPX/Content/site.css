@@ -1,0 +1,491 @@
+/* ============================================================
+   AJEDREZ 2026 — Estilos compartidos (temas claro/oscuro)
+   Colores basados en Tema.cs del proyecto de escritorio.
+   ============================================================ */
+
+* { box-sizing: border-box; }
+
+html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: "Segoe UI", "Microsoft Sans Serif", Arial, sans-serif;
+    font-size: 14px;
+}
+
+body.tema-claro {
+    --bg: #f0f0f0;
+    --panel: #f0f0f0;
+    --panel-2: #d9d9d9;
+    --text: #000000;
+    --text-sec: #5a6a85;
+    --text-dato: #707070;
+    --input-bg: #ffffff;
+    --input-text: #000000;
+    --borde: #c8c8c8;
+    --link: #0066cc;
+    --link-activo: #ff0000;
+    --consejo-bg: #f0f6ff;
+    --consejo-text: #242426;
+    background: var(--bg);
+    color: var(--text);
+}
+
+body.tema-oscuro {
+    --bg: #0a1628;
+    --panel: #0f1f3a;
+    --panel-2: #1a2d4a;
+    --text: #ffffff;
+    --text-sec: #9ab8e8;
+    --text-dato: #b8ccf0;
+    --input-bg: #1a2d4a;
+    --input-text: #ffffff;
+    --borde: #2a4a7a;
+    --link: #4a8af4;
+    --link-activo: #22b8f0;
+    --consejo-bg: #0f1f3a;
+    --consejo-text: #cfe0ff;
+    background: var(--bg);
+    color: var(--text);
+}
+
+a { color: var(--link); }
+a:hover { color: var(--link-activo); }
+
+/* ---------- Barra de tema (Site.Master) ---------- */
+
+.barra-tema {
+    position: fixed;
+    top: 8px;
+    right: 10px;
+    z-index: 1000;
+    display: flex;
+    gap: 6px;
+}
+
+.btn-tema {
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+    opacity: 0.9;
+}
+
+/* ---------- Contenedores ---------- */
+
+.pagina {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 16px 32px 16px;
+}
+
+.centrado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px;
+}
+
+.tarjeta {
+    background: var(--panel-2);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 18px;
+}
+
+.tema-oscuro .tarjeta {
+    background: var(--panel);
+}
+
+.titulo {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 14px 0;
+    color: var(--text);
+}
+
+.subtitulo {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text);
+    margin: 10px 0 6px 0;
+}
+
+.texto-sec { color: var(--text-sec); }
+
+.logo {
+    max-width: 220px;
+    width: 100%;
+    margin-bottom: 14px;
+}
+
+/* ---------- Botones ---------- */
+
+.btn {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-family: inherit;
+    cursor: pointer;
+    color: #fff;
+    background: #4a8af4;
+}
+
+.btn:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: 0.6; cursor: default; }
+
+.btn-cian          { background: #22b8f0; color: #fff; }
+.btn-azul          { background: #4a8af4; color: #fff; }
+.btn-verde         { background: #18c484; color: #fff; }
+.btn-rojo          { background: #e0533a; color: #fff; }
+.btn-verde-fuerte  { background: #58b828; color: #fff; }
+.btn-rojo-fuerte   { background: #f01916; color: #fff; }
+.btn-amarillo      { background: #fcd305; color: #000; }
+.btn-morado        { background: #943edb; color: #fff; }
+.btn-claro         { background: #f0f0f0; color: #000; }
+.btn-gris          { background: #dce4f0; color: #000; }
+
+/* Botones de navegación: en tema claro van en paneles suaves
+   (igual que el escritorio), manteniendo su color en tema oscuro. */
+.tema-claro .btn-nav { background: #f0f6ff; color: #000; }
+.tema-claro .btn-nav-par { background: #dce4f0; color: #000; }
+.tema-claro .btn-admin { background: #e0533a; color: #fff; }
+
+.btn-menu {
+    display: block;
+    width: 100%;
+    padding: 13px 18px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+/* ---------- Formularios ---------- */
+
+.campo {
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    padding: 9px 11px;
+    font-size: 14px;
+    font-family: inherit;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.campo:focus { outline: 2px solid var(--link); }
+
+.etiqueta {
+    display: block;
+    font-weight: bold;
+    color: var(--text);
+    margin: 8px 0 4px 0;
+}
+
+.dato {
+    color: var(--text-dato);
+    font-size: 14px;
+    margin: 3px 0;
+}
+
+.dato b { color: var(--text); }
+
+.mensaje {
+    display: block;
+    min-height: 18px;
+    margin-top: 8px;
+    font-style: italic;
+    font-size: 13px;
+    color: #e0533a;
+}
+
+.aviso-mayusculas {
+    display: block;
+    font-size: 12px;
+    color: var(--text-sec);
+    margin-bottom: 8px;
+}
+
+.fila-controles {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.grupo {
+    background: var(--panel-2);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.tema-oscuro .grupo { background: var(--panel); }
+
+.opcion {
+    display: inline-block;
+    margin: 4px 14px 4px 0;
+    cursor: pointer;
+    color: var(--text);
+}
+
+.consejo {
+    background: var(--consejo-bg);
+    color: var(--consejo-text);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+}
+
+/* ---------- Tablas (GridView de administración / partidas) ---------- */
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--input-bg);
+    color: var(--input-text);
+    border: 1px solid var(--borde);
+    font-size: 13px;
+}
+
+.tabla th {
+    background: var(--panel-2);
+    color: var(--text);
+    padding: 8px 10px;
+    text-align: left;
+    border-bottom: 2px solid var(--borde);
+    white-space: nowrap;
+}
+
+.tabla td {
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--borde);
+    white-space: nowrap;
+}
+
+.tabla tr:hover td { filter: brightness(0.95); }
+.tabla tr.fila-sel td { background: rgba(74, 138, 244, 0.25); }
+
+/* ---------- Estadísticas ---------- */
+
+.stats-linea {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    padding: 10px 0;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.stat-caja {
+    background: var(--panel-2);
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-align: center;
+    min-width: 90px;
+}
+
+.tema-oscuro .stat-caja { background: var(--panel); }
+
+.stat-caja .valor {
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.stat-caja .rotulo {
+    font-size: 12px;
+    color: var(--text-sec);
+}
+
+/* ---------- Pestañas (administración) ---------- */
+
+.pestanas {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.pestana {
+    padding: 9px 18px;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--borde);
+    background: var(--panel-2);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.tema-oscuro .pestana { background: var(--panel); }
+
+.pestana.activa {
+    background: #22b8f0;
+    color: #fff;
+    border-color: #22b8f0;
+}
+
+/* ---------- Panel modal (edición de usuario, avisos) ---------- */
+
+.modal-fondo {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+}
+
+.modal {
+    background: var(--bg);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    padding: 22px 26px;
+    min-width: 340px;
+    max-width: 92vw;
+    max-height: 88vh;
+    overflow: auto;
+    color: var(--text);
+}
+
+/* ---------- Utilidades ---------- */
+
+.texto-centrado { text-align: center; }
+.derecha { text-align: right; }
+.sin-margen { margin: 0; }
+.espacio-arriba { margin-top: 14px; }
+.oculto { display: none !important; }
+
+.link-btn {
+    background: none;
+    border: none;
+    color: var(--link);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0;
+    text-decoration: underline;
+    font-family: inherit;
+}
+
+.imagen-perfil {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--borde);
+    background: var(--panel-2);
+}
+
+.barra-superior {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+/* ---------- Envoltorio de tablas anchas (GridView) ---------- */
+
+.tabla-envoltorio {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 10px;
+}
+
+/* ---------- Tarjetas centradas (login, registro, menú, etc.) ---------- */
+
+.centrado .tarjeta {
+    width: 100%;
+    max-width: 440px;
+}
+
+/* ---------- Adaptación a pantallas pequeñas ---------- */
+
+@media (max-width: 720px) {
+    .pagina {
+        padding: 56px 10px 24px 10px;
+    }
+
+    .tarjeta {
+        padding: 16px 14px;
+    }
+
+    .titulo {
+        font-size: 18px;
+    }
+
+    .btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    .btn-menu {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
+
+    .modal {
+        min-width: 0;
+        width: calc(100vw - 24px);
+        padding: 16px 14px;
+    }
+
+    .stat-caja {
+        min-width: 72px;
+        padding: 8px 12px;
+    }
+
+    .stat-caja .valor {
+        font-size: 18px;
+    }
+
+    .campo-inline {
+        max-width: 100%;
+    }
+
+    .perfil-foto {
+        width: 100%;
+    }
+
+    .filtros .btn {
+        min-width: 0;
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    .barra-tema {
+        top: 6px;
+        right: 6px;
+    }
+
+    .btn-tema {
+        padding: 5px 9px !important;
+        font-size: 11px !important;
+    }
+
+    .stats-linea {
+        gap: 8px;
+    }
+
+    .tabla {
+        font-size: 12px;
+    }
+
+    .tabla th,
+    .tabla td {
+        padding: 6px 7px;
+    }
+}

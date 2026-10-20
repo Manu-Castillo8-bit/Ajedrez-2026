@@ -1,0 +1,27 @@
+/* ============================================================
+   PARTIDAS — estilos de la página de historial (Ajedrez 2026)
+   ============================================================ */
+
+.filtros {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.filtros .btn {
+    min-width: 125px;
+}
+
+.filtros-botones {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 720px) {
+    .filtros .btn {
+        min-width: 0;
+        flex: 1 1 45%;
+    }
+}

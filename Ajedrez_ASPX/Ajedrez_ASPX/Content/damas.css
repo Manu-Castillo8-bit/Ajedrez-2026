@@ -1,0 +1,214 @@
+/* ============================================================
+   DAMAS — Estilos del tablero y panel de la partida
+   (complementa site.css; no modifica los estilos compartidos)
+   ============================================================ */
+
+.damas-marco {
+    display: flex;
+    gap: 22px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.damas-tablero-tarjeta {
+    padding: 16px 18px;
+    /* Tamaño de celda escalable según el ancho de pantalla */
+    --celda: 56px;
+    --fuente-pieza: 34px;
+    --coord: 22px;
+}
+
+.damas-panel {
+    flex: 1 1 260px;
+    min-width: 240px;
+    max-width: 320px;
+    box-sizing: border-box;
+}
+
+/* ---------- Tablero ---------- */
+
+.tablero-damas {
+    border-collapse: collapse;
+    user-select: none;
+}
+
+.tablero-damas td {
+    padding: 0;
+    margin: 0;
+}
+
+.celda {
+    width: var(--celda, 56px);
+    height: var(--celda, 56px);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.celda.oscura { background: #262626; }
+.celda.clara  { background: #f0f0f0; }
+
+/* Resaltados de casilla (selección / soplar / último movimiento) */
+.celda.seleccionada { background: #32cd32; } /* LimeGreen, como el escritorio */
+.celda.soplada      { background: #e02020; } /* rojo, como el escritorio */
+
+.celda.ultimo-mov {
+    box-shadow: inset 0 0 0 3px rgba(252, 211, 5, 0.85);
+}
+
+/* Coordenadas (números 8..1 y letras a..h) */
+.celda.coord {
+    width: var(--coord, 22px);
+    height: var(--coord, 22px);
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text);
+    background: transparent;
+}
+
+/* ---------- Casillas clicables (LinkButton) ---------- */
+
+.damas-marco a.casilla {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--celda, 56px);
+    height: var(--celda, 56px);
+    margin: 0;
+    padding: 0;
+    font-size: var(--fuente-pieza, 34px);
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Fichas: discos dibujados con glifos (● y ♛) */
+.damas-marco a.casilla.pieza-blanca {
+    color: #f5f5f5;
+    text-shadow: 0 0 2px #555, 0 0 1px #222;
+}
+
+.damas-marco a.casilla.pieza-negra {
+    color: #222222;
+    text-shadow: 0 0 2px #999, 0 0 1px #ddd;
+}
+
+/* Destino legal: punto verde (equivale a la imagen Movimiento del escritorio) */
+.damas-marco a.casilla.destino::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: rgba(50, 205, 50, 0.8);
+}
+
+/* ---------- Avisos (movimientos soplados, fin de partida, deshacer) ---------- */
+
+.damas-aviso {
+    display: block;
+    min-height: 22px;
+    margin-top: 10px;
+    white-space: pre-line;
+}
+
+.damas-aviso.fin-partida {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    color: #18c484;
+}
+
+/* ---------- Confirmación de "Ir al menú" ---------- */
+
+.damas-confirmacion {
+    margin-top: 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    padding: 12px 14px;
+    background: var(--consejo-bg);
+    color: var(--consejo-text);
+}
+
+.damas-confirmacion-texto {
+    white-space: pre-line;
+    color: var(--consejo-text);
+    margin: 6px 0 10px 0;
+}
+
+/* ---------- Panel de puntos ---------- */
+
+.damas-puntos {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    min-height: 34px;
+    margin: 4px 0 14px 0;
+}
+
+.ficha-mini {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.ficha-mini.pieza-blanca {
+    color: #f5f5f5;
+    text-shadow: 0 0 2px #555, 0 0 1px #222;
+}
+
+.ficha-mini.pieza-negra {
+    color: #222222;
+    text-shadow: 0 0 2px #999, 0 0 1px #ddd;
+}
+
+.damas-numero {
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--text);
+    margin-left: 6px;
+}
+
+/* ---------- Escalado según pantalla ---------- */
+
+@media (max-width: 720px) {
+    .damas-marco {
+        gap: 14px;
+    }
+
+    .damas-tablero-tarjeta {
+        --celda: 40px;
+        --fuente-pieza: 26px;
+        --coord: 18px;
+        padding: 10px 8px;
+    }
+
+    .damas-panel {
+        flex: 1 1 100%;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .ficha-mini {
+        font-size: 18px;
+    }
+
+    .damas-numero {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 480px) {
+    .damas-tablero-tarjeta {
+        --celda: 34px;
+        --fuente-pieza: 22px;
+        --coord: 16px;
+        padding: 8px 4px;
+    }
+
+    .damas-marco a.casilla.destino::before {
+        width: 13px;
+        height: 13px;
+    }
+}
