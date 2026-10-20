@@ -68,6 +68,11 @@
     <Reference Include="Npgsql, Version=6.0.11.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.6.0.11\lib\netstandard2.0\Npgsql.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.8.1.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.8.1\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="Supabase, Version=0.16.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\supabase-csharp.0.16.2\lib\netstandard2.0\Supabase.dll</HintPath>
     </Reference>
@@ -174,6 +179,9 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormQR.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="GestorFuentes.cs" />
     <Compile Include="Consejos.cs" />

@@ -311,6 +311,14 @@ namespace Ajedrez
             public string imagen_url { get; set; }
             public double? elo { get; set; }
         }
+
+        private void btn_qr_Click(object sender, EventArgs e)
+        {
+            using (var ventana = new FormQR())
+            {
+                ventana.ShowDialog(this);
+            }
+        }
     }
     }
 

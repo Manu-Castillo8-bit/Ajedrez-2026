@@ -49,6 +49,7 @@
             this.ir_perfil = new System.Windows.Forms.Button();
             this.ir_damas = new System.Windows.Forms.Button();
             this.ajedrez = new System.Windows.Forms.Button();
+            this.btn_qr = new System.Windows.Forms.Button();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pic_usuario)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -93,7 +94,7 @@
             this.label5.AutoEllipsis = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(289, 46);
-            this.label5.Name = "lbl_victorias";
+            this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 14);
             this.label5.TabIndex = 21;
             this.label5.Text = "0";
@@ -115,7 +116,7 @@
             this.label4.AutoEllipsis = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(160, 46);
-            this.label4.Name = "lbl_elo";
+            this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(60, 14);
             this.label4.TabIndex = 20;
             this.label4.Text = "0";
@@ -138,7 +139,7 @@
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(28, 16);
-            this.label3.Name = "lbl_bienvenido";
+            this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(75, 16);
             this.label3.TabIndex = 19;
             this.label3.Text = "Bienvenido";
@@ -158,6 +159,7 @@
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ControlLight;
             this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.groupBox1.Controls.Add(this.btn_qr);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.ir_admin);
             this.groupBox1.Controls.Add(this.ir_creditos);
@@ -297,6 +299,16 @@
             this.ajedrez.UseVisualStyleBackColor = false;
             this.ajedrez.Click += new System.EventHandler(this.ajedrez_Click);
             // 
+            // btn_qr
+            // 
+            this.btn_qr.Location = new System.Drawing.Point(30, 155);
+            this.btn_qr.Name = "btn_qr";
+            this.btn_qr.Size = new System.Drawing.Size(115, 74);
+            this.btn_qr.TabIndex = 16;
+            this.btn_qr.Text = "VERSION MOVIL";
+            this.btn_qr.UseVisualStyleBackColor = true;
+            this.btn_qr.Click += new System.EventHandler(this.btn_qr_Click);
+            // 
             // menu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,10 +322,8 @@
             this.Controls.Add(this.ir_perfil);
             this.Controls.Add(this.ir_damas);
             this.Controls.Add(this.ajedrez);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Sizable;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MinimizeBox = true;
             this.Name = "menu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MENU";
@@ -351,5 +361,6 @@
         private System.Windows.Forms.Label lblEloTitulo;
         private System.Windows.Forms.Label lbl_usuario;
         private System.Windows.Forms.PictureBox pic_usuario;
+        private System.Windows.Forms.Button btn_qr;
     }
 }
