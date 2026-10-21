@@ -110,7 +110,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -123,6 +123,10 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
@@ -142,15 +146,11 @@
               "Title": "menu.cs [Dise\u00F1o]",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs",
               "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs [Dise\u00F1o]*",
-              "RelativeToolTip": "Ajedrez\\menu.cs [Dise\u00F1o]*",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs [Dise\u00F1o]",
+              "RelativeToolTip": "Ajedrez\\menu.cs [Dise\u00F1o]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-28T04:21:20.278Z",
               "EditorCaption": " [Dise\u00F1o]"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
@@ -183,8 +183,8 @@
               "Title": "menu.cs",
               "DocumentMoniker": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs",
               "RelativeDocumentMoniker": "Ajedrez\\menu.cs",
-              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs*",
-              "RelativeToolTip": "Ajedrez\\menu.cs*",
+              "ToolTip": "C:\\Users\\User\\source\\repos\\Manu-Castillo8-bit\\Ajedrez-2026\\Ajedrez\\menu.cs",
+              "RelativeToolTip": "Ajedrez\\menu.cs",
               "ViewState": "AgIAACkBAAAAAAAAAAAvwDMBAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-09-01T07:50:20.767Z",

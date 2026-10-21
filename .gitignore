@@ -16,3 +16,6 @@ Ajedrez/obj/**/Ajedrez.pdb
 **/stockfish.exe
 Ajedrez/Stockfish/
 .vs/Ajedrez.slnx/FileContentIndex/*.vsidx
+
+# Instalador generado (se regenera con instalador\compilar-instalador.ps1)
+dist/
